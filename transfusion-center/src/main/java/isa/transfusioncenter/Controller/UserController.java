@@ -14,23 +14,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import isa.transfusioncenter.Dto.LoginDto;
 import isa.transfusioncenter.Dto.RegisterUserDto;
-import isa.transfusioncenter.Model.User;
+import isa.transfusioncenter.Model.RegisteredUser;
 import isa.transfusioncenter.Service.EmailService;
-import isa.transfusioncenter.Service.UserService;
+import isa.transfusioncenter.Service.RegisteredUserService;
 
 @Controller
 public class UserController {
-    private final UserService userService;
+    private final RegisteredUserService registeredUserService;
     private final ModelMapper modelMapper;
     private final EmailService emailService;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper, EmailService emailService) {
-        this.userService = userService;
+    public UserController(RegisteredUserService registeredUserService, ModelMapper modelMapper,
+            EmailService emailService) {
+        this.registeredUserService = registeredUserService;
         this.modelMapper = modelMapper;
         this.emailService = emailService;
     }
@@ -38,7 +39,7 @@ public class UserController {
     @GetMapping(path = "/users/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserByEmail(@PathVariable("email") String email) {
         try {
-            return new ResponseEntity<User>(userService.findByEmail(email), HttpStatus.OK);
+            return new ResponseEntity<RegisteredUser>(registeredUserService.findByEmail(email), HttpStatus.OK);
         } catch (IllegalStateException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -47,7 +48,7 @@ public class UserController {
     @PostMapping(path = "/users/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> registerUser(@RequestBody RegisterUserDto userDto) {
         try {
-            User userToBeCreated = modelMapper.map(userDto, User.class);
+            RegisteredUser userToBeCreated = modelMapper.map(userDto, RegisteredUser.class);
             SecureRandom random = new SecureRandom();
             byte[] salt = new byte[16];
             random.nextBytes(salt);
@@ -59,12 +60,12 @@ public class UserController {
                 hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
                 userToBeCreated.setPasswordHash(hashedPassword);
                 userToBeCreated.setPasswordSalt(salt);
-                User newUser = userService.createUser(userToBeCreated);
+                RegisteredUser newUser = registeredUserService.createUser(userToBeCreated);
                 String to = newUser.getEmail();
                 String subject = "Activate Account";
                 String body = "http://localhost:8080/users/activateAccount/" + newUser.getId().toString();
                 emailService.sendEmail(to, subject, body);
-                return new ResponseEntity<User>(newUser, HttpStatus.OK);
+                return new ResponseEntity<RegisteredUser>(newUser, HttpStatus.OK);
             }
             return new ResponseEntity<String>("Failed to send email", HttpStatus.NOT_FOUND);
         } catch (NoSuchAlgorithmException e) {
@@ -76,7 +77,18 @@ public class UserController {
     @GetMapping(path = "/users/activateAccount/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> activateAccount(@PathVariable Long id) {
         try {
-            return new ResponseEntity<User>(userService.updateAccountStatus(id), HttpStatus.OK);
+            return new ResponseEntity<RegisteredUser>(registeredUserService.updateAccountStatus(id), HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
+        try {
+            return new ResponseEntity<String>(
+                    registeredUserService.loginUser(loginDto.getEmail(), loginDto.getPassword()),
+                    HttpStatus.OK);
         } catch (IllegalStateException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
