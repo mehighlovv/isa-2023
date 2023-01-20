@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import isa.transfusioncenter.RabbitMQ.RabbitMQProducer;
+
 import isa.transfusioncenter.Dto.LoginDto;
 import isa.transfusioncenter.Dto.RegisterUserDto;
 import isa.transfusioncenter.Model.RegisteredUser;
@@ -27,13 +29,15 @@ public class UserController {
     private final RegisteredUserService registeredUserService;
     private final ModelMapper modelMapper;
     private final EmailService emailService;
+    private final RabbitMQProducer producer;
 
     @Autowired
     public UserController(RegisteredUserService registeredUserService, ModelMapper modelMapper,
-            EmailService emailService) {
+            EmailService emailService, RabbitMQProducer producer) {
         this.registeredUserService = registeredUserService;
         this.modelMapper = modelMapper;
         this.emailService = emailService;
+        this.producer = producer;
     }
 
     @GetMapping(path = "/users/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,6 +47,12 @@ public class UserController {
         } catch (IllegalStateException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(path = "/start")
+    public ResponseEntity<?> startSimulation() {
+        producer.sendMessage("testcina");
+        return new ResponseEntity<String>("super",HttpStatus.OK);
     }
 
     @PostMapping(path = "/users/register", produces = MediaType.APPLICATION_JSON_VALUE)
