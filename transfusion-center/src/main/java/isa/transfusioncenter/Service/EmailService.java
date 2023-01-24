@@ -1,4 +1,4 @@
-package isa.transfusioncenter.Service;
+package isa.transfusioncenter.service;
 
 public interface EmailService {
     void sendEmail(String to, String subject, String body);

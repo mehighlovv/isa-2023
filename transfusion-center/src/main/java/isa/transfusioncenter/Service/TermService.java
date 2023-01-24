@@ -1,27 +1,23 @@
-package isa.transfusioncenter.Service;
+package isa.transfusioncenter.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import isa.transfusioncenter.Model.RegisteredUser;
-import isa.transfusioncenter.Model.Term;
-import isa.transfusioncenter.Model.TermType;
-import isa.transfusioncenter.Repository.TermRepository;
+import isa.transfusioncenter.model.RegisteredUser;
+import isa.transfusioncenter.model.Term;
+import isa.transfusioncenter.model.TermType;
+import isa.transfusioncenter.repository.TermRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class TermService {
     private final TermRepository termRepository;
     private final RegisteredUserService registeredUserService;
-
-    @Autowired
-    public TermService(TermRepository termRepository, RegisteredUserService registeredUserService) {
-        this.termRepository = termRepository;
-        this.registeredUserService = registeredUserService;
-    }
+    private final QuestionaireService questionaireService;
 
     public Term createTerm(Term term) {
         return termRepository.save(term);
@@ -51,7 +47,7 @@ public class TermService {
         Term term = termRepository.findById(termId).get();
         RegisteredUser reserver = registeredUserService.findByEmail(reserverEmail);
         if (term != null && reserver != null) {
-            if (term.getReserver() == null && reserver.getQuestionaire() != null
+            if (term.getReserver() == null && questionaireService.findByUserId(reserver.getId()) != null
                     && registeredUserService.checkForTermInLastSixMonths(reserver)) {
                 term.setReserver(reserver);
                 return termRepository.save(term);

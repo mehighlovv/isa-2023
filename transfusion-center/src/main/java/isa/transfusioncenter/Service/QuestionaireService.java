@@ -1,19 +1,15 @@
-package isa.transfusioncenter.Service;
+package isa.transfusioncenter.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import isa.transfusioncenter.Model.Questionaire;
-import isa.transfusioncenter.Repository.QuestionaireRepository;
+import isa.transfusioncenter.model.Questionaire;
+import isa.transfusioncenter.repository.QuestionaireRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionaireService {
     private final QuestionaireRepository questionaireRepository;
-
-    @Autowired
-    public QuestionaireService(QuestionaireRepository questionaireRepository) {
-        this.questionaireRepository = questionaireRepository;
-    }
 
     public Questionaire findByUserId(Long id) {
         return questionaireRepository.findByUserId(id);

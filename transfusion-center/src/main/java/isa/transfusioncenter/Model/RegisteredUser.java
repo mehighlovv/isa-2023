@@ -1,4 +1,4 @@
-package isa.transfusioncenter.Model;
+package isa.transfusioncenter.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,6 @@ public class RegisteredUser extends User {
     private int loyaltyPoints = 0;
 
     @Column
-    private boolean isAccepted = false;
-
-    @Column
     private int penalties = 0;
 
     @OneToMany(mappedBy = "complainee", fetch = FetchType.EAGER)
@@ -38,7 +35,7 @@ public class RegisteredUser extends User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Rating> ratings = new ArrayList<Rating>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     private Questionaire questionaire;
 
     @OneToMany(mappedBy = "reserver", fetch = FetchType.EAGER)

@@ -1,4 +1,4 @@
-package isa.transfusioncenter.Model;
+package isa.transfusioncenter.model;
 
 public enum TermType {
     PREDEFINED,

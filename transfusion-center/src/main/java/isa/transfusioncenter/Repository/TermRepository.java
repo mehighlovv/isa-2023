@@ -1,4 +1,4 @@
-package isa.transfusioncenter.Repository;
+package isa.transfusioncenter.repository;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import isa.transfusioncenter.Model.RegisteredUser;
-import isa.transfusioncenter.Model.Term;
+import isa.transfusioncenter.model.RegisteredUser;
+import isa.transfusioncenter.model.Term;
 
 @Repository
 public interface TermRepository extends JpaRepository<Term, Long> {

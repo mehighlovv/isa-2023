@@ -1,4 +1,4 @@
-package isa.transfusioncenter.Model;
+package isa.transfusioncenter.model;
 
 import java.sql.Time;
 import java.util.List;

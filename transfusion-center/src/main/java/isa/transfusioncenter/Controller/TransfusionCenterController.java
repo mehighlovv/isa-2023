@@ -1,26 +1,25 @@
-package isa.transfusioncenter.Controller;
+package isa.transfusioncenter.controller;
 
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import isa.transfusioncenter.Model.TransfusionCenter;
-import isa.transfusioncenter.Service.TransfusionCenterService;
+import isa.transfusioncenter.model.TransfusionCenter;
+import isa.transfusioncenter.service.TransfusionCenterService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
+@RequestMapping(value = "/api/transfusionCenters", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TransfusionCenterController {
     private final TransfusionCenterService transfusionCenterService;
 
-    @Autowired
-    public TransfusionCenterController(TransfusionCenterService transfusionCenterService) {
-        this.transfusionCenterService = transfusionCenterService;
-    }
-
-    @GetMapping(path = "/transfusionCenters")
+    @GetMapping
     public ResponseEntity<?> getAllCenters() {
         try {
             return new ResponseEntity<ArrayList<TransfusionCenter>>(transfusionCenterService.findAll(), HttpStatus.OK);

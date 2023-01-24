@@ -1,22 +1,18 @@
-package isa.transfusioncenter.Service;
+package isa.transfusioncenter.service;
 
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import isa.transfusioncenter.Model.TransfusionCenter;
-import isa.transfusioncenter.Repository.TransfusionCenterRepository;
+import isa.transfusioncenter.model.TransfusionCenter;
+import isa.transfusioncenter.repository.TransfusionCenterRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class TransfusionCenterService {
 
     private final TransfusionCenterRepository transfusionCenterRepository;
-
-    @Autowired
-    public TransfusionCenterService(TransfusionCenterRepository transfusionCenterRepository) {
-        this.transfusionCenterRepository = transfusionCenterRepository;
-    }
 
     public ArrayList<TransfusionCenter> findAll() {
         return transfusionCenterRepository.findAll();

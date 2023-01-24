@@ -1,4 +1,4 @@
-package isa.transfusioncenter.Dto;
+package isa.transfusioncenter.dto;
 
 import lombok.Data;
 

@@ -1,9 +1,9 @@
-package isa.transfusioncenter.Repository;
+package isa.transfusioncenter.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import isa.transfusioncenter.Model.Questionaire;
+import isa.transfusioncenter.model.Questionaire;
 
 @Repository
 public interface QuestionaireRepository extends JpaRepository<Questionaire, Long> {
