@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +16,12 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin
 @RequestMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
     private final RegisteredUserService registeredUserService;
 
     @GetMapping(path = "/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('TRANSFUSION_CENTER_ADMIN')")
     public ResponseEntity<?> getUserByEmail(@PathVariable("email") String email) {
         try {
             return new ResponseEntity<RegisteredUser>(registeredUserService.findByEmail(email), HttpStatus.OK);

@@ -1,0 +1,17 @@
+.register-form {
+  padding:10%;
+  min-width: 150px;
+  width: 80%;
+  background-color:rgb(245,245,245);
+  }
+  
+  .register-form-field {
+    width: 100%;
+  }
+  
+  .register-container {
+    text-align:center;
+    padding-left:30%;
+    padding-right:30%;
+    margin-top:2%;
+  }
