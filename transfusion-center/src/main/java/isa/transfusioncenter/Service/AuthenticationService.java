@@ -45,7 +45,7 @@ public class AuthenticationService {
         emailService.sendEmail(to, subject, body);
         Map<String, Object> claims = new HashMap<String, Object>() {
         };
-        claims.put("role", user.getAuthorities());
+        claims.put("role", user.getAuthorities().toArray()[0]);
         String jwt = jwtService.generateToken(claims, user);
         return new TokenDto(jwt);
     }
@@ -55,7 +55,10 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
         RegisteredUser user = registeredUserRepository.findByEmail(loginDto.getEmail())
                 .orElseThrow();
-        String jwt = jwtService.generateToken(user);
+        Map<String, Object> claims = new HashMap<String, Object>() {
+        };
+        claims.put("role", user.getAuthorities().toArray()[0]);
+        String jwt = jwtService.generateToken(claims, user);
         return new TokenDto(jwt);
     }
 }
