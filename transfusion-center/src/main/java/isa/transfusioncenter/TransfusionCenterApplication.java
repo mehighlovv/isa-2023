@@ -19,5 +19,4 @@ public class TransfusionCenterApplication {
 		SpringApplication.run(TransfusionCenterApplication.class, args);
 	}
 
-
 }
