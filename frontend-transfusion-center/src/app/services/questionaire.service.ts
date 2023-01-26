@@ -14,7 +14,19 @@ export class QuestionaireService {
 
   constructor(private httpClient : HttpClient, private authService : AuthService) {}
 
+  getQuestionaireByUsedId(usedId : Number): Observable<Questionaire> {
+    return this.httpClient.get<Questionaire>(
+      this.urlBase + '/' + usedId,
+      {
+        headers: {
+          Authorization: 'Bearer ' + this.authService.getTokenWithoutRedirect()?.toString(),
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
+    );
+  }
+
   answerQuestionaire(request : QuestionaireRequest) : Observable<Questionaire>{
-    return this.httpClient.post<Questionaire>(this.urlBase,request,{headers:{"Authorization":"Bearer "+ this.authService.getToken()}});
+    return this.httpClient.post<Questionaire>(this.urlBase,request,{headers:{"Authorization":"Bearer "+ this.authService.getTokenWithoutRedirect()}});
   }
 }

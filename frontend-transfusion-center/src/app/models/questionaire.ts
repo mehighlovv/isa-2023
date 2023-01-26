@@ -1,7 +1,6 @@
 import { RegisteredUser } from './registered-user';
 
 export interface Questionaire {
-  id: Number;
   answerToFirstQuestion: boolean;
   answerToSecondQuestion: boolean;
   answerToThirdQuestion: boolean;
@@ -28,5 +27,4 @@ export interface Questionaire {
   answerToTwentyFourthQuestion: boolean;
   answerToTwentyFifthQuestion: boolean;
   answerToTwentySixthQuestion: boolean;
-  user: RegisteredUser;
 }

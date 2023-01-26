@@ -16,9 +16,9 @@
         <p>Have you ever voluntarily donated your blood before?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToFirstQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -29,9 +29,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToSecondQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -40,9 +40,9 @@
         <p>Do you currently feel healthy, able and rested to donate blood?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToThirdQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -51,9 +51,9 @@
         <p>Have you eaten anything before coming to donate blood?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToFourthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -62,9 +62,9 @@
         <p>Is your occupation or hobby dangerous?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToFifthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -73,9 +73,9 @@
         <p>Do you take any medication on a regular basis?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToSixthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -87,9 +87,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToSeventhQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -101,9 +101,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToEighthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -115,9 +115,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToNinethQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -126,9 +126,9 @@
         <p>Have you taken out your tooth in the last week?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToTenthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -140,9 +140,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToEleventhQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -151,9 +151,9 @@
         <p>Have you received a vaccine or serum in the last 12 months?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToTwelfthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -164,9 +164,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToThirteenthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -178,9 +178,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToFourteenthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -193,9 +193,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToFifteenthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -208,9 +208,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToSixteenthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -222,9 +222,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToSeventeenthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -233,9 +233,9 @@
         <p>Do you suffer abrupt changes on the skin, have allergies?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToEighteenthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -247,9 +247,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToNineteenthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -261,9 +261,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToTwentiethQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -272,9 +272,9 @@
         <p>Did you suffer from hepatitis A, B or C?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToTwentyFirstQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -283,9 +283,9 @@
         <p>Have you had sexual relations with a person who is HIV positive?</p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToTwentySecondQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -296,9 +296,9 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToTwentyThirdQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
@@ -310,11 +310,12 @@
         </p>
       </div>
       <div class="question-answer">
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="true">Yes</mat-radio-button>
-          <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-group aria-label="Select an option" [(ngModel)]="answerToTwentyFourthQuestion">
+          <mat-radio-button [value]="true" [disabled]="this.isQuestionairePopulated">Yes</mat-radio-button>
+          <mat-radio-button [value]="false" [disabled]="this.isQuestionairePopulated">No</mat-radio-button>
         </mat-radio-group>
       </div>
     </div>
+    <button mat-stroked-button color="warn" *ngIf="!this.isQuestionairePopulated" (click)="submitAnswers()">Submit</button>
   </mat-list>
 </div>

@@ -46,6 +46,11 @@ export class AuthService {
     return this.token;
   }
 
+  getTokenWithoutRedirect() {
+    this.token = localStorage.getItem('token') ?? null;
+    return this.token;
+  }
+
   getUserDetailsFromToken() {
     if (!this.token) {
       return;

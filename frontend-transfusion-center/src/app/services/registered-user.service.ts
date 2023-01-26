@@ -20,7 +20,7 @@ export class RegisteredUserService {
       this.urlBase + '/' + this.authService.getEmail(),
       {
         headers: {
-          Authorization: 'Bearer ' + this.authService.getToken()?.toString(),
+          Authorization: 'Bearer ' + this.authService.getTokenWithoutRedirect()?.toString(),
           'Access-Control-Allow-Origin': '*',
         },
       }
