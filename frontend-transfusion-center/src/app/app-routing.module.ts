@@ -4,6 +4,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { LoginComponent } from './components/login/login.component';
 import { QuestionairePageComponent } from './components/questionaire-page/questionaire-page.component';
 import { RegisterComponent } from './components/register/register.component';
+import { TransfusionCenterProfileComponent } from './components/transfusion-center-profile/transfusion-center-profile.component';
 import { UserComplaintPageComponent } from './components/user-complaint-page/user-complaint-page.component';
 import { UserFutureTermsComponent } from './components/user-future-terms/user-future-terms.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
@@ -20,6 +21,10 @@ const routes: Routes = [
   { path: 'confirmations', component: UserTermsQRCodesComponent },
   { path: 'questionaire', component: QuestionairePageComponent },
   { path: 'complaints', component: UserComplaintPageComponent },
+  {
+    path: 'transfusionCenter/:id',
+    component: TransfusionCenterProfileComponent,
+  },
 ];
 
 @NgModule({

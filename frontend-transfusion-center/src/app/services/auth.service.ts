@@ -72,4 +72,8 @@ export class AuthService {
     this.loggedIn$.next(false);
     this.router.navigate(['']);
   }
+  getTokenWithoutRedirect() {
+    this.token = localStorage.getItem('token') ?? null;
+    return this.token;
+  }
 }

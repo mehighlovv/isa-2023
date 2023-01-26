@@ -58,4 +58,7 @@ public class TransfusionCenter {
     @OneToMany(mappedBy = "transfusionCenter", fetch = FetchType.EAGER)
     private List<Term> terms;
 
+    @Column
+    private double avgRating;
+
 }

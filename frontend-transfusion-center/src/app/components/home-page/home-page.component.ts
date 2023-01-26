@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NonNullableFormBuilder } from '@angular/forms';
 import { RegisteredUser } from 'src/app/models/registered-user';
 import { AuthService } from 'src/app/services/auth.service';
 import { RegisteredUserService } from 'src/app/services/registered-user.service';
@@ -50,9 +49,7 @@ export class HomePageComponent {
 
   checkIfAuthenticated() {
     this.authService.loggedIn$.subscribe((auth: boolean) => {
-      if (auth) {
-        this.authenticated = auth;
-      }
+      this.authenticated = auth;
     });
     if (this.authenticated) {
       this.registeredUserService.getUserByEmail().subscribe((response) => {

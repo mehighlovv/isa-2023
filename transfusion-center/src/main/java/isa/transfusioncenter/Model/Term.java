@@ -47,4 +47,8 @@ public class Term {
     @Column
     @Enumerated(EnumType.STRING)
     private TermType type;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private TermStatus status;
 }

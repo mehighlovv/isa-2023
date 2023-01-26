@@ -27,10 +27,13 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .requestMatchers("/api/transfusionCenters")
+                .permitAll()
                 .requestMatchers("/api/auth/**")
                 .permitAll()
                 .requestMatchers("/api/users/activate/**")
                 .permitAll()
+
                 .anyRequest()
                 .authenticated()
                 .and()

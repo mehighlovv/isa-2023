@@ -5,12 +5,12 @@ INSERT INTO users (role, discriminator, address, city, company_info, country, em
 INSERT INTO users (role, discriminator, address, city, company_info, country, email, gender, lastname, name, occupation, password, phone, social_security_number, is_accepted, loyalty_points, penalties, questionaire_id, transfusion_center_id) VALUES ('REGISTERED_USER', 'REGISTERED_USER', 'Pavla Papa 2', 'Novi Sad', 'Restoran BellaVile', 'Serbia', 'test5@test.com', 'M', 'Test5', 'Test5', 'Software Engineer', null, 'testbroj5', 'testjmbg5', false, 0, 2, null, null) 
 INSERT INTO users (role, discriminator, address, city, company_info, country, email, gender, lastname, name, occupation, password, phone, social_security_number, is_accepted, loyalty_points, penalties, questionaire_id, transfusion_center_id) VALUES ('REGISTERED_USER', 'REGISTERED_USER', 'Jase Tomica 17', 'Novi Sad', 'Synechron', 'Serbia', 'test6@test.com', 'M', 'Test6', 'Test6', 'Software Engineer', null, 'testbroj6', 'testjmbg6', true, 0, 0, null, null) 
 
-INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id) VALUES ('CenterTest1', 'TestAddress1', 'TestDescription1', '08:00', '16:00', null)
-INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id) VALUES ('CenterTest2', 'TestAddress2', 'TestDescription2', '08:00', '16:00', null)
-INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id) VALUES ('CenterTest3', 'TestAddress3', 'TestDescription3', '08:00', '16:00', null)
-INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id) VALUES ('CenterTest4', 'TestAddress4', 'TestDescription4', '08:00', '16:00', null)
-INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id) VALUES ('CenterTest5', 'TestAddress5', 'TestDescription5', '08:00', '16:00', null)
-INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id) VALUES ('CenterTest6', 'TestAddress6', 'TestDescription6', '08:00', '16:00', null)
+INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id, avg_rating) VALUES ('CenterTest1', 'TestAddress1', 'TestDescription1', '08:00', '16:00', null,4.5)
+INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id, avg_rating) VALUES ('CenterTest2', 'TestAddress2', 'TestDescription2', '08:00', '16:00', null,4.6)
+INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id, avg_rating) VALUES ('CenterTest3', 'TestAddress3', 'TestDescription3', '08:00', '16:00', null,5)
+INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id, avg_rating) VALUES ('CenterTest4', 'TestAddress4', 'TestDescription4', '08:00', '16:00', null,4.2)
+INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id, avg_rating) VALUES ('CenterTest5', 'TestAddress5', 'TestDescription5', '08:00', '16:00', null,1.7)
+INSERT INTO transfusion_centers (name, address, description, working_hours_begin, working_hours_end, administrator_id, avg_rating) VALUES ('CenterTest6', 'TestAddress6', 'TestDescription6', '08:00', '16:00', null,2.7)
 
 INSERT INTO complaints (complaint_type, description, complainee_id, transfusion_center_id, staff_id) VALUES ('TRANSFUSION_CENTER_COMPLAINT', 'TestDescription1', 1, 1, null)
 INSERT INTO complaints (complaint_type, description, complainee_id, transfusion_center_id, staff_id) VALUES ('TRANSFUSION_CENTER_COMPLAINT', 'TestDescription2', 1, 2, null)
@@ -46,11 +46,11 @@ UPDATE users SET questionaire_id=1 WHERE id=1
 UPDATE users SET questionaire_id=2 WHERE id=2
 
 
-INSERT INTO terms (begin_date, duration_in_minutes, type, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2023-02-19 19:00:00', 30, 'PREDEFINED', null, 1, 7)
-INSERT INTO terms (begin_date, duration_in_minutes, type, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2022-02-09 14:00:00', 30, 'NEW', 1, 1, 7)
-INSERT INTO terms (begin_date, duration_in_minutes, type, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2021-08-09 13:30:00', 30, 'PREDEFINED', 1, 1, 7)
-INSERT INTO terms (begin_date, duration_in_minutes, type, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2021-02-09 10:00:00', 30, 'PREDEFINED', 1, 1, 7)
-INSERT INTO terms (begin_date, duration_in_minutes, type, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2020-08-09 09:00:00', 30, 'PREDEFINED', 1, 1, 7)
+INSERT INTO terms (begin_date, duration_in_minutes, type, status, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2023-02-19 19:00:00', 30, 'PREDEFINED', 'FREE', null, 1, 7)
+INSERT INTO terms (begin_date, duration_in_minutes, type, status, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2022-02-09 14:00:00', 30, 'NEW', 'PROCESSED', 1, 1, 7)
+INSERT INTO terms (begin_date, duration_in_minutes, type, status, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2021-08-09 13:30:00', 30, 'PREDEFINED', 'PROCESSED', 1, 1, 7)
+INSERT INTO terms (begin_date, duration_in_minutes, type, status, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2021-02-09 10:00:00', 30, 'PREDEFINED', 'PROCESSED', 1, 1, 7)
+INSERT INTO terms (begin_date, duration_in_minutes, type, status, reserver_id, transfusion_center_id, transfusion_center_administrator_id) VALUES ('2020-08-09 09:00:00', 30, 'PREDEFINED', 'PROCESSED', 1, 1, 7)
 
 UPDATE transfusion_centers SET administrator_id=7 WHERE id=1
 UPDATE transfusion_centers SET administrator_id=8 WHERE id=2

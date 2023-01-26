@@ -1,1 +1,28 @@
-<p>transfusion-center-list works!</p>
+<mat-table matSort #table [dataSource]="dataSource">
+  <ng-container matColumnDef="name">
+    <mat-header-cell mat-sort-header *matHeaderCellDef> Name </mat-header-cell>
+    <mat-cell
+      *matCellDef="let center"
+      [routerLink]="['/transfusionCenter', center.id]"
+    >
+      {{center.name}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="address">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>
+      Address
+    </mat-header-cell>
+    <mat-cell *matCellDef="let center"> {{center.address}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="avgRating">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>
+      Rating(avg.)
+    </mat-header-cell>
+    <mat-cell *matCellDef="let center"> {{center.avgRating}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>

@@ -16,8 +16,6 @@ export class TransfusionCenterService {
   ) {}
 
   getAllCenters(): Observable<TransfusionCenter[]> {
-    return this.httpClient.get<TransfusionCenter[]>(this.urlBase, {
-      headers: { Authorization: 'Bearer ' + this.authService.getToken() },
-    });
+    return this.httpClient.get<TransfusionCenter[]>(this.urlBase);
   }
 }
