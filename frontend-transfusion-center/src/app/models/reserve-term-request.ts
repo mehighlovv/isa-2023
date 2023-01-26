@@ -1,4 +1,4 @@
 export interface ReserveTermRequest {
-  termId: Number;
+  termId: number;
   reserverEmail: string;
 }

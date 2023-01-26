@@ -46,6 +46,6 @@ export class TermListComponent {
         termId: id,
         reserverEmail: this.authService.getEmail(),
       })
-      .subscribe();
+      .subscribe((response) => alert('You have succesfully reserved a term'));
   }
 }

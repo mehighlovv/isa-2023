@@ -16,5 +16,7 @@ public interface TermRepository extends JpaRepository<Term, Long> {
 
     public ArrayList<Term> findByReserver(RegisteredUser reserver);
 
-    public ArrayList<Term> findByTransfusionCenterIdAndStatus(Long transfusionCenterId, TermStatus termsStatus);
+    public ArrayList<Term> findByTransfusionCenterIdAndStatus(Long transfusionCenterId, TermStatus termStatus);
+
+    public ArrayList<Term> findByReserverIdAndStatus(Long reserverId, TermStatus termStatus);
 }

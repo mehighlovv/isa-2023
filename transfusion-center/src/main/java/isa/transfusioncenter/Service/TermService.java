@@ -33,6 +33,7 @@ public class TermService {
             if (today.plus(24, ChronoUnit.HOURS).isBefore(dateBefore)) {
                 if (term.getType() == TermType.PREDEFINED) {
                     term.setReserver(null);
+                    term.setStatus(TermStatus.FREE);
                     return termRepository.save(term);
                 } else if (term.getType() == TermType.NEW) {
                     termRepository.delete(term);
@@ -64,5 +65,13 @@ public class TermService {
 
     public ArrayList<Term> findByTransfusionCenterId(Long transfusionCenterId) {
         return termRepository.findByTransfusionCenterIdAndStatus(transfusionCenterId, TermStatus.FREE);
+    }
+
+    public ArrayList<Term> findTermHistoryByReserver(Long reserverId) {
+        return termRepository.findByReserverIdAndStatus(reserverId, TermStatus.PROCESSED);
+    }
+
+    public ArrayList<Term> findReservationsByReserver(Long reserverId) {
+        return termRepository.findByReserverIdAndStatus(reserverId, TermStatus.TAKEN);
     }
 }

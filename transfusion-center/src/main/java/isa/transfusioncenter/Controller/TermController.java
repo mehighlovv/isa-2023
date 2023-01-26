@@ -51,12 +51,33 @@ public class TermController {
         }
     }
 
-    @GetMapping(path="/{transfusionCenterId}")
-    public ResponseEntity<?> getTermsByTransfusionCenter(@PathVariable Long transfusionCenterId){
-        try{
-            return new ResponseEntity<ArrayList<Term>>(termService.findByTransfusionCenterId(transfusionCenterId), HttpStatus.OK);
-        }catch(IllegalStateException e){
-            return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+    @GetMapping(path = "/{transfusionCenterId}")
+    public ResponseEntity<?> getTermsByTransfusionCenter(@PathVariable Long transfusionCenterId) {
+        try {
+            return new ResponseEntity<ArrayList<Term>>(termService.findByTransfusionCenterId(transfusionCenterId),
+                    HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/history/{reserverId}")
+    public ResponseEntity<?> getTermHistoryByUser(@PathVariable Long reserverId) {
+        try {
+            return new ResponseEntity<ArrayList<Term>>(termService.findTermHistoryByReserver(reserverId),
+                    HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/reservations/{reserverId}")
+    public ResponseEntity<?> getReservationsByUser(@PathVariable Long reserverId) {
+        try {
+            return new ResponseEntity<ArrayList<Term>>(termService.findReservationsByReserver(reserverId),
+                    HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }

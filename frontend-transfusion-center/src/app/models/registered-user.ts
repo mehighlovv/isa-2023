@@ -5,7 +5,7 @@ import { Rating } from './rating';
 import { Term } from './term';
 
 export interface RegisteredUser {
-  id: Number;
+  id: number;
   email: string;
   name: string;
   lastname: string;
@@ -19,8 +19,8 @@ export interface RegisteredUser {
   occupation: string;
   companyInfo: string;
   role: string;
-  loyaltyPoints: Number;
-  penalties: Number;
+  loyaltyPoints: number;
+  penalties: number;
   complaints: Complaint[];
   ratings: Rating[];
   questionaire?: Questionaire;

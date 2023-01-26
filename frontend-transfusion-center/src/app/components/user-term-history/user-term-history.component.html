@@ -1,1 +1,31 @@
-<p>user-term-history works!</p>
+<mat-table matSort #table [dataSource]="dataSource">
+  <ng-container matColumnDef="beginDate">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>
+      Begin Date
+    </mat-header-cell>
+    <mat-cell *matCellDef="let term">
+      {{term.beginDate}}
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="durationInMinutes">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>
+      Duration
+    </mat-header-cell>
+    <mat-cell *matCellDef="let term"> {{term.durationInMinutes}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="type">
+    <mat-header-cell mat-sort-header *matHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *matCellDef="let term"> {{term.type}} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <mat-header-cell mat-sort-header *matHeaderCellDef>
+      Status
+    </mat-header-cell>
+    <mat-cell *matCellDef="let term"> {{term.status}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>

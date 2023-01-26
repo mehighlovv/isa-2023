@@ -16,7 +16,7 @@ export class TermService {
     private authService: AuthService
   ) {}
 
-  cancelTerm(termId: BigInteger): Observable<Term> {
+  cancelTerm(termId: Number): Observable<Term> {
     return this.httpClient.put<Term>(
       this.urlBase + '/cancel/' + termId.toString(),
       null,
@@ -38,6 +38,26 @@ export class TermService {
   getTermsByTransfusionCenter(transfusionCenterId: number): Observable<Term[]> {
     return this.httpClient.get<Term[]>(
       this.urlBase + '/' + transfusionCenterId,
+      {
+        headers: {
+          Authorization: 'Bearer ' + this.authService.getTokenWithoutRedirect(),
+        },
+      }
+    );
+  }
+  getTermHistoryByUser(reserverId: number): Observable<Term[]> {
+    return this.httpClient.get<Term[]>(
+      this.urlBase + '/history/' + reserverId,
+      {
+        headers: {
+          Authorization: 'Bearer ' + this.authService.getTokenWithoutRedirect(),
+        },
+      }
+    );
+  }
+  getReservationsByUser(reserverId: number): Observable<Term[]> {
+    return this.httpClient.get<Term[]>(
+      this.urlBase + '/reservations/' + reserverId,
       {
         headers: {
           Authorization: 'Bearer ' + this.authService.getTokenWithoutRedirect(),
