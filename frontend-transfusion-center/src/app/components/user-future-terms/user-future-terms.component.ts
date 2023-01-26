@@ -38,10 +38,12 @@ export class UserFutureTermsComponent {
     });
   }
   cancelTerm(id: number) {
-    this.termService
-      .cancelTerm(id)
-      .subscribe((response) =>
-        alert('You have successfuly canceled your reservation!')
-      );
+    this.termService.cancelTerm(id).subscribe({
+      next: () => {
+        alert('You have successfully canceled a term!');
+      },
+      error: () =>
+        alert("You can't cancel a term 24 hours before it's start time!"),
+    });
   }
 }

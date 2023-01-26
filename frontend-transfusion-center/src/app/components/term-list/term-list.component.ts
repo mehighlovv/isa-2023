@@ -46,6 +46,14 @@ export class TermListComponent {
         termId: id,
         reserverEmail: this.authService.getEmail(),
       })
-      .subscribe((response) => alert('You have succesfully reserved a term'));
+      .subscribe({
+        next: () => {
+          alert('You have successfully reserved a term!');
+        },
+        error: () =>
+          alert(
+            'You either have to fill in the questionaire or you already have a term reserved in the 6 months before this term!'
+          ),
+      });
   }
 }
