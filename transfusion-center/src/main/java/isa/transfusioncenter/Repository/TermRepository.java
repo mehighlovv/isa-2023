@@ -8,10 +8,15 @@ import org.springframework.stereotype.Repository;
 
 import isa.transfusioncenter.model.RegisteredUser;
 import isa.transfusioncenter.model.Term;
+import isa.transfusioncenter.model.TermStatus;
 
 @Repository
 public interface TermRepository extends JpaRepository<Term, Long> {
     public ArrayList<Term> findByBeginDate(Instant beginDate);
 
     public ArrayList<Term> findByReserver(RegisteredUser reserver);
+
+    public ArrayList<Term> findByTransfusionCenterIdAndStatus(Long transfusionCenterId, TermStatus termStatus);
+
+    public ArrayList<Term> findByReserverIdAndStatus(Long reserverId, TermStatus termStatus);
 }

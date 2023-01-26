@@ -2,12 +2,14 @@ package isa.transfusioncenter.service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import isa.transfusioncenter.model.RegisteredUser;
 import isa.transfusioncenter.model.Term;
+import isa.transfusioncenter.model.TermStatus;
 import isa.transfusioncenter.model.TermType;
 import isa.transfusioncenter.repository.TermRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class TermService {
             if (today.plus(24, ChronoUnit.HOURS).isBefore(dateBefore)) {
                 if (term.getType() == TermType.PREDEFINED) {
                     term.setReserver(null);
+                    term.setStatus(TermStatus.FREE);
                     return termRepository.save(term);
                 } else if (term.getType() == TermType.NEW) {
                     termRepository.delete(term);
@@ -50,6 +53,7 @@ public class TermService {
             if (term.getReserver() == null && questionaireService.findByUserId(reserver.getId()) != null
                     && registeredUserService.checkForTermInLastSixMonths(reserver)) {
                 term.setReserver(reserver);
+                term.setStatus(TermStatus.TAKEN);
                 return termRepository.save(term);
             } else {
                 throw new IllegalStateException();
@@ -57,5 +61,17 @@ public class TermService {
         } else {
             throw new NotFoundException();
         }
+    }
+
+    public ArrayList<Term> findByTransfusionCenterId(Long transfusionCenterId) {
+        return termRepository.findByTransfusionCenterIdAndStatus(transfusionCenterId, TermStatus.FREE);
+    }
+
+    public ArrayList<Term> findTermHistoryByReserver(Long reserverId) {
+        return termRepository.findByReserverIdAndStatus(reserverId, TermStatus.PROCESSED);
+    }
+
+    public ArrayList<Term> findReservationsByReserver(Long reserverId) {
+        return termRepository.findByReserverIdAndStatus(reserverId, TermStatus.TAKEN);
     }
 }

@@ -1,0 +1,43 @@
+<mat-toolbar color="warn" class="app-header">
+  <span class="nav-tool-items" *ngIf="!authenticated">
+    <button
+      mat-flat-button
+      color="warn"
+      routerLink=""
+      routerLinkActive="active"
+    >
+      Home
+    </button>
+    <button mat-flat-button color="warn" routerLink="login">Log in</button>
+    <button mat-flat-button color="warn" routerLink="register">Register</button>
+  </span>
+  <span class="nav-tool-items" *ngIf="authenticated">
+    <button
+      mat-flat-button
+      color="warn"
+      routerLink=""
+      routerLinkActive="active"
+    >
+      Home
+    </button>
+    <button mat-flat-button color="warn" routerLink="history">
+      Donation history
+    </button>
+    <button mat-flat-button color="warn" routerLink="reservations">
+      Reservations
+    </button>
+    <button mat-flat-button color="warn" routerLink="confirmations">
+      Confirmed Terms
+    </button>
+
+    <button mat-flat-button color="warn" routerLink="questionaire">
+      Questionaire
+    </button>
+    <button mat-flat-button color="warn" routerLink="complaints">
+      Complaints
+    </button>
+    <button mat-flat-button color="warn" routerLink="profile">Profile</button>
+    <button mat-button disabled>You are now logged in as : {{ email }}</button>
+    <button mat-flat-button color="warn" (click)="logout()">Logout</button>
+  </span>
+</mat-toolbar>

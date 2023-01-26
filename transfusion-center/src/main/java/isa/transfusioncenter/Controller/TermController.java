@@ -1,12 +1,15 @@
 package isa.transfusioncenter.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin
 @RequestMapping(value = "/api/terms", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TermController {
     private final TermService termService;
@@ -43,6 +47,36 @@ public class TermController {
         } catch (IllegalStateException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         } catch (NotFoundException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/{transfusionCenterId}")
+    public ResponseEntity<?> getTermsByTransfusionCenter(@PathVariable Long transfusionCenterId) {
+        try {
+            return new ResponseEntity<ArrayList<Term>>(termService.findByTransfusionCenterId(transfusionCenterId),
+                    HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/history/{reserverId}")
+    public ResponseEntity<?> getTermHistoryByUser(@PathVariable Long reserverId) {
+        try {
+            return new ResponseEntity<ArrayList<Term>>(termService.findTermHistoryByReserver(reserverId),
+                    HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/reservations/{reserverId}")
+    public ResponseEntity<?> getReservationsByUser(@PathVariable Long reserverId) {
+        try {
+            return new ResponseEntity<ArrayList<Term>>(termService.findReservationsByReserver(reserverId),
+                    HttpStatus.OK);
+        } catch (IllegalStateException e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
