@@ -1,5 +1,5 @@
 import { Gender } from "../enums/gender.enum";
-export interface RegisterDto {
+export interface Register {
     email: string;
     password: string;
     verifyPassword: string;

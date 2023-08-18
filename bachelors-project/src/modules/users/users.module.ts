@@ -8,6 +8,7 @@ import { AuthService } from './services/auth.service';
 import { AuthController } from './controllers/auth.controller';
 import { CountriesModule } from '../countries/countries.module';
 import { MailModule } from '../mail/mail.module';
+import { UserController } from './controllers/user.controller';
 
 @Module({
     imports:[
@@ -22,6 +23,6 @@ import { MailModule } from '../mail/mail.module';
     ],
     providers: [UsersService, AuthService],
     exports: [UsersService, AuthService],
-    controllers: [AuthController],
+    controllers: [AuthController, UserController],
 })
 export class UsersModule {}

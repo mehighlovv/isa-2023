@@ -45,6 +45,20 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
         }
         return false;
     }
+    async editProfile(userId, userInfo) {
+        const country = await this.countriesService.findOneOrFail(userInfo.countryCode);
+        await this.usersRepository.update({ id: userId }, {
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
+            country: country,
+            phoneNumber: userInfo.phoneNumber,
+            password: userInfo.password,
+            occupation: userInfo.occupation,
+            companyInfo: userInfo.companyInfo,
+            address: userInfo.address,
+            city: userInfo.city
+        });
+    }
     mapRegisterDtoToUser(userInfo, country) {
         return {
             email: userInfo.email,

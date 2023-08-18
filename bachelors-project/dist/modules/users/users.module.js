@@ -17,6 +17,7 @@ const auth_service_1 = require("./services/auth.service");
 const auth_controller_1 = require("./controllers/auth.controller");
 const countries_module_1 = require("../countries/countries.module");
 const mail_module_1 = require("../mail/mail.module");
+const user_controller_1 = require("./controllers/user.controller");
 let UsersModule = exports.UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule = __decorate([
@@ -33,7 +34,7 @@ exports.UsersModule = UsersModule = __decorate([
         ],
         providers: [users_service_1.UsersService, auth_service_1.AuthService],
         exports: [users_service_1.UsersService, auth_service_1.AuthService],
-        controllers: [auth_controller_1.AuthController],
+        controllers: [auth_controller_1.AuthController, user_controller_1.UserController],
     })
 ], UsersModule);
 //# sourceMappingURL=users.module.js.map

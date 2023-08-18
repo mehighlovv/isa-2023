@@ -1,8 +1,8 @@
 import { Body, Controller, Post, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { LoginDto } from 'src/modules/utils/interfaces/login.dto';
+import { Login } from 'src/modules/utils/interfaces/Login';
 import { Public } from 'src/modules/utils/decorators/public.decorator';
-import { RegisterDto } from 'src/modules/utils/interfaces/register.dto';
+import { Register } from 'src/modules/utils/interfaces/Register';
 
 @Controller('auth')
 export class AuthController {
@@ -11,14 +11,14 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  login(@Body() credentials: LoginDto) {
+  login(@Body() credentials: Login) {
     return this.authService.signIn(credentials.email, credentials.password);
   }
 
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('register')
-  register(@Body() userInfo: RegisterDto) {
+  register(@Body() userInfo: Register) {
     return this.authService.register(userInfo);
   }
 

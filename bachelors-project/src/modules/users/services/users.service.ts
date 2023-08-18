@@ -2,10 +2,11 @@ import { Injectable, InternalServerErrorException, Logger } from "@nestjs/common
 import User from "../entities/user.entity";
 import { Repository, TreeRepositoryUtils } from "typeorm";
 import { InjectRepository } from '@nestjs/typeorm/dist/common';
-import { RegisterDto } from "src/modules/utils/interfaces/register.dto";
+import { Register } from "src/modules/utils/interfaces/Register";
 import { CountriesService } from "src/modules/countries/countries.service";
 import Country from "src/modules/countries/country.entity";
 import { Role } from "src/modules/utils/enums/role.enum";
+import { EditUserProfile } from "src/modules/utils/interfaces/EditUserProfile";
 
 @Injectable()
 export class UsersService{
@@ -20,7 +21,7 @@ export class UsersService{
         return this.usersRepository.findOne({where:{email:email}});
     }
 
-    async create(userInfo: RegisterDto) : Promise<User>{
+    async create(userInfo: Register) : Promise<User>{
         try{
             const country = await this.countriesService.findOneOrFail(userInfo.countryCode);
             return await this.usersRepository.save(this.mapRegisterDtoToUser(userInfo,country));
@@ -37,8 +38,24 @@ export class UsersService{
         }
         return false;
     }
+    async editProfile(userId: string,userInfo : EditUserProfile){
+        const country = await this.countriesService.findOneOrFail(userInfo.countryCode);
+        await this.usersRepository.update({id:userId},
+            {
+                firstName:userInfo.firstName,
+                lastName:userInfo.lastName,
+                country:country,
+                phoneNumber:userInfo.phoneNumber,
+                password:userInfo.password,
+                occupation:userInfo.occupation,
+                companyInfo:userInfo.companyInfo,
+                address:userInfo.address,
+                city:userInfo.city
+            }
+        );
+    }
 
-    mapRegisterDtoToUser(userInfo: RegisterDto, country: Country){
+    mapRegisterDtoToUser(userInfo: Register, country: Country){
         return {
             email:userInfo.email,
             password:userInfo.password,

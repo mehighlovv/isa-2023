@@ -1,13 +1,13 @@
 import { AuthService } from '../services/auth.service';
-import { LoginDto } from 'src/modules/utils/interfaces/login.dto';
-import { RegisterDto } from 'src/modules/utils/interfaces/register.dto';
+import { Login } from 'src/modules/utils/interfaces/Login';
+import { Register } from 'src/modules/utils/interfaces/Register';
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
-    login(credentials: LoginDto): Promise<{
+    login(credentials: Login): Promise<{
         access_token: string;
     }>;
-    register(userInfo: RegisterDto): Promise<{
+    register(userInfo: Register): Promise<{
         access_token: string;
     }>;
     activateAccount(token: string): Promise<string>;

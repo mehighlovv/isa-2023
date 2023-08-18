@@ -26,7 +26,7 @@ let AuthService = exports.AuthService = class AuthService {
         if (user?.password !== password || !user?.isAccepted) {
             throw new common_1.UnauthorizedException();
         }
-        const payload = { userId: user.id, username: user.email, role: user.role };
+        const payload = { userId: user.id, username: user.email, role: user.role, isAccepted: user.isAccepted };
         return {
             access_token: await this.jwtService.signAsync(payload),
         };
@@ -36,7 +36,7 @@ let AuthService = exports.AuthService = class AuthService {
             throw new common_1.BadRequestException('The passwords must match!');
         }
         const newUser = await this.usersService.create(userInfo);
-        const payload = { userId: newUser.id, username: newUser.email, role: newUser.role };
+        const payload = { userId: newUser.id, username: newUser.email, role: newUser.role, isAccepted: newUser.isAccepted };
         await this.mailService.sendUserConfirmation(newUser, newUser.id);
         return {
             access_token: await this.jwtService.signAsync(payload),

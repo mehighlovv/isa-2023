@@ -34,6 +34,9 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
             secret: jwtConstants.secret
           }
         );
+        if(!payload.isAccepted){
+          throw new UnauthorizedException();
+        }
         request['user'] = payload;
       } catch {
         throw new UnauthorizedException();
