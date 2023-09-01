@@ -9,6 +9,7 @@ import {
 import { jwtConstants } from '../constants';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { IAuthenticatedUser } from '../interfaces';
   
   @Injectable()
   export class AuthGuard implements CanActivate {
@@ -37,7 +38,7 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
         if(!payload.isAccepted){
           throw new UnauthorizedException();
         }
-        request['user'] = payload;
+        request['user'] = payload as IAuthenticatedUser;
       } catch {
         throw new UnauthorizedException();
       }

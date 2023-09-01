@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
-import { Register } from 'src/modules/utils/interfaces/Register';
+import { RegisterCenterAdmin, RegisterUser } from 'src/modules/utils/interfaces/Register';
 import { MailService } from 'src/modules/mail/mail.service';
 export declare class AuthService {
     private usersService;
@@ -10,8 +10,11 @@ export declare class AuthService {
     signIn(email: string, password: string): Promise<{
         access_token: string;
     }>;
-    register(userInfo: Register): Promise<{
+    registerUser(userInfo: RegisterUser): Promise<{
         access_token: string;
     }>;
     activateAccount(userId: string): Promise<string>;
+    registerCenterAdmin(userInfo: RegisterCenterAdmin): Promise<{
+        access_token: string;
+    }>;
 }

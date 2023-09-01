@@ -28,6 +28,19 @@ let MailService = exports.MailService = class MailService {
             },
         });
     }
+    async sendCenterAdminConfirmation(user, token) {
+        const url = `http://localhost:3000/auth/activate?token=${token}`;
+        await this.mailerService.sendMail({
+            to: user.email,
+            subject: 'Welcome to ISA Transfusion Center App! Activate your account!',
+            template: './centerAdminActivation',
+            context: {
+                name: user.firstName,
+                url,
+                password: user.password
+            },
+        });
+    }
 };
 exports.MailService = MailService = __decorate([
     (0, common_1.Injectable)(),

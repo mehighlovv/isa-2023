@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 const users_module_1 = require("./modules/users/users.module");
 const complaints_module_1 = require("./modules/complaints/complaints.module");
 const transfusion_centers_module_1 = require("./modules/transfusion-centers/transfusion-centers.module");
-const questionaires_module_1 = require("./modules/questionaires/questionaires.module");
+const questionnaires_module_1 = require("./modules/questionnaires/questionnaires.module");
 const terms_module_1 = require("./modules/terms/terms.module");
 const ratings_module_1 = require("./modules/ratings/ratings.module");
 const countries_module_1 = require("./modules/countries/countries.module");
@@ -22,6 +22,10 @@ const config_1 = require("@nestjs/config");
 const core_1 = require("@nestjs/core");
 const roles_guard_1 = require("./modules/utils/guards/roles.guard");
 const auth_guard_1 = require("./modules/utils/guards/auth.guard");
+const questions_module_1 = require("./modules/questions/questions.module");
+const answers_module_1 = require("./modules/answers/answers.module");
+const questionnaire_responses_module_1 = require("./modules/questionnaire-responses/questionnaire-responses.module");
+const question_orders_module_1 = require("./modules/question-orders/question-orders.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -35,11 +39,15 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             complaints_module_1.ComplaintsModule,
             transfusion_centers_module_1.TransfusionCentersModule,
-            questionaires_module_1.QuestionairesModule,
             terms_module_1.TermsModule,
             ratings_module_1.RatingsModule,
             countries_module_1.CountriesModule,
-            utils_module_1.UtilsModule
+            utils_module_1.UtilsModule,
+            questions_module_1.QuestionsModule,
+            answers_module_1.AnswersModule,
+            question_orders_module_1.QuestionOrdersModule,
+            questionnaire_responses_module_1.QuestionnaireResponsesModule,
+            questionnaires_module_1.QuestionnairesModule,
         ],
         providers: [
             {

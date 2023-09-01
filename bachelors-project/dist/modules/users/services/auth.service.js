@@ -22,7 +22,7 @@ let AuthService = exports.AuthService = class AuthService {
         this.mailService = mailService;
     }
     async signIn(email, password) {
-        const user = await this.usersService.findOne(email);
+        const user = await this.usersService.getOne(email);
         if (user?.password !== password || !user?.isAccepted) {
             throw new common_1.UnauthorizedException();
         }
@@ -31,11 +31,11 @@ let AuthService = exports.AuthService = class AuthService {
             access_token: await this.jwtService.signAsync(payload),
         };
     }
-    async register(userInfo) {
+    async registerUser(userInfo) {
         if (userInfo.password !== userInfo.verifyPassword) {
             throw new common_1.BadRequestException('The passwords must match!');
         }
-        const newUser = await this.usersService.create(userInfo);
+        const newUser = await this.usersService.createRegisteredUser(userInfo);
         const payload = { userId: newUser.id, username: newUser.email, role: newUser.role, isAccepted: newUser.isAccepted };
         await this.mailService.sendUserConfirmation(newUser, newUser.id);
         return {
@@ -50,6 +50,14 @@ let AuthService = exports.AuthService = class AuthService {
         else {
             return 'Something went wrong!';
         }
+    }
+    async registerCenterAdmin(userInfo) {
+        const newUser = await this.usersService.createCenterAdmin(userInfo);
+        const payload = { userId: newUser.id, username: newUser.email, role: newUser.role, isAccepted: newUser.isAccepted };
+        await this.mailService.sendCenterAdminConfirmation(newUser, newUser.id);
+        return {
+            access_token: await this.jwtService.signAsync(payload),
+        };
     }
 };
 exports.AuthService = AuthService = __decorate([

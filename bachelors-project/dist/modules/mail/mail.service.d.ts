@@ -4,4 +4,5 @@ export declare class MailService {
     private mailerService;
     constructor(mailerService: MailerService);
     sendUserConfirmation(user: User, token: string): Promise<void>;
+    sendCenterAdminConfirmation(user: User, token: string): Promise<void>;
 }

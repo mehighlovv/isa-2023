@@ -3,7 +3,13 @@ import {
     TypeOrmModuleAsyncOptions,
     TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
+import Answer from 'src/modules/answers/answer.entity';
+import BloodStock from 'src/modules/blood-stocks/blood-stock.entity';
 import Country from 'src/modules/countries/country.entity';
+import QuestionOrder from 'src/modules/question-orders/question-order.entity';
+import QuestionaireResponse from 'src/modules/questionnaire-responses/questionnaire-response.entity';
+import Questionaire from 'src/modules/questionnaires/questionnaire.entity';
+import Question from 'src/modules/questions/question.entity';
 import TransfusionCenter from 'src/modules/transfusion-centers/entities/transfusion-center.entity';
 import User from 'src/modules/users/entities/user.entity';
 
@@ -20,7 +26,13 @@ export default class TypeOrmConfig {
             entities: [
                Country,
                TransfusionCenter,
-               User
+               User,
+               BloodStock,
+               Question,
+               QuestionOrder,
+               Answer,
+               Questionaire,
+               QuestionaireResponse
             ],
             autoLoadEntities: true,
             logging: ['error'],

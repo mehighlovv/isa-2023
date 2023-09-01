@@ -2,7 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.typeOrmConfigAsync = void 0;
 const config_1 = require("@nestjs/config");
+const answer_entity_1 = require("../modules/answers/answer.entity");
+const blood_stock_entity_1 = require("../modules/blood-stocks/blood-stock.entity");
 const country_entity_1 = require("../modules/countries/country.entity");
+const question_order_entity_1 = require("../modules/question-orders/question-order.entity");
+const questionnaire_response_entity_1 = require("../modules/questionnaire-responses/questionnaire-response.entity");
+const questionnaire_entity_1 = require("../modules/questionnaires/questionnaire.entity");
+const question_entity_1 = require("../modules/questions/question.entity");
 const transfusion_center_entity_1 = require("../modules/transfusion-centers/entities/transfusion-center.entity");
 const user_entity_1 = require("../modules/users/entities/user.entity");
 class TypeOrmConfig {
@@ -17,7 +23,13 @@ class TypeOrmConfig {
             entities: [
                 country_entity_1.default,
                 transfusion_center_entity_1.default,
-                user_entity_1.default
+                user_entity_1.default,
+                blood_stock_entity_1.default,
+                question_entity_1.default,
+                question_order_entity_1.default,
+                answer_entity_1.default,
+                questionnaire_entity_1.default,
+                questionnaire_response_entity_1.default
             ],
             autoLoadEntities: true,
             logging: ['error'],

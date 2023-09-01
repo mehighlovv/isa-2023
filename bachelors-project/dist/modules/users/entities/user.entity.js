@@ -9,7 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const answer_entity_1 = require("../../answers/answer.entity");
 const country_entity_1 = require("../../countries/country.entity");
+const questionnaire_response_entity_1 = require("../../questionnaire-responses/questionnaire-response.entity");
+const transfusion_center_entity_1 = require("../../transfusion-centers/entities/transfusion-center.entity");
+const utils_1 = require("../../utils");
 const gender_enum_1 = require("../../utils/enums/gender.enum");
 const role_enum_1 = require("../../utils/enums/role.enum");
 const typeorm_1 = require("typeorm");
@@ -82,6 +86,22 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: utils_1.DEFAULT_PASSWORD_ATTEMPTS }),
+    __metadata("design:type", Number)
+], User.prototype, "passwordAttempts", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => transfusion_center_entity_1.default, (transfusionCenter) => transfusionCenter.administrators),
+    __metadata("design:type", transfusion_center_entity_1.default)
+], User.prototype, "transfusionCenter", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => answer_entity_1.default, (answer) => answer.user),
+    __metadata("design:type", Array)
+], User.prototype, "answers", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => questionnaire_response_entity_1.default, (questionaireResponse) => questionaireResponse.user),
+    __metadata("design:type", questionnaire_response_entity_1.default)
+], User.prototype, "questionnaireResponse", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)({ name: 'users' })
 ], User);

@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
-import { Register } from 'src/modules/utils/interfaces/Register';
+import { RegisterCenterAdmin, RegisterUser } from 'src/modules/utils/interfaces/Register';
 import { DEFAULT_FRONT_URL } from 'src/modules/utils/constants';
 import { MailService } from 'src/modules/mail/mail.service';
 
@@ -14,7 +14,7 @@ export class AuthService {
   ) {}
 
   async signIn(email: string, password: string) {
-    const user = await this.usersService.findOne(email);
+    const user = await this.usersService.getOne(email);
     if (user?.password !== password || !user?.isAccepted) {
       throw new UnauthorizedException();
     }
@@ -24,11 +24,11 @@ export class AuthService {
     };
   }
 
-  async register(userInfo: Register){
+  async registerUser(userInfo: RegisterUser){
     if(userInfo.password!==userInfo.verifyPassword){
         throw new BadRequestException('The passwords must match!');
     }
-    const newUser = await this.usersService.create(userInfo);
+    const newUser = await this.usersService.createRegisteredUser(userInfo);
     const payload = { userId: newUser.id, username: newUser.email, role: newUser.role , isAccepted:newUser.isAccepted};
     await this.mailService.sendUserConfirmation(newUser,newUser.id)
     return {
@@ -44,5 +44,14 @@ export class AuthService {
     else{
       return 'Something went wrong!';
     }
+  }
+
+  async registerCenterAdmin(userInfo: RegisterCenterAdmin){
+    const newUser = await this.usersService.createCenterAdmin(userInfo);
+    const payload = { userId: newUser.id, username: newUser.email, role: newUser.role , isAccepted:newUser.isAccepted};
+    await this.mailService.sendCenterAdminConfirmation(newUser,newUser.id)
+    return {
+        access_token: await this.jwtService.signAsync(payload),
+    }; 
   }
 }

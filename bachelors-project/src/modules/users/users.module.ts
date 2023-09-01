@@ -9,6 +9,7 @@ import { AuthController } from './controllers/auth.controller';
 import { CountriesModule } from '../countries/countries.module';
 import { MailModule } from '../mail/mail.module';
 import { UserController } from './controllers/user.controller';
+import { TransfusionCentersModule } from '../transfusion-centers/transfusion-centers.module';
 
 @Module({
     imports:[
@@ -19,7 +20,8 @@ import { UserController } from './controllers/user.controller';
         signOptions: { expiresIn: '3600s' },
       }),
       CountriesModule,
-      MailModule
+      MailModule,
+      TransfusionCentersModule
     ],
     providers: [UsersService, AuthService],
     exports: [UsersService, AuthService],

@@ -21,7 +21,7 @@ let CountriesService = exports.CountriesService = class CountriesService {
     constructor(countriesRepository) {
         this.countriesRepository = countriesRepository;
     }
-    async findOneOrFail(countryCode) {
+    async getOneOrFail(countryCode) {
         return await this.countriesRepository.findOneOrFail({ where: { code: countryCode } });
     }
 };

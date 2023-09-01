@@ -1,7 +1,6 @@
-import { Gender } from "../enums/gender.enum";
 
 export interface EditUserProfile{
-    password:string;
+    id: string;
     firstName: string;
     lastName: string;
     phoneNumber: string;

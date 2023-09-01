@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UsersModule } from './modules/users/users.module';
 import { ComplaintsModule } from './modules/complaints/complaints.module';
 import { TransfusionCentersModule } from './modules/transfusion-centers/transfusion-centers.module';
-import { QuestionairesModule } from './modules/questionaires/questionaires.module';
+import { QuestionnairesModule } from './modules/questionnaires/questionnaires.module';
 import { TermsModule } from './modules/terms/terms.module';
 import { RatingsModule } from './modules/ratings/ratings.module';
 import { CountriesModule } from './modules/countries/countries.module';
@@ -13,6 +13,10 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './modules/utils/guards/roles.guard';
 import { AuthGuard } from './modules/utils/guards/auth.guard';
+import { QuestionsModule } from './modules/questions/questions.module';
+import { AnswersModule } from './modules/answers/answers.module';
+import { QuestionnaireResponsesModule } from './modules/questionnaire-responses/questionnaire-responses.module';
+import { QuestionOrdersModule } from './modules/question-orders/question-orders.module';
 
 @Module({
   imports: [
@@ -24,11 +28,15 @@ import { AuthGuard } from './modules/utils/guards/auth.guard';
     UsersModule,
     ComplaintsModule,
     TransfusionCentersModule,
-    QuestionairesModule,
     TermsModule, 
     RatingsModule, 
     CountriesModule, 
-    UtilsModule
+    UtilsModule,
+    QuestionsModule,
+    AnswersModule,
+    QuestionOrdersModule,
+    QuestionnaireResponsesModule,
+    QuestionnairesModule,
   ],
   providers: [
     {

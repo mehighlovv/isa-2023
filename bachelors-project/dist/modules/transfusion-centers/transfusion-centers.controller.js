@@ -16,8 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransfusionCentersController = void 0;
 const common_1 = require("@nestjs/common");
 const transfusion_centers_service_1 = require("./transfusion-centers.service");
-const pagination_decorator_1 = require("../utils/decorators/pagination.decorator");
-const public_decorator_1 = require("../utils/decorators/public.decorator");
+const utils_1 = require("../utils");
 let TransfusionCentersController = exports.TransfusionCentersController = TransfusionCentersController_1 = class TransfusionCentersController {
     constructor(transfusionCentersService) {
         this.transfusionCentersService = transfusionCentersService;
@@ -26,17 +25,61 @@ let TransfusionCentersController = exports.TransfusionCentersController = Transf
     async getPaginated(paginationParams, name, address) {
         return await this.transfusionCentersService.getPaginated(paginationParams, name, address);
     }
+    async getCenterDetails(id) {
+        return await this.transfusionCentersService.getOne(id);
+    }
+    async editTransfusionCenter(editTransfusionCenterInfo) {
+        return await this.transfusionCentersService.updateTransfusionCenter(editTransfusionCenterInfo);
+    }
+    async createTransfusionCenter(transfusionCenterInfo) {
+        return await this.transfusionCentersService.createTransfusionCenter(transfusionCenterInfo);
+    }
+    async getBloodStocks(id) {
+        return await this.transfusionCentersService.getBloodStocks(id);
+    }
 };
 __decorate([
-    (0, public_decorator_1.Public)(),
+    (0, utils_1.Public)(),
     (0, common_1.Get)(),
-    __param(0, (0, pagination_decorator_1.PaginationParams)()),
+    __param(0, (0, utils_1.PaginationParams)()),
     __param(1, (0, common_1.Query)('name')),
     __param(2, (0, common_1.Query)('address')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", Promise)
 ], TransfusionCentersController.prototype, "getPaginated", null);
+__decorate([
+    (0, utils_1.Public)(),
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], TransfusionCentersController.prototype, "getCenterDetails", null);
+__decorate([
+    (0, utils_1.Roles)(utils_1.Role.TRANSFUSION_CENTER_ADMINISTRATOR, utils_1.Role.SYSTEM_ADMINISTRATOR),
+    (0, common_1.Put)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], TransfusionCentersController.prototype, "editTransfusionCenter", null);
+__decorate([
+    (0, utils_1.Roles)(utils_1.Role.SYSTEM_ADMINISTRATOR),
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], TransfusionCentersController.prototype, "createTransfusionCenter", null);
+__decorate([
+    (0, utils_1.Roles)(utils_1.Role.TRANSFUSION_CENTER_ADMINISTRATOR),
+    (0, common_1.Get)(':id/blood-stocks'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], TransfusionCentersController.prototype, "getBloodStocks", null);
 exports.TransfusionCentersController = TransfusionCentersController = TransfusionCentersController_1 = __decorate([
     (0, common_1.Controller)('transfusion-centers'),
     __metadata("design:paramtypes", [transfusion_centers_service_1.TransfusionCentersService])

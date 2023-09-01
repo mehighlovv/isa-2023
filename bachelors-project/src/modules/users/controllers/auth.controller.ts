@@ -2,11 +2,13 @@ import { Body, Controller, Post, HttpCode, HttpStatus, Query } from '@nestjs/com
 import { AuthService } from '../services/auth.service';
 import { Login } from 'src/modules/utils/interfaces/Login';
 import { Public } from 'src/modules/utils/decorators/public.decorator';
-import { Register } from 'src/modules/utils/interfaces/Register';
+import { RegisterCenterAdmin, RegisterUser } from 'src/modules/utils/interfaces/Register';
+import { ChangePassword, Role, Roles } from 'src/modules/utils';
+import { UsersService } from '../services/users.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private usersService : UsersService) {}
 
   @Public()
   @HttpCode(HttpStatus.OK)
@@ -18,8 +20,8 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('register')
-  register(@Body() userInfo: Register) {
-    return this.authService.register(userInfo);
+  register(@Body() userInfo: RegisterUser) {
+    return this.authService.registerUser(userInfo);
   }
 
   @Public()
@@ -27,5 +29,17 @@ export class AuthController {
   @Post('activate')
   activateAccount(@Query('token') token : string){
     return this.authService.activateAccount(token);
+  }
+
+  @Roles(Role.REGISTERED_USER,Role.STAFF,Role.SYSTEM_ADMINISTRATOR,Role.TRANSFUSION_CENTER_ADMINISTRATOR)
+  @Post('change-password')
+  async changePassword(@Body() changePasswordInfo: ChangePassword){
+    await this.usersService.changePassword(changePasswordInfo);
+  }
+
+  @Roles(Role.SYSTEM_ADMINISTRATOR)
+  @Post('/register/admin')
+  async registerCenterAdministrator(@Body() registerCenterAdminInfo : RegisterCenterAdmin){
+    return await this.authService.registerCenterAdmin(registerCenterAdminInfo);
   }
 }

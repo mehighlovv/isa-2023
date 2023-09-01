@@ -1,26 +1,50 @@
 import User from "../entities/user.entity";
 import { Repository } from "typeorm";
-import { Register } from "src/modules/utils/interfaces/Register";
+import { RegisterCenterAdmin, RegisterUser } from "src/modules/utils/interfaces/Register";
 import { CountriesService } from "src/modules/countries/countries.service";
 import Country from "src/modules/countries/country.entity";
 import { Role } from "src/modules/utils/enums/role.enum";
 import { EditUserProfile } from "src/modules/utils/interfaces/EditUserProfile";
+import { ChangePassword } from "src/modules/utils/interfaces/ChangePassword";
+import { TransfusionCenter } from "src/modules/utils";
+import { TransfusionCentersService } from "src/modules/transfusion-centers/transfusion-centers.service";
 export declare class UsersService {
     private readonly usersRepository;
     private readonly countriesService;
+    private readonly transfusionCentersService;
     private readonly logger;
-    constructor(usersRepository: Repository<User>, countriesService: CountriesService);
-    findOne(email: string): Promise<User | undefined>;
-    create(userInfo: Register): Promise<User>;
+    constructor(usersRepository: Repository<User>, countriesService: CountriesService, transfusionCentersService: TransfusionCentersService);
+    getOne(email: string): Promise<User | undefined>;
+    getById(id: string): Promise<User>;
+    createRegisteredUser(userInfo: RegisterUser): Promise<User>;
     activateAccount(userId: string): Promise<boolean>;
-    editProfile(userId: string, userInfo: EditUserProfile): Promise<void>;
-    mapRegisterDtoToUser(userInfo: Register, country: Country): {
+    editProfile(userInfo: EditUserProfile): Promise<void>;
+    changePassword(changePasswordInfo: ChangePassword): Promise<string>;
+    createCenterAdmin(userInfo: RegisterCenterAdmin): Promise<User>;
+    mapRegisterUserDtoToUser(userInfo: RegisterUser, country: Country): {
         email: string;
         password: string;
         firstName: string;
         lastName: string;
         phoneNumber: string;
-        gender: import("../../utils/enums/gender.enum").Gender;
+        gender: import("src/modules/utils").Gender;
+        socialSecurityNumber: string;
+        city: string;
+        address: string;
+        occupation: string;
+        companyInfo: string;
+        country: Country;
+        isAccepted: boolean;
+        role: Role;
+    };
+    mapRegisterCenterAdminDtoToUser(userInfo: RegisterCenterAdmin, country: Country, transfusionCenter: TransfusionCenter): {
+        email: string;
+        password: `${string}-${string}-${string}-${string}-${string}`;
+        transfusionCenter: TransfusionCenter;
+        firstName: string;
+        lastName: string;
+        phoneNumber: string;
+        gender: import("src/modules/utils").Gender;
         socialSecurityNumber: string;
         city: string;
         address: string;

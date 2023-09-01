@@ -18,6 +18,7 @@ const auth_controller_1 = require("./controllers/auth.controller");
 const countries_module_1 = require("../countries/countries.module");
 const mail_module_1 = require("../mail/mail.module");
 const user_controller_1 = require("./controllers/user.controller");
+const transfusion_centers_module_1 = require("../transfusion-centers/transfusion-centers.module");
 let UsersModule = exports.UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule = __decorate([
@@ -30,7 +31,8 @@ exports.UsersModule = UsersModule = __decorate([
                 signOptions: { expiresIn: '3600s' },
             }),
             countries_module_1.CountriesModule,
-            mail_module_1.MailModule
+            mail_module_1.MailModule,
+            transfusion_centers_module_1.TransfusionCentersModule
         ],
         providers: [users_service_1.UsersService, auth_service_1.AuthService],
         exports: [users_service_1.UsersService, auth_service_1.AuthService],

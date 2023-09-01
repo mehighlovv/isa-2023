@@ -19,4 +19,19 @@ export class MailService {
       },
     });
   }
+
+  async sendCenterAdminConfirmation(user: User, token: string) {
+    const url = `http://localhost:3000/auth/activate?token=${token}`;
+
+    await this.mailerService.sendMail({
+      to: user.email,
+      subject: 'Welcome to ISA Transfusion Center App! Activate your account!',
+      template: './centerAdminActivation', 
+      context: { 
+        name: user.firstName,
+        url,
+        password:user.password
+      },
+    });
+  }
 }

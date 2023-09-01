@@ -15,23 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("../services/users.service");
-const role_enum_1 = require("../../utils/enums/role.enum");
-const roles_decorator_1 = require("../../utils/decorators/roles.decorator");
+const utils_1 = require("../../utils");
 let UserController = exports.UserController = class UserController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    login(id, editUserProfileDto) {
-        return this.usersService.editProfile(id, editUserProfileDto);
+    login(editUserProfileDto) {
+        return this.usersService.editProfile(editUserProfileDto);
     }
 };
 __decorate([
-    (0, roles_decorator_1.Roles)(role_enum_1.Role.REGISTERED_USER),
-    (0, common_1.Post)(':id/profile'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
+    (0, utils_1.Roles)(utils_1.Role.REGISTERED_USER),
+    (0, common_1.Put)('profile'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "login", null);
 exports.UserController = UserController = __decorate([

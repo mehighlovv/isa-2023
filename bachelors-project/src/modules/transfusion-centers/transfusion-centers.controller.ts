@@ -1,8 +1,6 @@
-import { Controller, Get, Logger, Query } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Param, Post, Put, Query } from "@nestjs/common";
 import { TransfusionCentersService } from "./transfusion-centers.service";
-import { PaginationRequest } from "../utils/interfaces/Pagination";
-import { PaginationParams } from "../utils/decorators/pagination.decorator";
-import { Public } from "../utils/decorators/public.decorator";
+import { CreateTransfusionCenter, EditTransfusionCenter, PaginationParams, PaginationRequest, Public, Role, Roles} from "../utils";
 
 
 @Controller('transfusion-centers')
@@ -12,9 +10,37 @@ export class TransfusionCentersController{
 
     @Public()
     @Get()
-    async getPaginated(@PaginationParams() paginationParams : PaginationRequest,
-    @Query('name') name?: string,
-    @Query('address') address? : string){
+    async getPaginated(
+        @PaginationParams() paginationParams : PaginationRequest,
+        @Query('name') name?: string,
+        @Query('address') address? : string
+    ){
         return await this.transfusionCentersService.getPaginated(paginationParams,name,address);
     }
+
+    @Public()
+    @Get(':id')
+    async getCenterDetails(@Param('id') id: string){
+        return await this.transfusionCentersService.getOne(id);
+    }
+
+    @Roles(Role.TRANSFUSION_CENTER_ADMINISTRATOR, Role.SYSTEM_ADMINISTRATOR)
+    @Put()
+    async editTransfusionCenter(@Body() editTransfusionCenterInfo : EditTransfusionCenter){
+        return await this.transfusionCentersService.updateTransfusionCenter(editTransfusionCenterInfo);
+    }
+
+    @Roles(Role.SYSTEM_ADMINISTRATOR)
+    @Post()
+    async createTransfusionCenter(@Body() transfusionCenterInfo : CreateTransfusionCenter){
+        return await this.transfusionCentersService.createTransfusionCenter(transfusionCenterInfo);
+    }
+
+    @Roles(Role.TRANSFUSION_CENTER_ADMINISTRATOR)
+    @Get(':id/blood-stocks')
+    async getBloodStocks(@Param('id') id: string){
+        return await this.transfusionCentersService.getBloodStocks(id);
+    }
+    
+
 }
