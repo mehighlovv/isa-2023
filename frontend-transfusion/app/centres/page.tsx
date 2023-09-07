@@ -1,10 +1,10 @@
-
+"use client";
 import Button from '@/components/PrimaryButton'
 import SecondaryButton from '@/components/SecondaryButton'
 import DisabledButton from '@/components/DisabledButton'
 import Card from '@/components/Card'
 import Sidebar from '@/components/Sidebar'
-
+import { useRouter } from 'next/navigation'
 //   async function getData() {
 //   const res = await fetch('http://localhost:3001/performance/testSuite')
 //   // The return value is *not* serialized
@@ -20,8 +20,12 @@ import Sidebar from '@/components/Sidebar'
 
 
 
-export default async function Page() {
-
+export default function Page() {
+ const router = useRouter();
+  const handleBack = () => {
+   
+    router.push("/");
+  };
     const mockCentres = [{id: "c1", name: "centre 21", description: "some short description some short description some short description some short description"}, {id: "c1", name: "centre 100", description: "some short description"}, {id: "c1", name: "centre 500", description: "some short description"}]
 
 // const data = await getData()
@@ -35,7 +39,7 @@ export default async function Page() {
        <div className="flex gap-5 z-10 items-stretch flex-wrap">
        {!!mockCentres?.length && mockCentres?.map((centre: { id: any; name: any; description: any }) => <Card key={centre.id} name={centre?.name} description={centre?.description}/>)}</div>
        <div className="flex flex-row p-4">
-       <Button title="back" />
+       <Button title="back" action={handleBack}/>
        <SecondaryButton title='secondary'/>
        <DisabledButton title='disabled'/>
 </div>
