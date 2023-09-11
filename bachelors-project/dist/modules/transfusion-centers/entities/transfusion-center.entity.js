@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const blood_stock_entity_1 = require("../../blood-stocks/blood-stock.entity");
+const term_entity_1 = require("../../terms/term.entity");
 const user_entity_1 = require("../../users/entities/user.entity");
 const typeorm_1 = require("typeorm");
 let TransfusionCenter = class TransfusionCenter {
@@ -38,11 +39,11 @@ __decorate([
     __metadata("design:type", String)
 ], TransfusionCenter.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'working_hours_begin', type: 'time' }),
+    (0, typeorm_1.Column)({ name: 'working_hours_begin', type: 'datetime' }),
     __metadata("design:type", Date)
 ], TransfusionCenter.prototype, "workingHoursBegin", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'working_hours_end', type: 'time' }),
+    (0, typeorm_1.Column)({ name: 'working_hours_end', type: 'datetime' }),
     __metadata("design:type", Date)
 ], TransfusionCenter.prototype, "workingHoursEnd", void 0);
 __decorate([
@@ -53,6 +54,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => user_entity_1.default, (user) => user.transfusionCenter),
     __metadata("design:type", Array)
 ], TransfusionCenter.prototype, "administrators", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => term_entity_1.default, (term) => term.transfusionCenter),
+    __metadata("design:type", Array)
+], TransfusionCenter.prototype, "workingCalendar", void 0);
 TransfusionCenter = __decorate([
     (0, typeorm_1.Entity)({ name: 'transfusion_centers' }),
     __metadata("design:paramtypes", [String, String, String, Date, Date])

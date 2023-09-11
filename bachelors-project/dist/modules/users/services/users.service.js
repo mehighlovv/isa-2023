@@ -34,7 +34,7 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
         return await this.usersRepository.findOne({ where: { email: email } });
     }
     async getById(id) {
-        return await this.usersRepository.findOne({ where: { id: id } });
+        return await this.usersRepository.findOneOrFail({ where: { id: id } });
     }
     async createRegisteredUser(userInfo) {
         try {

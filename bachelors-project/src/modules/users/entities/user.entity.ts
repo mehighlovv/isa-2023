@@ -1,6 +1,7 @@
 import Answer from 'src/modules/answers/answer.entity';
 import Country from 'src/modules/countries/country.entity';
 import QuestionaireResponse from 'src/modules/questionnaire-responses/questionnaire-response.entity';
+import Term from 'src/modules/terms/term.entity';
 import TransfusionCenter from 'src/modules/transfusion-centers/entities/transfusion-center.entity';
 import { DEFAULT_PASSWORD_ATTEMPTS } from 'src/modules/utils';
 import { Gender } from 'src/modules/utils/enums/gender.enum';
@@ -13,8 +14,6 @@ import {
     OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-
-
 
 @Entity({name:'users'})
 export default class User {
@@ -85,4 +84,7 @@ export default class User {
 
     @OneToOne(()=>QuestionaireResponse,(questionaireResponse)=>questionaireResponse.user)
     questionnaireResponse: QuestionaireResponse;
+
+    @OneToMany(()=>Term,(term)=>term.reservationHolder)
+    reservedTerms: Term[];
 }

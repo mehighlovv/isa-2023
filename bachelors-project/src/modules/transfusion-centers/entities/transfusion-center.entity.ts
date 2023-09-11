@@ -1,4 +1,5 @@
 import BloodStock from "src/modules/blood-stocks/blood-stock.entity";
+import Term from "src/modules/terms/term.entity";
 import User from "src/modules/users/entities/user.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -17,10 +18,10 @@ export default class TransfusionCenter{
     @Column({name:'description',type:'varchar'})
     description: string;
 
-    @Column({name:'working_hours_begin',type:'time'})
+    @Column({name:'working_hours_begin',type:'datetime'})
     workingHoursBegin: Date;
 
-    @Column({name:'working_hours_end',type:'time'})
+    @Column({name:'working_hours_end',type:'datetime'})
     workingHoursEnd: Date;
 
     @OneToMany(()=>BloodStock,(bloodStock)=>bloodStock.transfusionCenter)
@@ -28,6 +29,9 @@ export default class TransfusionCenter{
 
     @OneToMany(()=>User,(user)=>user.transfusionCenter)
     administrators: User[];
+
+    @OneToMany(()=>Term,(term)=>term.transfusionCenter)
+    workingCalendar: Term[];
 
 
     constructor(name: string, description: string, address: string, workingHoursBegin: Date, workingHoursEnd: Date){

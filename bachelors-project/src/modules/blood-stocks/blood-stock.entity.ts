@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { BloodType } from "../utils/enums/blood-type.enum";
 import TransfusionCenter from "../transfusion-centers/entities/transfusion-center.entity";
+import { BloodType } from "../utils";
 
 @Entity({name:'blood_stocks'})
 export default class BloodStock{

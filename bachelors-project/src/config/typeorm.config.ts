@@ -10,6 +10,7 @@ import QuestionOrder from 'src/modules/question-orders/question-order.entity';
 import QuestionaireResponse from 'src/modules/questionnaire-responses/questionnaire-response.entity';
 import Questionaire from 'src/modules/questionnaires/questionnaire.entity';
 import Question from 'src/modules/questions/question.entity';
+import Term from 'src/modules/terms/term.entity';
 import TransfusionCenter from 'src/modules/transfusion-centers/entities/transfusion-center.entity';
 import User from 'src/modules/users/entities/user.entity';
 
@@ -32,7 +33,8 @@ export default class TypeOrmConfig {
                QuestionOrder,
                Answer,
                Questionaire,
-               QuestionaireResponse
+               QuestionaireResponse,
+               Term
             ],
             autoLoadEntities: true,
             logging: ['error'],

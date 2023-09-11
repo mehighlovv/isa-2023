@@ -58,6 +58,10 @@ exports.AppModule = AppModule = __decorate([
                 provide: core_1.APP_GUARD,
                 useClass: roles_guard_1.RolesGuard,
             },
+            {
+                provide: core_1.APP_PIPE,
+                useClass: common_1.ValidationPipe,
+            },
         ],
     })
 ], AppModule);

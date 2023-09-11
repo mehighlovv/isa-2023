@@ -7,3 +7,4 @@ export * from './TransfusionCenter';
 export * from './BloodStocks';
 export * from './Answer';
 export * from './User';
+export * from './Term';

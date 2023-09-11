@@ -17,8 +17,8 @@ const common_1 = require("@nestjs/common");
 const transfusion_center_entity_1 = require("./entities/transfusion-center.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const utils_1 = require("../utils");
 const blood_stocks_service_1 = require("../blood-stocks/blood-stocks.service");
-const blood_type_enum_1 = require("../utils/enums/blood-type.enum");
 let TransfusionCentersService = exports.TransfusionCentersService = class TransfusionCentersService {
     constructor(transfusionCentersRepository, bloodStocksService) {
         this.transfusionCentersRepository = transfusionCentersRepository;
@@ -73,14 +73,14 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
         return await this.bloodStocksService.getByTransfusionCenter(transfusionCenter.id);
     }
     async initializeBloodStocks(transfusionCenter) {
-        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: blood_type_enum_1.BloodType.AB_NEGATIVE }, transfusionCenter);
-        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: blood_type_enum_1.BloodType.AB_POSITIVE }, transfusionCenter);
-        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: blood_type_enum_1.BloodType.A_NEGATIVE }, transfusionCenter);
-        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: blood_type_enum_1.BloodType.A_POSITIVE }, transfusionCenter);
-        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: blood_type_enum_1.BloodType.B_NEGATIVE }, transfusionCenter);
-        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: blood_type_enum_1.BloodType.B_POSITIVE }, transfusionCenter);
-        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: blood_type_enum_1.BloodType.O_NEGATIVE }, transfusionCenter);
-        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: blood_type_enum_1.BloodType.O_POSITIVE }, transfusionCenter);
+        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.AB_NEGATIVE }, transfusionCenter);
+        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.AB_POSITIVE }, transfusionCenter);
+        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.A_NEGATIVE }, transfusionCenter);
+        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.A_POSITIVE }, transfusionCenter);
+        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.B_NEGATIVE }, transfusionCenter);
+        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.B_POSITIVE }, transfusionCenter);
+        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.O_NEGATIVE }, transfusionCenter);
+        await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.O_POSITIVE }, transfusionCenter);
     }
     dtoToEntity(center) {
         return new transfusion_center_entity_1.default(center.name, center.description, center.address, center.workingHoursBegin, center.workingHoursEnd);
