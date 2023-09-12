@@ -58,7 +58,6 @@ export default function Page() {
           <Button title="back" action={handleBack} />
           <SecondaryButton title="secondary" />
           <DisabledButton title="disabled" />
-          <TextArea />
         </div>
       </div>
     </main>
