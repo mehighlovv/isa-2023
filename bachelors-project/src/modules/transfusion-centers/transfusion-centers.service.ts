@@ -3,9 +3,8 @@ import TransfusionCenterEntity from "./entities/transfusion-center.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Like, Repository } from "typeorm";
 import { Paginate, PaginationRequest } from "../utils/interfaces/Pagination";
-import { CreateTransfusionCenter, EditTransfusionCenter, TransfusionCenter } from "../utils";
+import { BloodType, CreateTransfusionCenter, EditTransfusionCenter, TransfusionCenter } from "../utils";
 import { BloodStocksService } from "../blood-stocks/blood-stocks.service";
-import { BloodType } from "../utils/enums/blood-type.enum";
 
 @Injectable()
 export class TransfusionCentersService{

@@ -27,7 +27,7 @@ export class UsersService{
     }
 
     async getById(id: string) {
-        return await this.usersRepository.findOne({where:{id:id}});
+        return await this.usersRepository.findOneOrFail({where:{id:id}});
     }
 
     async createRegisteredUser(userInfo: RegisterUser) : Promise<User>{

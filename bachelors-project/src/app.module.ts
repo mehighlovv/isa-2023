@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { UsersModule } from './modules/users/users.module';
 import { ComplaintsModule } from './modules/complaints/complaints.module';
 import { TransfusionCentersModule } from './modules/transfusion-centers/transfusion-centers.module';
@@ -10,7 +10,7 @@ import { UtilsModule } from './modules/utils/utils.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfigAsync } from './config/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { RolesGuard } from './modules/utils/guards/roles.guard';
 import { AuthGuard } from './modules/utils/guards/auth.guard';
 import { QuestionsModule } from './modules/questions/questions.module';
@@ -47,7 +47,10 @@ import { QuestionOrdersModule } from './modules/question-orders/question-orders.
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
-    
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
   ],
 })
 export class AppModule {}

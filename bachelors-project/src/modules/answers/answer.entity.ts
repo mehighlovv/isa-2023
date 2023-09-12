@@ -9,7 +9,7 @@ export default class Answer{
     constructor(question : Question, user : User, questionnaireResponse : QuestionnaireResponse, response : boolean){
         this.question=question;
         this.user=user;
-        this.questionnaireResponse;
+        this.questionnaireResponse=questionnaireResponse;
         this.response=response;
     }
 
@@ -22,7 +22,7 @@ export default class Answer{
     @ManyToOne(()=>User,(user)=>user.answers)
     user: User;
 
-    @ManyToOne(()=>QuestionnaireResponse,(questionaireResponse)=>questionaireResponse.answers)
+    @ManyToOne(()=>QuestionnaireResponse,(questionaireResponse)=>questionaireResponse.answers, {onDelete:"CASCADE"})
     questionnaireResponse: QuestionnaireResponse
 
     @Column()

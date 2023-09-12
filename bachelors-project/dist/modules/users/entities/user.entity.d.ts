@@ -1,6 +1,7 @@
 import Answer from 'src/modules/answers/answer.entity';
 import Country from 'src/modules/countries/country.entity';
 import QuestionaireResponse from 'src/modules/questionnaire-responses/questionnaire-response.entity';
+import Term from 'src/modules/terms/term.entity';
 import TransfusionCenter from 'src/modules/transfusion-centers/entities/transfusion-center.entity';
 import { Gender } from 'src/modules/utils/enums/gender.enum';
 import { Role } from 'src/modules/utils/enums/role.enum';
@@ -24,4 +25,5 @@ export default class User {
     transfusionCenter: TransfusionCenter;
     answers: Answer[];
     questionnaireResponse: QuestionaireResponse;
+    reservedTerms: Term[];
 }

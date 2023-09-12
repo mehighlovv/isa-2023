@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const answer_entity_1 = require("../../answers/answer.entity");
 const country_entity_1 = require("../../countries/country.entity");
 const questionnaire_response_entity_1 = require("../../questionnaire-responses/questionnaire-response.entity");
+const term_entity_1 = require("../../terms/term.entity");
 const transfusion_center_entity_1 = require("../../transfusion-centers/entities/transfusion-center.entity");
 const utils_1 = require("../../utils");
 const gender_enum_1 = require("../../utils/enums/gender.enum");
@@ -102,6 +103,10 @@ __decorate([
     (0, typeorm_1.OneToOne)(() => questionnaire_response_entity_1.default, (questionaireResponse) => questionaireResponse.user),
     __metadata("design:type", questionnaire_response_entity_1.default)
 ], User.prototype, "questionnaireResponse", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => term_entity_1.default, (term) => term.reservationHolder),
+    __metadata("design:type", Array)
+], User.prototype, "reservedTerms", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)({ name: 'users' })
 ], User);

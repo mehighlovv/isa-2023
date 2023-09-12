@@ -9,6 +9,7 @@ const question_order_entity_1 = require("../modules/question-orders/question-ord
 const questionnaire_response_entity_1 = require("../modules/questionnaire-responses/questionnaire-response.entity");
 const questionnaire_entity_1 = require("../modules/questionnaires/questionnaire.entity");
 const question_entity_1 = require("../modules/questions/question.entity");
+const term_entity_1 = require("../modules/terms/term.entity");
 const transfusion_center_entity_1 = require("../modules/transfusion-centers/entities/transfusion-center.entity");
 const user_entity_1 = require("../modules/users/entities/user.entity");
 class TypeOrmConfig {
@@ -29,7 +30,8 @@ class TypeOrmConfig {
                 question_order_entity_1.default,
                 answer_entity_1.default,
                 questionnaire_entity_1.default,
-                questionnaire_response_entity_1.default
+                questionnaire_response_entity_1.default,
+                term_entity_1.default
             ],
             autoLoadEntities: true,
             logging: ['error'],
