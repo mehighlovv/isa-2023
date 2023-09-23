@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import TransfusionCenterEntity from "./entities/transfusion-center.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Like, Repository } from "typeorm";
+import { In, Like, Not, Repository } from "typeorm";
 import { Paginate, PaginationRequest } from "../utils/interfaces/Pagination";
-import { BloodType, CreateTransfusionCenter, EditTransfusionCenter, TransfusionCenter } from "../utils";
+import { BloodType, CreateTransfusionCenter, EditTransfusionCenter, TermStatus, TransfusionCenter, createDateFromTimeString } from "../utils";
 import { BloodStocksService } from "../blood-stocks/blood-stocks.service";
 
 @Injectable()
@@ -27,7 +27,7 @@ export class TransfusionCentersService{
         });
         const centerResponses = centers.map((center)=>this.entityToDto(center));
         const paginate: Paginate<TransfusionCenter> = {
-            records: centers,
+            records: centerResponses,
             pagination: {
                 page: page,
                 perPage: perPage,
@@ -77,6 +77,50 @@ export class TransfusionCentersService{
         await this.bloodStocksService.createBloodStock({volume:0, bloodType:BloodType.B_POSITIVE},transfusionCenter);
         await this.bloodStocksService.createBloodStock({volume:0, bloodType:BloodType.O_NEGATIVE},transfusionCenter);
         await this.bloodStocksService.createBloodStock({volume:0, bloodType:BloodType.O_POSITIVE},transfusionCenter);
+    }
+
+    async getCentersWithFreeTerm(paginationParams : PaginationRequest, date: Date,time: string){
+        const {page,perPage} = paginationParams;
+        const dateTime = createDateFromTimeString(time);
+        const where = 
+        {
+            workingCalendar:{
+                startDate:date,
+                startTime:dateTime,
+                status:TermStatus.TAKEN
+            }
+        };
+        const centersWithTakenTerm = await this.transfusionCentersRepository.find({
+            where:where,
+            relations:{
+                workingCalendar:true
+            },
+        });
+
+        let ids = [];
+        centersWithTakenTerm.forEach(center=>{
+            ids.push(center.id);
+        })
+
+        const [centers, totalCount] = await this.transfusionCentersRepository.findAndCount({
+            where:{
+                id:Not(In(ids))
+            },
+            skip:(page-1)*perPage,
+            take:perPage
+        });
+        const centerResponses = centers.map((center)=>this.entityToDto(center));
+        const paginate: Paginate<TransfusionCenter> = {
+            records: centerResponses,
+            pagination: {
+                page: page,
+                perPage: perPage,
+                totalCount: totalCount,
+                pageCount: centers.length,
+            },
+        };
+        return paginate;
+
     }
 
     dtoToEntity(center: CreateTransfusionCenter) : TransfusionCenterEntity{

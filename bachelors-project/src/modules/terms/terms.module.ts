@@ -6,13 +6,15 @@ import { TermsService } from './terms.service';
 import { TermsController } from './terms.controller';
 import { QuestionnaireResponsesModule } from '../questionnaire-responses/questionnaire-responses.module';
 import { UsersModule } from '../users/users.module';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
     imports:[
         TypeOrmModule.forFeature([Term]),
         TransfusionCentersModule,
         UsersModule,
-        QuestionnaireResponsesModule
+        QuestionnaireResponsesModule,
+        MailModule
     ],
     providers:[TermsService],
     exports:[TermsService],

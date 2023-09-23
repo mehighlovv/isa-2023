@@ -23,6 +23,9 @@ let UserController = exports.UserController = class UserController {
     login(editUserProfileDto) {
         return this.usersService.editProfile(editUserProfileDto);
     }
+    async getPaginatedUsers(firstName, lastName, paginationParams, orderBy, sortBy = 'firstName') {
+        return await this.usersService.getPaginatedUsers({ firstName, lastName }, paginationParams, orderBy, sortBy);
+    }
 };
 __decorate([
     (0, utils_1.Roles)(utils_1.Role.REGISTERED_USER),
@@ -32,6 +35,18 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "login", null);
+__decorate([
+    (0, utils_1.Roles)(utils_1.Role.STAFF, utils_1.Role.SYSTEM_ADMINISTRATOR, utils_1.Role.TRANSFUSION_CENTER_ADMINISTRATOR),
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('firstName')),
+    __param(1, (0, common_1.Query)('lastName')),
+    __param(2, (0, utils_1.PaginationParams)()),
+    __param(3, (0, common_1.Query)('orderBy', new common_1.DefaultValuePipe(utils_1.OrderByValue.DESC), new utils_1.EnumValidationPipe(utils_1.OrderByValue))),
+    __param(4, (0, common_1.Query)('sortBy')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object, String, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getPaginatedUsers", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

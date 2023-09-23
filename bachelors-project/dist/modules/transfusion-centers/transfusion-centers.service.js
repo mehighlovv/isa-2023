@@ -37,7 +37,7 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
         });
         const centerResponses = centers.map((center) => this.entityToDto(center));
         const paginate = {
-            records: centers,
+            records: centerResponses,
             pagination: {
                 page: page,
                 perPage: perPage,
@@ -81,6 +81,45 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
         await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.B_POSITIVE }, transfusionCenter);
         await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.O_NEGATIVE }, transfusionCenter);
         await this.bloodStocksService.createBloodStock({ volume: 0, bloodType: utils_1.BloodType.O_POSITIVE }, transfusionCenter);
+    }
+    async getCentersWithFreeTerm(paginationParams, date, time) {
+        const { page, perPage } = paginationParams;
+        const dateTime = (0, utils_1.createDateFromTimeString)(time);
+        const where = {
+            workingCalendar: {
+                startDate: date,
+                startTime: dateTime,
+                status: utils_1.TermStatus.TAKEN
+            }
+        };
+        const centersWithTakenTerm = await this.transfusionCentersRepository.find({
+            where: where,
+            relations: {
+                workingCalendar: true
+            },
+        });
+        let ids = [];
+        centersWithTakenTerm.forEach(center => {
+            ids.push(center.id);
+        });
+        const [centers, totalCount] = await this.transfusionCentersRepository.findAndCount({
+            where: {
+                id: (0, typeorm_2.Not)((0, typeorm_2.In)(ids))
+            },
+            skip: (page - 1) * perPage,
+            take: perPage
+        });
+        const centerResponses = centers.map((center) => this.entityToDto(center));
+        const paginate = {
+            records: centerResponses,
+            pagination: {
+                page: page,
+                perPage: perPage,
+                totalCount: totalCount,
+                pageCount: centers.length,
+            },
+        };
+        return paginate;
     }
     dtoToEntity(center) {
         return new transfusion_center_entity_1.default(center.name, center.description, center.address, center.workingHoursBegin, center.workingHoursEnd);

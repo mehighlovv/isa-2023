@@ -45,6 +45,38 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
             throw new common_1.InternalServerErrorException('A user with that email already exists!');
         }
     }
+    async getPaginatedUsers(searchParams, paginationParams, orderBy, sortBy) {
+        const { page, perPage } = paginationParams;
+        const { firstName, lastName } = searchParams;
+        const query = {
+            where: {
+                firstName: firstName ? (0, typeorm_1.ILike)(`%${firstName}%`) : undefined,
+                lastName: lastName ? (0, typeorm_1.ILike)(`%${lastName}%`) : undefined,
+                role: role_enum_1.Role.REGISTERED_USER
+            },
+            order: undefined,
+            skip: (page - 1) * perPage,
+            take: perPage
+        };
+        console.log(orderBy);
+        console.log(sortBy);
+        console.log(this.isSortValid(orderBy));
+        if (this.isSortValid(sortBy)) {
+            query.order = { ...query.order, ...{ [sortBy]: orderBy } };
+        }
+        console.log(query);
+        const [users, totalCount] = await this.usersRepository.findAndCount(query);
+        const paginate = {
+            records: users,
+            pagination: {
+                page: page,
+                perPage: perPage,
+                totalCount: totalCount,
+                pageCount: users.length,
+            },
+        };
+        return paginate;
+    }
     async activateAccount(userId) {
         const result = await this.usersRepository.update({ id: userId }, { isAccepted: true });
         if (result.affected) {
@@ -135,6 +167,13 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
             isAccepted: false,
             role: role_enum_1.Role.TRANSFUSION_CENTER_ADMINISTRATOR
         };
+    }
+    isSortValid(sortBy) {
+        console.log(new user_entity_1.default());
+        if (sortBy in new user_entity_1.default())
+            return true;
+        else
+            return false;
     }
 };
 exports.UsersService = UsersService = UsersService_1 = __decorate([

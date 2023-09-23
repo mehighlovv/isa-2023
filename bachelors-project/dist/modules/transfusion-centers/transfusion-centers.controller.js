@@ -37,6 +37,9 @@ let TransfusionCentersController = exports.TransfusionCentersController = Transf
     async getBloodStocks(id) {
         return await this.transfusionCentersService.getBloodStocks(id);
     }
+    async getTransfusionCentersWhichHaveFreeTerm(paginationParams, date, time) {
+        return await this.transfusionCentersService.getCentersWithFreeTerm(paginationParams, date, time);
+    }
 };
 __decorate([
     (0, utils_1.Public)(),
@@ -80,6 +83,16 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], TransfusionCentersController.prototype, "getBloodStocks", null);
+__decorate([
+    (0, utils_1.Roles)(utils_1.Role.REGISTERED_USER),
+    (0, common_1.Get)('check/availability'),
+    __param(0, (0, utils_1.PaginationParams)()),
+    __param(1, (0, common_1.Query)('date')),
+    __param(2, (0, common_1.Query)('time')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Date, String]),
+    __metadata("design:returntype", Promise)
+], TransfusionCentersController.prototype, "getTransfusionCentersWhichHaveFreeTerm", null);
 exports.TransfusionCentersController = TransfusionCentersController = TransfusionCentersController_1 = __decorate([
     (0, common_1.Controller)('transfusion-centers'),
     __metadata("design:paramtypes", [transfusion_centers_service_1.TransfusionCentersService])

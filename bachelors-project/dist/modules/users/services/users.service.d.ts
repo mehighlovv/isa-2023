@@ -6,7 +6,7 @@ import Country from "src/modules/countries/country.entity";
 import { Role } from "src/modules/utils/enums/role.enum";
 import { EditUserProfile } from "src/modules/utils/interfaces/EditUserProfile";
 import { ChangePassword } from "src/modules/utils/interfaces/ChangePassword";
-import { TransfusionCenter } from "src/modules/utils";
+import { OrderByValue, Paginate, PaginationRequest, TransfusionCenter, UserSearchParams } from "src/modules/utils";
 import { TransfusionCentersService } from "src/modules/transfusion-centers/transfusion-centers.service";
 export declare class UsersService {
     private readonly usersRepository;
@@ -17,6 +17,7 @@ export declare class UsersService {
     getOne(email: string): Promise<User | undefined>;
     getById(id: string): Promise<User>;
     createRegisteredUser(userInfo: RegisterUser): Promise<User>;
+    getPaginatedUsers(searchParams: UserSearchParams, paginationParams: PaginationRequest, orderBy: OrderByValue, sortBy: string): Promise<Paginate<User, import("src/modules/utils").Pagination>>;
     activateAccount(userId: string): Promise<boolean>;
     editProfile(userInfo: EditUserProfile): Promise<void>;
     changePassword(changePasswordInfo: ChangePassword): Promise<string>;
@@ -54,4 +55,5 @@ export declare class UsersService {
         isAccepted: boolean;
         role: Role;
     };
+    private isSortValid;
 }

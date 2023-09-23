@@ -5,3 +5,4 @@ export const DEFAULT_PASSWORD_ATTEMPTS = 3;
 export const DEFAULT_LOCKOUT_PERIOD = 24 * 60 * 60 * 1000;
 export const DEFAULT_MINUTES_TO_MILLISECONDS = 60000; 
 export const DEFAULT_DATE = "2023-01-01";
+export const DEFAULT_DURATION = 30;

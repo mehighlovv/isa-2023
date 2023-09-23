@@ -41,6 +41,12 @@ export class TransfusionCentersController{
     async getBloodStocks(@Param('id') id: string){
         return await this.transfusionCentersService.getBloodStocks(id);
     }
+
+    @Roles(Role.REGISTERED_USER)
+    @Get('check/availability')
+    async getTransfusionCentersWhichHaveFreeTerm(@PaginationParams() paginationParams : PaginationRequest, @Query('date') date: Date, @Query('time') time: string){
+        return await this.transfusionCentersService.getCentersWithFreeTerm(paginationParams, date,time);
+    }
     
 
 }

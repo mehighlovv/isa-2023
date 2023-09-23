@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import User from "../entities/user.entity";
-import { Repository, TreeRepositoryUtils } from "typeorm";
+import { ILike, Repository, TreeRepositoryUtils } from "typeorm";
 import { InjectRepository } from '@nestjs/typeorm/dist/common';
 import { RegisterCenterAdmin, RegisterUser } from "src/modules/utils/interfaces/Register";
 import { CountriesService } from "src/modules/countries/countries.service";
@@ -8,7 +8,7 @@ import Country from "src/modules/countries/country.entity";
 import { Role } from "src/modules/utils/enums/role.enum";
 import { EditUserProfile } from "src/modules/utils/interfaces/EditUserProfile";
 import { ChangePassword } from "src/modules/utils/interfaces/ChangePassword";
-import { DEFAULT_LOCKOUT_PERIOD, DEFAULT_PASSWORD_ATTEMPTS, TransfusionCenter } from "src/modules/utils";
+import { DEFAULT_LOCKOUT_PERIOD, DEFAULT_PASSWORD_ATTEMPTS, OrderByValue, Paginate, PaginationRequest, TransfusionCenter, UserSearchParams, UserSortParams } from "src/modules/utils";
 import { randomUUID } from "crypto";
 import { TransfusionCentersService } from "src/modules/transfusion-centers/transfusion-centers.service";
 
@@ -38,6 +38,42 @@ export class UsersService{
         catch(e){
             throw new InternalServerErrorException('A user with that email already exists!');
         }
+    }
+
+    async getPaginatedUsers(searchParams: UserSearchParams, paginationParams: PaginationRequest,orderBy: OrderByValue, sortBy: string){
+        const {
+            page,
+            perPage
+        } = paginationParams;
+        const {
+            firstName,
+            lastName
+        } = searchParams;
+        const query = {
+            where:{
+                firstName: firstName? ILike(`%${firstName}%`) : undefined,
+                lastName: lastName? ILike(`%${lastName}%`) : undefined,
+                role: Role.REGISTERED_USER
+            },
+            order:undefined,
+            skip:(page-1)*perPage,
+            take:perPage
+        }
+        if(this.isSortValid(sortBy)){
+            query.order={...query.order,...{[sortBy]:orderBy}};
+        }
+        console.log(query);
+        const [users, totalCount] = await this.usersRepository.findAndCount(query);
+        const paginate: Paginate<User> = {
+            records: users,
+            pagination: {
+                page: page,
+                perPage: perPage,
+                totalCount: totalCount,
+                pageCount: users.length,
+            },
+        };
+        return paginate;
     }
 
     async activateAccount(userId: string) {
@@ -139,5 +175,11 @@ export class UsersService{
             role: Role.TRANSFUSION_CENTER_ADMINISTRATOR
         }
     }
+
+    private isSortValid(sortBy: string) {
+        if (sortBy in new UserSortParams()) return true;
+        else return false;
+    }
+
     
 }

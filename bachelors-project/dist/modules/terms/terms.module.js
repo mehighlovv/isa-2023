@@ -15,6 +15,7 @@ const terms_service_1 = require("./terms.service");
 const terms_controller_1 = require("./terms.controller");
 const questionnaire_responses_module_1 = require("../questionnaire-responses/questionnaire-responses.module");
 const users_module_1 = require("../users/users.module");
+const mail_module_1 = require("../mail/mail.module");
 let TermsModule = exports.TermsModule = class TermsModule {
 };
 exports.TermsModule = TermsModule = __decorate([
@@ -23,7 +24,8 @@ exports.TermsModule = TermsModule = __decorate([
             typeorm_1.TypeOrmModule.forFeature([term_entity_1.default]),
             transfusion_centers_module_1.TransfusionCentersModule,
             users_module_1.UsersModule,
-            questionnaire_responses_module_1.QuestionnaireResponsesModule
+            questionnaire_responses_module_1.QuestionnaireResponsesModule,
+            mail_module_1.MailModule
         ],
         providers: [terms_service_1.TermsService],
         exports: [terms_service_1.TermsService],

@@ -13,6 +13,7 @@ export declare class TransfusionCentersService {
     createTransfusionCenter(transfusionCenterRequest: CreateTransfusionCenter): Promise<TransfusionCenterEntity>;
     getBloodStocks(id: string): Promise<import("../blood-stocks/blood-stock.entity").default[]>;
     initializeBloodStocks(transfusionCenter: TransfusionCenterEntity): Promise<void>;
+    getCentersWithFreeTerm(paginationParams: PaginationRequest, date: Date, time: string): Promise<Paginate<TransfusionCenter, import("../utils").Pagination>>;
     dtoToEntity(center: CreateTransfusionCenter): TransfusionCenterEntity;
     entityToDto(center: TransfusionCenterEntity): TransfusionCenter;
 }
