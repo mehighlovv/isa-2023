@@ -47,4 +47,5 @@ pnpm-lock.yaml
 
 .env
 
+**/dist/
 dist/
