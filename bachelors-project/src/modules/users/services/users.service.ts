@@ -62,7 +62,6 @@ export class UsersService{
         if(this.isSortValid(sortBy)){
             query.order={...query.order,...{[sortBy]:orderBy}};
         }
-        console.log(query);
         const [users, totalCount] = await this.usersRepository.findAndCount(query);
         const paginate: Paginate<User> = {
             records: users,

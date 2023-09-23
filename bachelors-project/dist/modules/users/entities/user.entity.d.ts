@@ -6,7 +6,6 @@ import TransfusionCenter from 'src/modules/transfusion-centers/entities/transfus
 import { Gender } from 'src/modules/utils/enums/gender.enum';
 import { Role } from 'src/modules/utils/enums/role.enum';
 export default class User {
-    constructor();
     id: string;
     firstName: string;
     lastName: string;

@@ -19,18 +19,6 @@ const gender_enum_1 = require("../../utils/enums/gender.enum");
 const role_enum_1 = require("../../utils/enums/role.enum");
 const typeorm_1 = require("typeorm");
 let User = class User {
-    constructor() {
-        this.address = null;
-        this.answers = null;
-        this.city = null;
-        this.companyInfo = null;
-        this.country = null;
-        this.email = null;
-        this.firstName = null;
-        this.gender = null;
-        this.lastName = null;
-        this.occupation = null;
-    }
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
@@ -120,8 +108,7 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "reservedTerms", void 0);
 User = __decorate([
-    (0, typeorm_1.Entity)({ name: 'users' }),
-    __metadata("design:paramtypes", [])
+    (0, typeorm_1.Entity)({ name: 'users' })
 ], User);
 exports.default = User;
 //# sourceMappingURL=user.entity.js.map

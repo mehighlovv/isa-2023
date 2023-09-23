@@ -58,13 +58,9 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
             skip: (page - 1) * perPage,
             take: perPage
         };
-        console.log(orderBy);
-        console.log(sortBy);
-        console.log(this.isSortValid(orderBy));
         if (this.isSortValid(sortBy)) {
             query.order = { ...query.order, ...{ [sortBy]: orderBy } };
         }
-        console.log(query);
         const [users, totalCount] = await this.usersRepository.findAndCount(query);
         const paginate = {
             records: users,
@@ -169,8 +165,7 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
         };
     }
     isSortValid(sortBy) {
-        console.log(new user_entity_1.default());
-        if (sortBy in new user_entity_1.default())
+        if (sortBy in new utils_1.UserSortParams())
             return true;
         else
             return false;
