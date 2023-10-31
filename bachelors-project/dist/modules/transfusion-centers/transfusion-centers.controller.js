@@ -40,6 +40,9 @@ let TransfusionCentersController = exports.TransfusionCentersController = Transf
     async getTransfusionCentersWhichHaveFreeTerm(paginationParams, date, time) {
         return await this.transfusionCentersService.getCentersWithFreeTerm(paginationParams, date, time);
     }
+    async getWorkingCalendar(id, timeFrame, referenceDate) {
+        return await this.transfusionCentersService.getWorkingCalendar(id, timeFrame, referenceDate);
+    }
 };
 __decorate([
     (0, utils_1.Public)(),
@@ -93,6 +96,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, Date, String]),
     __metadata("design:returntype", Promise)
 ], TransfusionCentersController.prototype, "getTransfusionCentersWhichHaveFreeTerm", null);
+__decorate([
+    (0, utils_1.Roles)(utils_1.Role.REGISTERED_USER),
+    (0, common_1.Get)(':id/working-calendar'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Query)('timeFrame', new common_1.DefaultValuePipe(utils_1.TermTimeFrame.WEEKLY), new utils_1.EnumValidationPipe(utils_1.TermTimeFrame))),
+    __param(2, (0, common_1.Query)('referenceDate')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Date]),
+    __metadata("design:returntype", Promise)
+], TransfusionCentersController.prototype, "getWorkingCalendar", null);
 exports.TransfusionCentersController = TransfusionCentersController = TransfusionCentersController_1 = __decorate([
     (0, common_1.Controller)('transfusion-centers'),
     __metadata("design:paramtypes", [transfusion_centers_service_1.TransfusionCentersService])

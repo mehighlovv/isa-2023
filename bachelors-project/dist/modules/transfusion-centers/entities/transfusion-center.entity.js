@@ -10,6 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const blood_stock_entity_1 = require("../../blood-stocks/blood-stock.entity");
+const complaint_entity_1 = require("../../complaints/complaint.entity");
+const medical_equipment_entity_1 = require("../../medical-equipment/medical-equipment.entity");
+const rating_entity_1 = require("../../ratings/rating.entity");
 const term_entity_1 = require("../../terms/term.entity");
 const user_entity_1 = require("../../users/entities/user.entity");
 const typeorm_1 = require("typeorm");
@@ -58,6 +61,18 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => term_entity_1.default, (term) => term.transfusionCenter),
     __metadata("design:type", Array)
 ], TransfusionCenter.prototype, "workingCalendar", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => complaint_entity_1.default, (complaint) => complaint.transfusionCenter),
+    __metadata("design:type", Array)
+], TransfusionCenter.prototype, "complaints", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => rating_entity_1.default, (rating) => rating.transfusionCenter),
+    __metadata("design:type", Array)
+], TransfusionCenter.prototype, "ratings", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => medical_equipment_entity_1.default, (medicalEquipment) => medicalEquipment.transfusionCenter),
+    __metadata("design:type", Array)
+], TransfusionCenter.prototype, "medicalEquipment", void 0);
 TransfusionCenter = __decorate([
     (0, typeorm_1.Entity)({ name: 'transfusion_centers' }),
     __metadata("design:paramtypes", [String, String, String, Date, Date])

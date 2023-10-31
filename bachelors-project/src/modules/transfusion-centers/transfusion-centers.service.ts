@@ -1,16 +1,18 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, forwardRef, Inject } from "@nestjs/common";
 import TransfusionCenterEntity from "./entities/transfusion-center.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { In, Like, Not, Repository } from "typeorm";
 import { Paginate, PaginationRequest } from "../utils/interfaces/Pagination";
-import { BloodType, CreateTransfusionCenter, EditTransfusionCenter, TermStatus, TransfusionCenter, createDateFromTimeString } from "../utils";
+import { BloodType, CreateTransfusionCenter, DECEMBER, EditTransfusionCenter, JANUARY, TermStatus, TermTimeFrame, TransfusionCenter, createDateFromTimeString } from "../utils";
 import { BloodStocksService } from "../blood-stocks/blood-stocks.service";
+import { TermsService } from "../terms/terms.service";
 
 @Injectable()
 export class TransfusionCentersService{
     constructor(@InjectRepository(TransfusionCenterEntity) 
         private readonly transfusionCentersRepository: Repository<TransfusionCenterEntity>,
-        private readonly bloodStocksService: BloodStocksService
+        private readonly bloodStocksService: BloodStocksService,
+        @Inject(forwardRef(() => TermsService))private readonly termsService: TermsService
     ){}
     
     async getPaginated(paginationParams: PaginationRequest, name: string, address: string){
@@ -22,6 +24,9 @@ export class TransfusionCentersService{
 
         const [centers, totalCount] = await this.transfusionCentersRepository.findAndCount({
             where:where,
+            relations:{
+                ratings:true
+            },
             skip:(page-1)*perPage,
             take:perPage
         });
@@ -40,7 +45,7 @@ export class TransfusionCentersService{
 
     async getOne(id: string){
         const center = await this.transfusionCentersRepository.findOneOrFail({where:{id:id}});
-        return this.entityToDto(center);
+        return center;
     }
 
     async updateTransfusionCenter(editTransfusionCenterInfo : EditTransfusionCenter){
@@ -123,18 +128,53 @@ export class TransfusionCentersService{
 
     }
 
+    async getWorkingCalendar(transfusionCenterId: string, timeFrame: TermTimeFrame, referenceDate: Date){
+        const transfusionCenter = await this.getOne(transfusionCenterId);
+        const date = new Date(referenceDate);
+        switch(timeFrame){
+            case TermTimeFrame.WEEKLY:
+                return await this.getWeeklyCalendar(transfusionCenter.id, date);
+            case TermTimeFrame.MONTHLY:
+                return await this.getMonthlyCalendar(transfusionCenter.id, date);
+            case TermTimeFrame.YEARLY:
+                return await this.getYearlyCalendar(transfusionCenter.id, date);
+        }
+    }
+    async getYearlyCalendar(transfusionCenterId: string, referenceDate: Date) {
+        let startOfYear = new Date(referenceDate.getFullYear(),JANUARY,1,0,0,0);
+        let endOfYear = new Date(referenceDate.getFullYear(),DECEMBER,31,23,59,59);
+        return await this.termsService.getTerms(transfusionCenterId, startOfYear, endOfYear);
+    }
+    async getMonthlyCalendar(transfusionCenterId: string, referenceDate: Date) {
+        let startOfMonth = new Date(referenceDate.getFullYear(),referenceDate.getMonth(),1,0,0,0);
+        let endOfMonth  = new Date(referenceDate.getFullYear(),referenceDate.getMonth(),31,23,59,59);
+        return await this.termsService.getTerms(transfusionCenterId, startOfMonth, endOfMonth);
+    }
+    async getWeeklyCalendar(transfusionCenterId: string, referenceDate: Date) {
+        let startOfWeek = new Date(referenceDate.getFullYear(),referenceDate.getMonth(),referenceDate.getDate(),0,0,0);
+        startOfWeek.setDate(startOfWeek.getDate()-startOfWeek.getDay()+1);
+        let endOfWeek = new Date(referenceDate.getFullYear(),referenceDate.getMonth(),startOfWeek.getDate()+6,23,59,59);
+        return await this.termsService.getTerms(transfusionCenterId, startOfWeek, endOfWeek);
+    }
+
     dtoToEntity(center: CreateTransfusionCenter) : TransfusionCenterEntity{
         return new TransfusionCenterEntity(center.name, center.description, center.address, center.workingHoursBegin, center.workingHoursEnd);
     }
 
     entityToDto(center: TransfusionCenterEntity) : TransfusionCenter{
+        let avgRating = 0;
+        center.ratings.forEach(rating=>{
+            avgRating+=rating.rating;
+        });
+        avgRating/=center.ratings.length;
         return {
             id: center.id,
             name:center.name,
             description:center.description,
             address: center.address,
             workingHoursBegin: center.workingHoursBegin,
-            workingHoursEnd: center.workingHoursEnd
+            workingHoursEnd: center.workingHoursEnd,
+            averageRating: avgRating
         }
     }
 }

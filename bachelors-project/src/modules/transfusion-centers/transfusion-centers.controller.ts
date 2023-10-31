@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Logger, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Get, Logger, Param, Post, Put, Query, UsePipes } from "@nestjs/common";
 import { TransfusionCentersService } from "./transfusion-centers.service";
-import { CreateTransfusionCenter, EditTransfusionCenter, PaginationParams, PaginationRequest, Public, Role, Roles} from "../utils";
+import { CreateTransfusionCenter, DateTransformPipe, DateType, EditTransfusionCenter, EnumValidationPipe, PaginationParams, PaginationRequest, Public, Role, Roles, TermTimeFrame} from "../utils";
 
 
 @Controller('transfusion-centers')
@@ -46,6 +46,17 @@ export class TransfusionCentersController{
     @Get('check/availability')
     async getTransfusionCentersWhichHaveFreeTerm(@PaginationParams() paginationParams : PaginationRequest, @Query('date') date: Date, @Query('time') time: string){
         return await this.transfusionCentersService.getCentersWithFreeTerm(paginationParams, date,time);
+    }
+
+    @Roles(Role.REGISTERED_USER)
+    @Get(':id/working-calendar')
+    async getWorkingCalendar(@Param('id') id : string,
+                            @Query('timeFrame', 
+                            new DefaultValuePipe(TermTimeFrame.WEEKLY),
+                            new EnumValidationPipe(TermTimeFrame)) 
+                            timeFrame: TermTimeFrame, 
+                            @Query('referenceDate')  referenceDate: Date){
+        return await this.transfusionCentersService.getWorkingCalendar(id, timeFrame, referenceDate);
     }
     
 

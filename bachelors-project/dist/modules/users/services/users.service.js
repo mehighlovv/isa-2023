@@ -23,18 +23,39 @@ const role_enum_1 = require("../../utils/enums/role.enum");
 const utils_1 = require("../../utils");
 const crypto_1 = require("crypto");
 const transfusion_centers_service_1 = require("../../transfusion-centers/transfusion-centers.service");
+const terms_service_1 = require("../../terms/terms.service");
+const loyalties_service_1 = require("../../loyalty/loyalties.service");
+const schedule_1 = require("@nestjs/schedule");
 let UsersService = exports.UsersService = UsersService_1 = class UsersService {
-    constructor(usersRepository, countriesService, transfusionCentersService) {
+    updatePenalties(updatedUser) {
+        throw new Error("Method not implemented.");
+    }
+    constructor(usersRepository, countriesService, transfusionCentersService, termsService, loyaltiesService) {
         this.usersRepository = usersRepository;
         this.countriesService = countriesService;
         this.transfusionCentersService = transfusionCentersService;
+        this.termsService = termsService;
+        this.loyaltiesService = loyaltiesService;
         this.logger = new common_1.Logger(UsersService_1.name);
     }
     async getOne(email) {
         return await this.usersRepository.findOne({ where: { email: email } });
     }
     async getById(id) {
-        return await this.usersRepository.findOneOrFail({ where: { id: id } });
+        return await this.usersRepository.findOneOrFail({
+            where: { id: id },
+            relations: {
+                transfusionCenter: true,
+            }
+        });
+    }
+    async getUserProfile(userId) {
+        const user = await this.getById(userId);
+        const loyaltyLevel = await this.loyaltiesService.getLoyaltyTierByPointsCollected(user.points);
+        return { ...user, loyaltyLevel };
+    }
+    async resetPenalties() {
+        await this.usersRepository.update({ penalties: (0, typeorm_1.MoreThan)(0) }, { penalties: 0 });
     }
     async createRegisteredUser(userInfo) {
         try {
@@ -142,7 +163,9 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
             companyInfo: userInfo.companyInfo,
             country: country,
             isAccepted: false,
-            role: role_enum_1.Role.REGISTERED_USER
+            role: role_enum_1.Role.REGISTERED_USER,
+            points: 0,
+            penalties: 0
         };
     }
     mapRegisterCenterAdminDtoToUser(userInfo, country, transfusionCenter) {
@@ -171,11 +194,20 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
             return false;
     }
 };
+__decorate([
+    (0, schedule_1.Cron)('0 0 1 * *'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UsersService.prototype, "resetPenalties", null);
 exports.UsersService = UsersService = UsersService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_2.InjectRepository)(user_entity_1.default)),
+    __param(3, (0, common_1.Inject)((0, common_1.forwardRef)(() => terms_service_1.TermsService))),
     __metadata("design:paramtypes", [typeorm_1.Repository,
         countries_service_1.CountriesService,
-        transfusion_centers_service_1.TransfusionCentersService])
+        transfusion_centers_service_1.TransfusionCentersService,
+        terms_service_1.TermsService,
+        loyalties_service_1.LoyaltiesService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

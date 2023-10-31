@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn
 import Questionnaire from "../questionnaires/questionnaire.entity";
 import Question from "../questions/question.entity";
 
-@Entity({name:'question-orders'})
+@Entity({name:'question_orders'})
 export default class QuestionOrder{
 
     @PrimaryGeneratedColumn('uuid')

@@ -26,6 +26,14 @@ const questions_module_1 = require("./modules/questions/questions.module");
 const answers_module_1 = require("./modules/answers/answers.module");
 const questionnaire_responses_module_1 = require("./modules/questionnaire-responses/questionnaire-responses.module");
 const question_orders_module_1 = require("./modules/question-orders/question-orders.module");
+const complaint_answers_module_1 = require("./modules/complaint-answers/complaint-answers.module");
+const loyalties_module_1 = require("./modules/loyalty/loyalties.module");
+const points_configurations_module_1 = require("./modules/points-configurations/points-configurations.module");
+const schedule_1 = require("@nestjs/schedule");
+const completed_terms_module_1 = require("./modules/completed-terms/completed-terms.module");
+const blood_stock_updates_module_1 = require("./modules/blood-stocks-updates/blood-stock-updates.module");
+const medical_equipments_module_1 = require("./modules/medical-equipment/medical-equipments.module");
+const medical_equipment_updates_module_1 = require("./modules/medical-equipment-updates/medical-equipment-updates.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -36,6 +44,7 @@ exports.AppModule = AppModule = __decorate([
                 envFilePath: '.env',
             }),
             typeorm_1.TypeOrmModule.forRootAsync(typeorm_config_1.typeOrmConfigAsync),
+            schedule_1.ScheduleModule.forRoot(),
             users_module_1.UsersModule,
             complaints_module_1.ComplaintsModule,
             transfusion_centers_module_1.TransfusionCentersModule,
@@ -48,6 +57,13 @@ exports.AppModule = AppModule = __decorate([
             question_orders_module_1.QuestionOrdersModule,
             questionnaire_responses_module_1.QuestionnaireResponsesModule,
             questionnaires_module_1.QuestionnairesModule,
+            complaint_answers_module_1.ComplaintAnswersModule,
+            loyalties_module_1.LoyaltiesModule,
+            points_configurations_module_1.PointsConfigurationsModule,
+            completed_terms_module_1.CompletedTermsModule,
+            blood_stock_updates_module_1.BloodStockUpdatesModule,
+            medical_equipments_module_1.MedicalEquipmentsModule,
+            medical_equipment_updates_module_1.MedicalEquipmentUpdatesModule
         ],
         providers: [
             {

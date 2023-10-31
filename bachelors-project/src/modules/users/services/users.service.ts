@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, forwardRef, Inject } from "@nestjs/common";
 import User from "../entities/user.entity";
-import { ILike, Repository, TreeRepositoryUtils } from "typeorm";
+import { ILike, MoreThan, Repository, TreeRepositoryUtils } from "typeorm";
 import { InjectRepository } from '@nestjs/typeorm/dist/common';
 import { RegisterCenterAdmin, RegisterUser } from "src/modules/utils/interfaces/Register";
 import { CountriesService } from "src/modules/countries/countries.service";
@@ -8,18 +8,28 @@ import Country from "src/modules/countries/country.entity";
 import { Role } from "src/modules/utils/enums/role.enum";
 import { EditUserProfile } from "src/modules/utils/interfaces/EditUserProfile";
 import { ChangePassword } from "src/modules/utils/interfaces/ChangePassword";
-import { DEFAULT_LOCKOUT_PERIOD, DEFAULT_PASSWORD_ATTEMPTS, OrderByValue, Paginate, PaginationRequest, TransfusionCenter, UserSearchParams, UserSortParams } from "src/modules/utils";
+import { DEFAULT_LOCKOUT_PERIOD, DEFAULT_PASSWORD_ATTEMPTS, OrderByValue, Paginate, PaginationRequest, UserSearchParams, UserSortParams } from "src/modules/utils";
 import { randomUUID } from "crypto";
 import { TransfusionCentersService } from "src/modules/transfusion-centers/transfusion-centers.service";
+import { TermsService } from "src/modules/terms/terms.service";
+import TransfusionCenter from "src/modules/transfusion-centers/entities/transfusion-center.entity";
+import { LoyaltiesService } from "src/modules/loyalty/loyalties.service";
+import { Cron } from "@nestjs/schedule";
 
 @Injectable()
 export class UsersService{
+    updatePenalties(updatedUser: User) {
+        throw new Error("Method not implemented.");
+    }
    
     private readonly logger = new Logger(UsersService.name);
 
     constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>,
         private readonly countriesService: CountriesService,
-        private readonly transfusionCentersService: TransfusionCentersService
+        private readonly transfusionCentersService: TransfusionCentersService,
+        @Inject(forwardRef(() => TermsService))
+        private readonly termsService: TermsService,
+        private readonly loyaltiesService: LoyaltiesService
     ){}
 
     async getOne(email: string): Promise<User | undefined> {
@@ -27,7 +37,23 @@ export class UsersService{
     }
 
     async getById(id: string) {
-        return await this.usersRepository.findOneOrFail({where:{id:id}});
+        return await this.usersRepository.findOneOrFail({
+            where:{id:id},
+            relations:{
+                transfusionCenter:true,
+            }
+        });
+    }
+
+    async getUserProfile(userId: string){
+        const user = await this.getById(userId);
+        const loyaltyLevel = await this.loyaltiesService.getLoyaltyTierByPointsCollected(user.points);
+        return {...user, loyaltyLevel};
+    }
+
+    @Cron('0 0 1 * *')
+    async resetPenalties(){
+        await this.usersRepository.update({penalties:MoreThan(0)},{penalties:0});
     }
 
     async createRegisteredUser(userInfo: RegisterUser) : Promise<User>{
@@ -151,7 +177,9 @@ export class UsersService{
             companyInfo:userInfo.companyInfo,
             country:country,
             isAccepted: false,
-            role: Role.REGISTERED_USER
+            role: Role.REGISTERED_USER,
+            points:0,
+            penalties:0
         }
     }
 

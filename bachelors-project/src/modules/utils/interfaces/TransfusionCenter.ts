@@ -5,6 +5,7 @@ export interface TransfusionCenter{
     address: string;
     workingHoursBegin: Date;
     workingHoursEnd: Date;
+    averageRating: number;
 }
 
 export type CreateTransfusionCenter = Omit<TransfusionCenter,'id'>;

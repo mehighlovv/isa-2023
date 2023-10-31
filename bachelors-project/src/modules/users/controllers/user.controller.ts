@@ -25,6 +25,9 @@ export class UserController {
     return await this.usersService.getPaginatedUsers({firstName,lastName},paginationParams,orderBy,sortBy);
   }
 
-  
-
+  @Roles(Role.STAFF, Role.SYSTEM_ADMINISTRATOR, Role.REGISTERED_USER, Role.TRANSFUSION_CENTER_ADMINISTRATOR)
+  @Get(':userId')
+  async getUserProfile(@Param('userId') userId: string){
+    return await this.usersService.getUserProfile(userId);
+  }
 }

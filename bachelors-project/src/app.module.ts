@@ -17,6 +17,14 @@ import { QuestionsModule } from './modules/questions/questions.module';
 import { AnswersModule } from './modules/answers/answers.module';
 import { QuestionnaireResponsesModule } from './modules/questionnaire-responses/questionnaire-responses.module';
 import { QuestionOrdersModule } from './modules/question-orders/question-orders.module';
+import { ComplaintAnswersModule } from './modules/complaint-answers/complaint-answers.module';
+import { LoyaltiesModule } from './modules/loyalty/loyalties.module';
+import { PointsConfigurationsModule } from './modules/points-configurations/points-configurations.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CompletedTermsModule } from './modules/completed-terms/completed-terms.module';
+import { BloodStockUpdatesModule } from './modules/blood-stocks-updates/blood-stock-updates.module';
+import { MedicalEquipmentsModule } from './modules/medical-equipment/medical-equipments.module';
+import { MedicalEquipmentUpdatesModule } from './modules/medical-equipment-updates/medical-equipment-updates.module';
 
 @Module({
   imports: [
@@ -25,6 +33,7 @@ import { QuestionOrdersModule } from './modules/question-orders/question-orders.
       envFilePath: '.env',
     }),
     TypeOrmModule.forRootAsync(typeOrmConfigAsync),
+    ScheduleModule.forRoot(),
     UsersModule,
     ComplaintsModule,
     TransfusionCentersModule,
@@ -37,6 +46,13 @@ import { QuestionOrdersModule } from './modules/question-orders/question-orders.
     QuestionOrdersModule,
     QuestionnaireResponsesModule,
     QuestionnairesModule,
+    ComplaintAnswersModule,
+    LoyaltiesModule,
+    PointsConfigurationsModule,
+    CompletedTermsModule,
+    BloodStockUpdatesModule,
+    MedicalEquipmentsModule,
+    MedicalEquipmentUpdatesModule
   ],
   providers: [
     {

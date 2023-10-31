@@ -26,6 +26,9 @@ let UserController = exports.UserController = class UserController {
     async getPaginatedUsers(firstName, lastName, paginationParams, orderBy, sortBy = 'firstName') {
         return await this.usersService.getPaginatedUsers({ firstName, lastName }, paginationParams, orderBy, sortBy);
     }
+    async getUserProfile(userId) {
+        return await this.usersService.getUserProfile(userId);
+    }
 };
 __decorate([
     (0, utils_1.Roles)(utils_1.Role.REGISTERED_USER),
@@ -47,6 +50,14 @@ __decorate([
     __metadata("design:paramtypes", [String, String, Object, String, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getPaginatedUsers", null);
+__decorate([
+    (0, utils_1.Roles)(utils_1.Role.STAFF, utils_1.Role.SYSTEM_ADMINISTRATOR, utils_1.Role.REGISTERED_USER, utils_1.Role.TRANSFUSION_CENTER_ADMINISTRATOR),
+    (0, common_1.Get)(':userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUserProfile", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])

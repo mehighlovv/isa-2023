@@ -3,9 +3,12 @@ import { Injectable } from '@nestjs/common';
 import User from '../users/entities/user.entity';
 import Term from '../terms/term.entity';
 import { generateQrCode } from '../utils/helpers/qr-code.helpers';
+import ComplaintAnswer from '../complaint-answers/complaint-answer.entity';
+import { ComplaintType } from '../utils';
 
 @Injectable()
 export class MailService {
+  
   constructor(private mailerService: MailerService) {}
 
   async sendUserConfirmation(user: User, token: string) {
@@ -58,6 +61,21 @@ export class MailService {
       to: user.email,
       subject: 'Thank you for reserving your term. Confirm your reservation by scanning the QR code below!',
       attachDataUrls: true,
+      html:html
+    });
+  }
+
+  async sendComplaintAnswerToComplainee(complaintAnswer: ComplaintAnswer, complainee: User) {
+    const complaintType = complaintAnswer.complaint.complaintType==ComplaintType.STAFF? `staff at ${complaintAnswer.complaint.staff.transfusionCenter.name}` : `the ${complaintAnswer.complaint.transfusionCenter.name} transfusion center`;
+    const html =  `<p>Hey ${complainee.firstName},</p>
+    <p>Your complaint about ${complaintType} has been answered!</p>
+    <br/>
+    <p>"${complaintAnswer.answer}"</p>
+    <br/>
+    <p>Thank you for your feedback!</p>`;
+    await this.mailerService.sendMail({
+      to: complainee.email,
+      subject: 'Complaint answered!',
       html:html
     });
   }

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import User from './entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from './services/users.service';
@@ -10,6 +10,8 @@ import { CountriesModule } from '../countries/countries.module';
 import { MailModule } from '../mail/mail.module';
 import { UserController } from './controllers/user.controller';
 import { TransfusionCentersModule } from '../transfusion-centers/transfusion-centers.module';
+import { TermsModule } from '../terms/terms.module';
+import { LoyaltiesModule } from '../loyalty/loyalties.module';
 
 @Module({
     imports:[
@@ -21,7 +23,9 @@ import { TransfusionCentersModule } from '../transfusion-centers/transfusion-cen
       }),
       CountriesModule,
       MailModule,
-      TransfusionCentersModule
+      TransfusionCentersModule,
+      forwardRef(()=>TermsModule),
+      LoyaltiesModule
     ],
     providers: [UsersService, AuthService],
     exports: [UsersService, AuthService],

@@ -4,7 +4,7 @@ import User from "../users/entities/user.entity";
 import Questionnaire from "../questionnaires/questionnaire.entity";
 
 
-@Entity({name:'questionnaire-responses'})
+@Entity({name:'questionnaire_responses'})
 export default class QuestionnaireResponse{
     @PrimaryGeneratedColumn('uuid')
     id: string;

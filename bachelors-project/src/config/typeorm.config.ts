@@ -5,11 +5,14 @@ import {
 } from '@nestjs/typeorm';
 import Answer from 'src/modules/answers/answer.entity';
 import BloodStock from 'src/modules/blood-stocks/blood-stock.entity';
+import ComplaintAnswer from 'src/modules/complaint-answers/complaint-answer.entity';
+import Complaint from 'src/modules/complaints/complaint.entity';
 import Country from 'src/modules/countries/country.entity';
 import QuestionOrder from 'src/modules/question-orders/question-order.entity';
 import QuestionaireResponse from 'src/modules/questionnaire-responses/questionnaire-response.entity';
 import Questionaire from 'src/modules/questionnaires/questionnaire.entity';
 import Question from 'src/modules/questions/question.entity';
+import Rating from 'src/modules/ratings/rating.entity';
 import Term from 'src/modules/terms/term.entity';
 import TransfusionCenter from 'src/modules/transfusion-centers/entities/transfusion-center.entity';
 import User from 'src/modules/users/entities/user.entity';
@@ -34,7 +37,10 @@ export default class TypeOrmConfig {
                Answer,
                Questionaire,
                QuestionaireResponse,
-               Term
+               Term,
+               Complaint,
+               ComplaintAnswer,
+               Rating
             ],
             autoLoadEntities: true,
             logging: ['error'],

@@ -1,6 +1,10 @@
 import Answer from 'src/modules/answers/answer.entity';
+import ComplaintAnswer from 'src/modules/complaint-answers/complaint-answer.entity';
+import Complaint from 'src/modules/complaints/complaint.entity';
+import CompletedTerm from 'src/modules/completed-terms/completed-term.entity';
 import Country from 'src/modules/countries/country.entity';
 import QuestionaireResponse from 'src/modules/questionnaire-responses/questionnaire-response.entity';
+import Rating from 'src/modules/ratings/rating.entity';
 import Term from 'src/modules/terms/term.entity';
 import TransfusionCenter from 'src/modules/transfusion-centers/entities/transfusion-center.entity';
 import { DEFAULT_PASSWORD_ATTEMPTS } from 'src/modules/utils';
@@ -45,6 +49,16 @@ export default class User {
     @Column()
     address : string;
 
+    @Column({
+        default:0
+    })
+    points: number;
+
+    @Column({
+        default:0
+    })
+    penalties: number;
+
     @Column(
         {
             type:'enum',
@@ -88,4 +102,16 @@ export default class User {
 
     @OneToMany(()=>Term,(term)=>term.reservationHolder)
     reservedTerms: Term[];
+
+    @OneToMany(()=>Complaint,(complaint)=>complaint.complainee)
+    complaints: Complaint[];
+
+    @OneToMany(()=>ComplaintAnswer,(complaintAnswer)=>complaintAnswer.administrator)
+    complaintAnswers: ComplaintAnswer[];
+
+    @OneToMany(()=>Rating,(rating)=>rating.user)
+    ratings: Rating[];
+
+    @OneToMany(()=>CompletedTerm,(completedTerm)=>completedTerm.patient)
+    termHistory: CompletedTerm[];
 }

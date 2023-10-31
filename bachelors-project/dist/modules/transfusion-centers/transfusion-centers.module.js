@@ -13,6 +13,7 @@ const transfusion_centers_service_1 = require("./transfusion-centers.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const transfusion_center_entity_1 = require("./entities/transfusion-center.entity");
 const blood_stocks_module_1 = require("../blood-stocks/blood-stocks.module");
+const terms_module_1 = require("../terms/terms.module");
 let TransfusionCentersModule = exports.TransfusionCentersModule = class TransfusionCentersModule {
 };
 exports.TransfusionCentersModule = TransfusionCentersModule = __decorate([
@@ -21,7 +22,8 @@ exports.TransfusionCentersModule = TransfusionCentersModule = __decorate([
         providers: [transfusion_centers_service_1.TransfusionCentersService],
         imports: [
             typeorm_1.TypeOrmModule.forFeature([transfusion_center_entity_1.default]),
-            blood_stocks_module_1.BloodStocksModule
+            blood_stocks_module_1.BloodStocksModule,
+            terms_module_1.TermsModule
         ],
         exports: [transfusion_centers_service_1.TransfusionCentersService]
     })

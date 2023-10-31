@@ -1,5 +1,6 @@
 
 export enum TermStatus{
     FREE = 'Free',
-    TAKEN = 'Taken'
+    TAKEN = 'Taken',
+    COMPLETED = 'Completed'
 }

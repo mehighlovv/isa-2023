@@ -19,10 +19,12 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const utils_1 = require("../utils");
 const blood_stocks_service_1 = require("../blood-stocks/blood-stocks.service");
+const terms_service_1 = require("../terms/terms.service");
 let TransfusionCentersService = exports.TransfusionCentersService = class TransfusionCentersService {
-    constructor(transfusionCentersRepository, bloodStocksService) {
+    constructor(transfusionCentersRepository, bloodStocksService, termsService) {
         this.transfusionCentersRepository = transfusionCentersRepository;
         this.bloodStocksService = bloodStocksService;
+        this.termsService = termsService;
     }
     async getPaginated(paginationParams, name, address) {
         const { page, perPage } = paginationParams;
@@ -32,6 +34,9 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
         };
         const [centers, totalCount] = await this.transfusionCentersRepository.findAndCount({
             where: where,
+            relations: {
+                ratings: true
+            },
             skip: (page - 1) * perPage,
             take: perPage
         });
@@ -49,7 +54,7 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
     }
     async getOne(id) {
         const center = await this.transfusionCentersRepository.findOneOrFail({ where: { id: id } });
-        return this.entityToDto(center);
+        return center;
     }
     async updateTransfusionCenter(editTransfusionCenterInfo) {
         await this.transfusionCentersRepository.update({ id: editTransfusionCenterInfo.id }, {
@@ -121,24 +126,60 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
         };
         return paginate;
     }
+    async getWorkingCalendar(transfusionCenterId, timeFrame, referenceDate) {
+        const transfusionCenter = await this.getOne(transfusionCenterId);
+        const date = new Date(referenceDate);
+        switch (timeFrame) {
+            case utils_1.TermTimeFrame.WEEKLY:
+                return await this.getWeeklyCalendar(transfusionCenter.id, date);
+            case utils_1.TermTimeFrame.MONTHLY:
+                return await this.getMonthlyCalendar(transfusionCenter.id, date);
+            case utils_1.TermTimeFrame.YEARLY:
+                return await this.getYearlyCalendar(transfusionCenter.id, date);
+        }
+    }
+    async getYearlyCalendar(transfusionCenterId, referenceDate) {
+        let startOfYear = new Date(referenceDate.getFullYear(), utils_1.JANUARY, 1, 0, 0, 0);
+        let endOfYear = new Date(referenceDate.getFullYear(), utils_1.DECEMBER, 31, 23, 59, 59);
+        return await this.termsService.getTerms(transfusionCenterId, startOfYear, endOfYear);
+    }
+    async getMonthlyCalendar(transfusionCenterId, referenceDate) {
+        let startOfMonth = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 1, 0, 0, 0);
+        let endOfMonth = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 31, 23, 59, 59);
+        return await this.termsService.getTerms(transfusionCenterId, startOfMonth, endOfMonth);
+    }
+    async getWeeklyCalendar(transfusionCenterId, referenceDate) {
+        let startOfWeek = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), referenceDate.getDate(), 0, 0, 0);
+        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+        let endOfWeek = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), startOfWeek.getDate() + 6, 23, 59, 59);
+        return await this.termsService.getTerms(transfusionCenterId, startOfWeek, endOfWeek);
+    }
     dtoToEntity(center) {
         return new transfusion_center_entity_1.default(center.name, center.description, center.address, center.workingHoursBegin, center.workingHoursEnd);
     }
     entityToDto(center) {
+        let avgRating = 0;
+        center.ratings.forEach(rating => {
+            avgRating += rating.rating;
+        });
+        avgRating /= center.ratings.length;
         return {
             id: center.id,
             name: center.name,
             description: center.description,
             address: center.address,
             workingHoursBegin: center.workingHoursBegin,
-            workingHoursEnd: center.workingHoursEnd
+            workingHoursEnd: center.workingHoursEnd,
+            averageRating: avgRating
         };
     }
 };
 exports.TransfusionCentersService = TransfusionCentersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(transfusion_center_entity_1.default)),
+    __param(2, (0, common_1.Inject)((0, common_1.forwardRef)(() => terms_service_1.TermsService))),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        blood_stocks_service_1.BloodStocksService])
+        blood_stocks_service_1.BloodStocksService,
+        terms_service_1.TermsService])
 ], TransfusionCentersService);
 //# sourceMappingURL=transfusion-centers.service.js.map

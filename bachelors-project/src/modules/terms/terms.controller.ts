@@ -1,6 +1,6 @@
 import { Body, Controller, Logger, Param, Post, UsePipes } from "@nestjs/common";
 import { TermsService } from "./terms.service";
-import { CreateNewTerm, CreatePredefinedTerm, CurrentUser, DateTransformPipe, IAuthenticatedUser, Role, Roles } from "../utils";
+import { CreateNewTerm, CreatePredefinedTerm, CurrentUser, DateTransformPipe, IAuthenticatedUser, Role, Roles, TermReportInfo } from "../utils";
 
 
 @Controller('terms')
@@ -33,5 +33,9 @@ export class TermsController{
         return await this.termsService.reserveNewTerm(creteNewTermInfo, user.userId);
     }
     
-
+    @Roles(Role.TRANSFUSION_CENTER_ADMINISTRATOR)
+    @Post(':id/complete')
+    async completeTerm(@Param('id') id: string, @Body() termReport: TermReportInfo){
+        return await this.termsService.completeTerm(id, termReport);
+    }
 }

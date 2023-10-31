@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typ
 import User from "../users/entities/user.entity";
 import TransfusionCenter from "../transfusion-centers/entities/transfusion-center.entity";
 import { TermStatus } from "../utils";
+import CompletedTerm from "../completed-terms/completed-term.entity";
 
 
 @Entity({name:'terms'})
@@ -29,4 +30,7 @@ export default class Term{
 
     @ManyToOne(()=>TransfusionCenter, (transfusionCenter)=>transfusionCenter.workingCalendar)
     transfusionCenter: TransfusionCenter;
+
+    @OneToOne(()=>CompletedTerm,(completedTerm)=>completedTerm.term)
+    completedTerm: CompletedTerm;
 }

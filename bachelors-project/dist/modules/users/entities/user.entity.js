@@ -10,8 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const answer_entity_1 = require("../../answers/answer.entity");
+const complaint_answer_entity_1 = require("../../complaint-answers/complaint-answer.entity");
+const complaint_entity_1 = require("../../complaints/complaint.entity");
+const completed_term_entity_1 = require("../../completed-terms/completed-term.entity");
 const country_entity_1 = require("../../countries/country.entity");
 const questionnaire_response_entity_1 = require("../../questionnaire-responses/questionnaire-response.entity");
+const rating_entity_1 = require("../../ratings/rating.entity");
 const term_entity_1 = require("../../terms/term.entity");
 const transfusion_center_entity_1 = require("../../transfusion-centers/entities/transfusion-center.entity");
 const utils_1 = require("../../utils");
@@ -56,6 +60,18 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "address", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        default: 0
+    }),
+    __metadata("design:type", Number)
+], User.prototype, "points", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        default: 0
+    }),
+    __metadata("design:type", Number)
+], User.prototype, "penalties", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: 'enum',
@@ -107,6 +123,22 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => term_entity_1.default, (term) => term.reservationHolder),
     __metadata("design:type", Array)
 ], User.prototype, "reservedTerms", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => complaint_entity_1.default, (complaint) => complaint.complainee),
+    __metadata("design:type", Array)
+], User.prototype, "complaints", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => complaint_answer_entity_1.default, (complaintAnswer) => complaintAnswer.administrator),
+    __metadata("design:type", Array)
+], User.prototype, "complaintAnswers", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => rating_entity_1.default, (rating) => rating.user),
+    __metadata("design:type", Array)
+], User.prototype, "ratings", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => completed_term_entity_1.default, (completedTerm) => completedTerm.patient),
+    __metadata("design:type", Array)
+], User.prototype, "termHistory", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)({ name: 'users' })
 ], User);

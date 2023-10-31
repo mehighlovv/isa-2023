@@ -8,9 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComplaintsModule = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const complaint_entity_1 = require("./complaint.entity");
+const complaints_service_1 = require("./complaints.service");
+const users_module_1 = require("../users/users.module");
+const transfusion_centers_module_1 = require("../transfusion-centers/transfusion-centers.module");
+const complaints_controller_1 = require("./complaints.controller");
 let ComplaintsModule = exports.ComplaintsModule = class ComplaintsModule {
 };
 exports.ComplaintsModule = ComplaintsModule = __decorate([
-    (0, common_1.Module)({})
+    (0, common_1.Module)({
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([complaint_entity_1.default]),
+            users_module_1.UsersModule,
+            transfusion_centers_module_1.TransfusionCentersModule
+        ],
+        providers: [complaints_service_1.ComplaintsService],
+        exports: [complaints_service_1.ComplaintsService],
+        controllers: [complaints_controller_1.ComplaintsController]
+    })
 ], ComplaintsModule);
 //# sourceMappingURL=complaints.module.js.map

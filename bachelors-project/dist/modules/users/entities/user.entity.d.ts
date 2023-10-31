@@ -1,6 +1,10 @@
 import Answer from 'src/modules/answers/answer.entity';
+import ComplaintAnswer from 'src/modules/complaint-answers/complaint-answer.entity';
+import Complaint from 'src/modules/complaints/complaint.entity';
+import CompletedTerm from 'src/modules/completed-terms/completed-term.entity';
 import Country from 'src/modules/countries/country.entity';
 import QuestionaireResponse from 'src/modules/questionnaire-responses/questionnaire-response.entity';
+import Rating from 'src/modules/ratings/rating.entity';
 import Term from 'src/modules/terms/term.entity';
 import TransfusionCenter from 'src/modules/transfusion-centers/entities/transfusion-center.entity';
 import { Gender } from 'src/modules/utils/enums/gender.enum';
@@ -15,6 +19,8 @@ export default class User {
     country: Country;
     city: string;
     address: string;
+    points: number;
+    penalties: number;
     gender: Gender;
     password: string;
     occupation: string;
@@ -26,4 +32,8 @@ export default class User {
     answers: Answer[];
     questionnaireResponse: QuestionaireResponse;
     reservedTerms: Term[];
+    complaints: Complaint[];
+    complaintAnswers: ComplaintAnswer[];
+    ratings: Rating[];
+    termHistory: CompletedTerm[];
 }

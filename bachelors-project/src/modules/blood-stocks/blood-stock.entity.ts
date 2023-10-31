@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import TransfusionCenter from "../transfusion-centers/entities/transfusion-center.entity";
 import { BloodType } from "../utils";
+import BloodStockUpdate from "../blood-stocks-updates/blood-stock-update.entity";
 
 @Entity({name:'blood_stocks'})
 export default class BloodStock{
@@ -21,6 +22,9 @@ export default class BloodStock{
 
     @ManyToOne(()=>TransfusionCenter,(center)=>center.bloodStocks)
     transfusionCenter: TransfusionCenter;
+
+    @OneToMany(()=>BloodStockUpdate,(bloodStockUpdate)=>bloodStockUpdate.bloodStock)
+    updates: BloodStockUpdate[];
 
     constructor(volume: number, bloodType: BloodType, transfusionCenter: TransfusionCenter){
         this.volume = volume;

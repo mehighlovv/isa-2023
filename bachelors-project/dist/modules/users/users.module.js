@@ -19,6 +19,8 @@ const countries_module_1 = require("../countries/countries.module");
 const mail_module_1 = require("../mail/mail.module");
 const user_controller_1 = require("./controllers/user.controller");
 const transfusion_centers_module_1 = require("../transfusion-centers/transfusion-centers.module");
+const terms_module_1 = require("../terms/terms.module");
+const loyalties_module_1 = require("../loyalty/loyalties.module");
 let UsersModule = exports.UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule = __decorate([
@@ -32,7 +34,9 @@ exports.UsersModule = UsersModule = __decorate([
             }),
             countries_module_1.CountriesModule,
             mail_module_1.MailModule,
-            transfusion_centers_module_1.TransfusionCentersModule
+            transfusion_centers_module_1.TransfusionCentersModule,
+            (0, common_1.forwardRef)(() => terms_module_1.TermsModule),
+            loyalties_module_1.LoyaltiesModule
         ],
         providers: [users_service_1.UsersService, auth_service_1.AuthService],
         exports: [users_service_1.UsersService, auth_service_1.AuthService],

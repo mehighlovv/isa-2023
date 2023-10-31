@@ -13,6 +13,7 @@ exports.MailService = void 0;
 const mailer_1 = require("@nestjs-modules/mailer");
 const common_1 = require("@nestjs/common");
 const qr_code_helpers_1 = require("../utils/helpers/qr-code.helpers");
+const utils_1 = require("../utils");
 let MailService = exports.MailService = class MailService {
     constructor(mailerService) {
         this.mailerService = mailerService;
@@ -63,6 +64,20 @@ let MailService = exports.MailService = class MailService {
             to: user.email,
             subject: 'Thank you for reserving your term. Confirm your reservation by scanning the QR code below!',
             attachDataUrls: true,
+            html: html
+        });
+    }
+    async sendComplaintAnswerToComplainee(complaintAnswer, complainee) {
+        const complaintType = complaintAnswer.complaint.complaintType == utils_1.ComplaintType.STAFF ? `staff at ${complaintAnswer.complaint.staff.transfusionCenter.name}` : `the ${complaintAnswer.complaint.transfusionCenter.name} transfusion center`;
+        const html = `<p>Hey ${complainee.firstName},</p>
+    <p>Your complaint about ${complaintType} has been answered!</p>
+    <br/>
+    <p>"${complaintAnswer.answer}"</p>
+    <br/>
+    <p>Thank you for your feedback!</p>`;
+        await this.mailerService.sendMail({
+            to: complainee.email,
+            subject: 'Complaint answered!',
             html: html
         });
     }
