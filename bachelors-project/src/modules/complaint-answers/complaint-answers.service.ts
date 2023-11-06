@@ -10,6 +10,7 @@ import { MailService } from "../mail/mail.service";
 
 @Injectable()
 export class ComplaintAnswersService{
+   
 
     
     constructor(
@@ -29,5 +30,15 @@ export class ComplaintAnswersService{
         const complaintAnswer = new ComplaintAnswer(createComplaintAnswerInfo.answer, complaint, administrator);
         await this.mailService.sendComplaintAnswerToComplainee(complaintAnswer,complaint.complainee);
         return await this.complaintAnswersRepository.save(complaintAnswer);
+    }
+
+    async getOneByComplaintId(complaintId: string) {
+        return await this.complaintAnswersRepository.findOne({
+            where:{
+                complaint:{
+                    id:complaintId
+                }
+            }
+        });
     }
 }

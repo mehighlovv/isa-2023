@@ -9,6 +9,7 @@ import { TermsService } from "../terms/terms.service";
 
 @Injectable()
 export class TransfusionCentersService{
+    
     constructor(@InjectRepository(TransfusionCenterEntity) 
         private readonly transfusionCentersRepository: Repository<TransfusionCenterEntity>,
         private readonly bloodStocksService: BloodStocksService,
@@ -44,8 +45,23 @@ export class TransfusionCentersService{
     }
 
     async getOne(id: string){
-        const center = await this.transfusionCentersRepository.findOneOrFail({where:{id:id}});
+        const center = await this.transfusionCentersRepository.findOneOrFail({
+            where:{id:id},
+            relations:{
+                ratings:true
+            },
+        });
         return center;
+    }
+
+    async getByIdWithAverageRating(id: string){
+        const center = await this.transfusionCentersRepository.findOneOrFail({
+            where:{id:id},
+            relations:{
+                ratings:true
+            },
+        });
+        return this.entityToDto(center);
     }
 
     async updateTransfusionCenter(editTransfusionCenterInfo : EditTransfusionCenter){
@@ -155,6 +171,46 @@ export class TransfusionCentersService{
         startOfWeek.setDate(startOfWeek.getDate()-startOfWeek.getDay()+1);
         let endOfWeek = new Date(referenceDate.getFullYear(),referenceDate.getMonth(),startOfWeek.getDate()+6,23,59,59);
         return await this.termsService.getTerms(transfusionCenterId, startOfWeek, endOfWeek);
+    }
+
+    async getByRatingId(ratingId: string) {
+        return await this.transfusionCentersRepository.findOne({
+            where:{
+                ratings:{
+                    id:ratingId
+                }
+            }
+        });
+    }
+
+    async getOneByBloodStockId(bloodStockId: string) {
+        return await this.transfusionCentersRepository.findOne({
+            where:{
+                bloodStocks:{
+                    id:bloodStockId
+                }
+            }
+        });
+    }
+
+    async getOneByComplaintId(complaintId: string) {
+        return await this.transfusionCentersRepository.findOne({
+            where:{
+                complaints:{
+                    id:complaintId
+                }
+            }
+        });
+    }
+
+    async getOneByMedicalEquipmentId(medicalEquipmentId: string){
+        return await this.transfusionCentersRepository.findOne({
+            where:{
+                medicalEquipment:{
+                    id:medicalEquipmentId
+                }
+            }
+        });
     }
 
     dtoToEntity(center: CreateTransfusionCenter) : TransfusionCenterEntity{

@@ -12,9 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const constants_1 = require("../constants");
 const core_1 = require("@nestjs/core");
 const public_decorator_1 = require("../decorators/public.decorator");
+const constants_1 = require("../constants");
 let AuthGuard = exports.AuthGuard = class AuthGuard {
     constructor(jwtService, reflector) {
         this.jwtService = jwtService;
@@ -28,14 +28,21 @@ let AuthGuard = exports.AuthGuard = class AuthGuard {
         if (isPublic) {
             return true;
         }
-        const request = context.switchToHttp().getRequest();
-        const token = this.extractTokenFromHeader(request);
+        let request = { headers: { authorization: "" } };
+        if (context["contextType"] == "http") {
+            request = context.switchToHttp().getRequest();
+        }
+        else {
+            const { req } = context.getArgs()[2];
+            request = req;
+        }
+        const token = this.extractTokenFromRequest(request);
         if (!token) {
             throw new common_1.UnauthorizedException();
         }
         try {
             const payload = await this.jwtService.verifyAsync(token, {
-                secret: constants_1.jwtConstants.secret
+                secret: constants_1.jwtConstants.secret,
             });
             if (!payload.isAccepted) {
                 throw new common_1.UnauthorizedException();
@@ -47,8 +54,8 @@ let AuthGuard = exports.AuthGuard = class AuthGuard {
         }
         return true;
     }
-    extractTokenFromHeader(request) {
-        const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    extractTokenFromRequest(req) {
+        const [type, token] = req.headers.authorization?.split(' ') ?? [];
         return type === 'Bearer' ? token : undefined;
     }
 };

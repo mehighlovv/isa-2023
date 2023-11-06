@@ -21,7 +21,7 @@ export class TransfusionCentersController{
     @Public()
     @Get(':id')
     async getCenterDetails(@Param('id') id: string){
-        return await this.transfusionCentersService.getOne(id);
+        return await this.transfusionCentersService.getByIdWithAverageRating(id);
     }
 
     @Roles(Role.TRANSFUSION_CENTER_ADMINISTRATOR, Role.SYSTEM_ADMINISTRATOR)

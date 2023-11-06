@@ -39,8 +39,7 @@ export class RatingsService{
             }
         });
         ratingToBeUpdated.rating=rating;
-        await this.ratingsRepository.save(ratingToBeUpdated);
-        
+        return await this.ratingsRepository.save(ratingToBeUpdated);
     }
 
     async userAlreadyRatedCenter(userId: string, transfusionCenterId: string) {

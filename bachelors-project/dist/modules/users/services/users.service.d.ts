@@ -17,7 +17,6 @@ export declare class UsersService {
     private readonly transfusionCentersService;
     private readonly termsService;
     private readonly loyaltiesService;
-    updatePenalties(updatedUser: User): void;
     private readonly logger;
     constructor(usersRepository: Repository<User>, countriesService: CountriesService, transfusionCentersService: TransfusionCentersService, termsService: TermsService, loyaltiesService: LoyaltiesService);
     getOne(email: string): Promise<User | undefined>;
@@ -58,6 +57,12 @@ export declare class UsersService {
     editProfile(userInfo: EditUserProfile): Promise<void>;
     changePassword(changePasswordInfo: ChangePassword): Promise<string>;
     createCenterAdmin(userInfo: RegisterCenterAdmin): Promise<User>;
+    updateUser(updatedUser: User): Promise<void>;
+    getOneByCompletedTermId(completedTermId: string): Promise<User>;
+    getByRatingId(ratingId: string): Promise<User>;
+    getOneByComplaintAnswerId(complaintAnswerId: string): Promise<User>;
+    getOneByAnswerId(answerId: string): Promise<User>;
+    getOneByComplaintId(complaintId: string): Promise<User>;
     mapRegisterUserDtoToUser(userInfo: RegisterUser, country: Country): {
         email: string;
         password: string;

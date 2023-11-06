@@ -18,10 +18,8 @@ import { Cron } from "@nestjs/schedule";
 
 @Injectable()
 export class UsersService{
-    updatePenalties(updatedUser: User) {
-        throw new Error("Method not implemented.");
-    }
-   
+    
+    
     private readonly logger = new Logger(UsersService.name);
 
     constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>,
@@ -160,6 +158,60 @@ export class UsersService{
         catch(e){
             throw new InternalServerErrorException('A user with that email already exists!');
         }
+    }
+
+    async updateUser(updatedUser: User) {
+        await this.usersRepository.save(updatedUser);
+    }
+
+    async getOneByCompletedTermId(completedTermId: string) {
+        return await this.usersRepository.findOne({
+            where:{
+                termHistory:{
+                    id:completedTermId
+                }
+            }
+        });
+    }
+
+    async getByRatingId(ratingId: string) {
+        return await this.usersRepository.findOne({
+            where:{
+                ratings:{
+                    id:ratingId
+                }
+            }
+        });
+    }
+
+    async getOneByComplaintAnswerId(complaintAnswerId: string) {
+        return await this.usersRepository.findOne({
+            where:{
+                complaintAnswers:{
+                    id:complaintAnswerId
+                }
+            }
+        });
+    }
+
+    async getOneByAnswerId(answerId: string) {
+        return await this.usersRepository.findOne({
+            where:{
+                answers:{
+                    id:answerId
+                }
+            }
+        });
+    }
+
+    async getOneByComplaintId(complaintId: string) {
+        return await this.usersRepository.findOne({
+            where:{
+                complaints:{
+                    id:complaintId
+                }
+            }
+        });
     }
 
     mapRegisterUserDtoToUser(userInfo: RegisterUser, country: Country){

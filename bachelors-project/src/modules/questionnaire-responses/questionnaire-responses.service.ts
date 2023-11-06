@@ -8,6 +8,7 @@ import { CreateAnswer } from "../utils";
 
 @Injectable()
 export class QuestionnaireResponsesService{
+    
     constructor(@InjectRepository(QuestionnaireResponseEntity) private readonly questionnaireResponsesRepository : Repository<QuestionnaireResponseEntity>){}
 
     async createQuestionnaireResponse(questionnaire: Questionnaire, user: User, answers: CreateAnswer[]){
@@ -38,6 +39,16 @@ export class QuestionnaireResponsesService{
                 createdAt:MoreThan(sixMonthsAgo)
             }
         })
+    }
+
+    async getOneByAnswerId(answerId: string) {
+        return await this.questionnaireResponsesRepository.findOne({
+            where:{
+                answers:{
+                    id:answerId
+                }
+            }
+        });
     }
 
     questionnaireResponseEntityToDto(questionnaireResponse : QuestionnaireResponseEntity){

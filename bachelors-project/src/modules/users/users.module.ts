@@ -22,10 +22,10 @@ import { LoyaltiesModule } from '../loyalty/loyalties.module';
         signOptions: { expiresIn: '3600s' },
       }),
       CountriesModule,
+      LoyaltiesModule,
       MailModule,
-      TransfusionCentersModule,
+      forwardRef(()=>TransfusionCentersModule),
       forwardRef(()=>TermsModule),
-      LoyaltiesModule
     ],
     providers: [UsersService, AuthService],
     exports: [UsersService, AuthService],

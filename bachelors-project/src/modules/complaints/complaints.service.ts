@@ -10,6 +10,7 @@ import { TransfusionCentersService } from "../transfusion-centers/transfusion-ce
 @Injectable()
 export class ComplaintsService{
     
+    
     constructor(@InjectRepository(Complaint) private readonly complaintsRepository: Repository<Complaint>,
         private readonly usersService: UsersService,
         private readonly transfusionCentersService: TransfusionCentersService
@@ -127,5 +128,15 @@ export class ComplaintsService{
                 const transfusionCenterComplaint = new Complaint(createComplaintInfo.description, complaintType, transfusionCenter, complainee, null);
                 return await this.complaintsRepository.save(transfusionCenterComplaint);
         }
+    }
+
+    async getOneByComplaintAnswerId(complaintAnswerId: string) {
+        return await this.complaintsRepository.findOne({
+            where:{
+                answer:{
+                    id:complaintAnswerId
+                }
+            }
+        });
     }
 }

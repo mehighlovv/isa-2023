@@ -17,10 +17,12 @@ import MedicalEquipmentUpdate from "../medical-equipment-updates/medical-equipme
 import { MedicalEquipmentUpdatesService } from "../medical-equipment-updates/medical-equipment-updates.service";
 import { BloodStockUpdatesService } from "../blood-stocks-updates/blood-stock-updates.service";
 import BloodStockUpdate from "../blood-stocks-updates/blood-stock-update.entity";
+import { PointsConfigurationsService } from "../points-configurations/points-configurations.service";
 
 
 @Injectable()
 export class TermsService{
+    
     
 
     constructor(@InjectRepository(TermEntity) private readonly termsRepository : Repository<TermEntity>,
@@ -34,6 +36,7 @@ export class TermsService{
         private readonly completedTermsService: CompletedTermsService,
         private readonly medicalEquipmentUpdatesService : MedicalEquipmentUpdatesService,
         private readonly bloodStockUpdatesService : BloodStockUpdatesService,
+        private readonly pointsConfigurationsService: PointsConfigurationsService,
         private readonly mailService: MailService
     ){}
 
@@ -184,12 +187,11 @@ export class TermsService{
         if(!termReport.patientShownUp){
             const updatedUser = term.reservationHolder;
             term.reservationHolder.penalties+=1;
-            await this.usersService.updatePenalties(updatedUser);
+            await this.usersService.updateUser(updatedUser);
             return termReport.reasonForRejection ?? "Hasn't shown up";
         }
         const medicalEquipments = await this.medicalEquipmentsService.getMedicalEquipments(termReport.medicalEquipmentIds);
         let medicalEquipmentUpdates = [];
-        console.log(medicalEquipments);
         medicalEquipments.forEach((value,index)=>{
             value.quantityInStock-=termReport.medicalEquipmentUsageAmounts[index];
             medicalEquipmentUpdates.push(new MedicalEquipmentUpdate(termReport.medicalEquipmentUsageAmounts[index],value));
@@ -205,7 +207,22 @@ export class TermsService{
         term.status=TermStatus.COMPLETED;
         await this.termsRepository.save(term);
         const completedTerm = await this.completedTermsService.createCompletedTerm(new CompletedTerm(term.reservationHolder, term, termReport.lungSaturation, termReport.heartRate, termReport.amountOfSugarInBlood));
+
+        const updatedUser = term.reservationHolder;
+        updatedUser.points += (await this.pointsConfigurationsService.getPointsConfiguration()).points;
+        await this.usersService.updateUser(updatedUser);
+        
         return completedTerm;
+    }
+
+    async getOneByCompletedTermId(completedTermId: string) {
+        return await this.termsRepository.findOne({
+            where:{
+              completedTerm:{
+                id:completedTermId
+              }
+            }
+        });
     }
 
     createPredefinedTermDtoToEntity(transfusionCenter: TransfusionCenter, createPredefinedTermInfo: CreatePredefinedTerm, startDateWithTime : Date){

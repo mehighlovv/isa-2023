@@ -5,3 +5,4 @@ export * from './term-status.enum';
 export * from './order-by-value.enum';
 export * from './term-time-frame.enum';
 export * from './complaint-type.enum';
+export * from './time-frame.enum';

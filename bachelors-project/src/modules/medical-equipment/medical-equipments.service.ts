@@ -6,6 +6,7 @@ import MedicalEquipment from "./medical-equipment.entity";
 @Injectable()
 export class MedicalEquipmentsService {
   
+  
   constructor(
     @InjectRepository(MedicalEquipment)
     private readonly medicalEquipmentRepository: Repository<MedicalEquipment>,
@@ -17,5 +18,15 @@ export class MedicalEquipmentsService {
 
   async updateMedicalEquipments(medicalEquipments: MedicalEquipment[]) {
     return await this.medicalEquipmentRepository.save(medicalEquipments);
+  }
+
+  async getOneByMedicalEquipmentUpdateId(medicalEquipmentUpdateId: string) {
+    return await this.medicalEquipmentRepository.findOne({
+      where:{
+        updates:{
+          id:medicalEquipmentUpdateId
+        }
+      }
+    });
   }
 }

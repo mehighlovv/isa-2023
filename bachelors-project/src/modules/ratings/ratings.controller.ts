@@ -1,5 +1,5 @@
 import { Body, Controller, Logger, Param, Post, Put } from "@nestjs/common";
-import { CreateComplaintAnswer, CreateRating, CurrentUser, IAuthenticatedUser, Role, Roles } from "../utils";
+import { CreateRating, CurrentUser, IAuthenticatedUser, Role, Roles } from "../utils";
 import { RatingsService } from "./ratings.service";
 
 

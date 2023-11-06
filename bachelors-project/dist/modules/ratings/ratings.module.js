@@ -14,6 +14,7 @@ const ratings_service_1 = require("./ratings.service");
 const ratings_controller_1 = require("./ratings.controller");
 const users_module_1 = require("../users/users.module");
 const transfusion_centers_module_1 = require("../transfusion-centers/transfusion-centers.module");
+const ratings_resolver_1 = require("./ratings.resolver");
 let RatingsModule = exports.RatingsModule = class RatingsModule {
 };
 exports.RatingsModule = RatingsModule = __decorate([
@@ -24,7 +25,10 @@ exports.RatingsModule = RatingsModule = __decorate([
             transfusion_centers_module_1.TransfusionCentersModule
         ],
         exports: [ratings_service_1.RatingsService],
-        providers: [ratings_service_1.RatingsService],
+        providers: [
+            ratings_service_1.RatingsService,
+            ratings_resolver_1.RatingsResolver
+        ],
         controllers: [ratings_controller_1.RatingsController]
     })
 ], RatingsModule);

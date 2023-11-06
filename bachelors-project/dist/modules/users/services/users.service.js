@@ -27,9 +27,6 @@ const terms_service_1 = require("../../terms/terms.service");
 const loyalties_service_1 = require("../../loyalty/loyalties.service");
 const schedule_1 = require("@nestjs/schedule");
 let UsersService = exports.UsersService = UsersService_1 = class UsersService {
-    updatePenalties(updatedUser) {
-        throw new Error("Method not implemented.");
-    }
     constructor(usersRepository, countriesService, transfusionCentersService, termsService, loyaltiesService) {
         this.usersRepository = usersRepository;
         this.countriesService = countriesService;
@@ -147,6 +144,54 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
         catch (e) {
             throw new common_1.InternalServerErrorException('A user with that email already exists!');
         }
+    }
+    async updateUser(updatedUser) {
+        await this.usersRepository.save(updatedUser);
+    }
+    async getOneByCompletedTermId(completedTermId) {
+        return await this.usersRepository.findOne({
+            where: {
+                termHistory: {
+                    id: completedTermId
+                }
+            }
+        });
+    }
+    async getByRatingId(ratingId) {
+        return await this.usersRepository.findOne({
+            where: {
+                ratings: {
+                    id: ratingId
+                }
+            }
+        });
+    }
+    async getOneByComplaintAnswerId(complaintAnswerId) {
+        return await this.usersRepository.findOne({
+            where: {
+                complaintAnswers: {
+                    id: complaintAnswerId
+                }
+            }
+        });
+    }
+    async getOneByAnswerId(answerId) {
+        return await this.usersRepository.findOne({
+            where: {
+                answers: {
+                    id: answerId
+                }
+            }
+        });
+    }
+    async getOneByComplaintId(complaintId) {
+        return await this.usersRepository.findOne({
+            where: {
+                complaints: {
+                    id: complaintId
+                }
+            }
+        });
     }
     mapRegisterUserDtoToUser(userInfo, country) {
         return {

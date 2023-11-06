@@ -10,6 +10,6 @@ export class PointsConfigurationsController {
   @Roles(Role.SYSTEM_ADMINISTRATOR)
   @Post()
   async configurePoints(@Body() { points }): Promise<PointsConfiguration> {
-    return this.pointsConfigurationsService.configurePoints(points);
+    return await this.pointsConfigurationsService.configurePoints(points);
   }
 }

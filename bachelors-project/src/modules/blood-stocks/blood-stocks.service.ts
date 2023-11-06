@@ -7,6 +7,7 @@ import TransfusionCenterEntity from "../transfusion-centers/entities/transfusion
 
 @Injectable()
 export class BloodStocksService {
+    
    
     constructor(@InjectRepository(BloodStockEntity) private readonly bloodStocksRepository: Repository<BloodStockEntity>){}
     
@@ -36,6 +37,16 @@ export class BloodStocksService {
             }
         });
         return bloodStock;
+    }
+
+    async getOneByBloodStockUpdateId(bloodStockUpdateId: string) {
+        return await this.bloodStocksRepository.findOne({
+            where:{
+                updates:{
+                id:bloodStockUpdateId
+                }
+            }
+        });
     }
 
     dtoToEntity(bloodStockInfo: CreateBloodStock, transfusionCenter: TransfusionCenterEntity){

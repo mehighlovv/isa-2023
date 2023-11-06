@@ -33,10 +33,10 @@ exports.UsersModule = UsersModule = __decorate([
                 signOptions: { expiresIn: '3600s' },
             }),
             countries_module_1.CountriesModule,
+            loyalties_module_1.LoyaltiesModule,
             mail_module_1.MailModule,
-            transfusion_centers_module_1.TransfusionCentersModule,
+            (0, common_1.forwardRef)(() => transfusion_centers_module_1.TransfusionCentersModule),
             (0, common_1.forwardRef)(() => terms_module_1.TermsModule),
-            loyalties_module_1.LoyaltiesModule
         ],
         providers: [users_service_1.UsersService, auth_service_1.AuthService],
         exports: [users_service_1.UsersService, auth_service_1.AuthService],

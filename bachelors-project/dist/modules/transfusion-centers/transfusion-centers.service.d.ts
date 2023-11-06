@@ -11,6 +11,7 @@ export declare class TransfusionCentersService {
     constructor(transfusionCentersRepository: Repository<TransfusionCenterEntity>, bloodStocksService: BloodStocksService, termsService: TermsService);
     getPaginated(paginationParams: PaginationRequest, name: string, address: string): Promise<Paginate<TransfusionCenter, import("../utils").Pagination>>;
     getOne(id: string): Promise<TransfusionCenterEntity>;
+    getByIdWithAverageRating(id: string): Promise<TransfusionCenter>;
     updateTransfusionCenter(editTransfusionCenterInfo: EditTransfusionCenter): Promise<void>;
     createTransfusionCenter(transfusionCenterRequest: CreateTransfusionCenter): Promise<TransfusionCenterEntity>;
     getBloodStocks(id: string): Promise<import("../blood-stocks/blood-stock.entity").default[]>;
@@ -20,6 +21,10 @@ export declare class TransfusionCentersService {
     getYearlyCalendar(transfusionCenterId: string, referenceDate: Date): Promise<import("../terms/term.entity").default[]>;
     getMonthlyCalendar(transfusionCenterId: string, referenceDate: Date): Promise<import("../terms/term.entity").default[]>;
     getWeeklyCalendar(transfusionCenterId: string, referenceDate: Date): Promise<import("../terms/term.entity").default[]>;
+    getByRatingId(ratingId: string): Promise<TransfusionCenterEntity>;
+    getOneByBloodStockId(bloodStockId: string): Promise<TransfusionCenterEntity>;
+    getOneByComplaintId(complaintId: string): Promise<TransfusionCenterEntity>;
+    getOneByMedicalEquipmentId(medicalEquipmentId: string): Promise<TransfusionCenterEntity>;
     dtoToEntity(center: CreateTransfusionCenter): TransfusionCenterEntity;
     entityToDto(center: TransfusionCenterEntity): TransfusionCenter;
 }

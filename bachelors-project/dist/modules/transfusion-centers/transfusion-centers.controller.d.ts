@@ -5,7 +5,7 @@ export declare class TransfusionCentersController {
     private readonly logger;
     constructor(transfusionCentersService: TransfusionCentersService);
     getPaginated(paginationParams: PaginationRequest, name?: string, address?: string): Promise<import("../utils").Paginate<import("../utils").TransfusionCenter, import("../utils").Pagination>>;
-    getCenterDetails(id: string): Promise<import("./entities/transfusion-center.entity").default>;
+    getCenterDetails(id: string): Promise<import("../utils").TransfusionCenter>;
     editTransfusionCenter(editTransfusionCenterInfo: EditTransfusionCenter): Promise<void>;
     createTransfusionCenter(transfusionCenterInfo: CreateTransfusionCenter): Promise<import("./entities/transfusion-center.entity").default>;
     getBloodStocks(id: string): Promise<import("../blood-stocks/blood-stock.entity").default[]>;

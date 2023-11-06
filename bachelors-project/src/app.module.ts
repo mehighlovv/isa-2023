@@ -1,4 +1,4 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Module, ValidationPipe, forwardRef } from '@nestjs/common';
 import { UsersModule } from './modules/users/users.module';
 import { ComplaintsModule } from './modules/complaints/complaints.module';
 import { TransfusionCentersModule } from './modules/transfusion-centers/transfusion-centers.module';
@@ -25,12 +25,18 @@ import { CompletedTermsModule } from './modules/completed-terms/completed-terms.
 import { BloodStockUpdatesModule } from './modules/blood-stocks-updates/blood-stock-updates.module';
 import { MedicalEquipmentsModule } from './modules/medical-equipment/medical-equipments.module';
 import { MedicalEquipmentUpdatesModule } from './modules/medical-equipment-updates/medical-equipment-updates.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile:true
     }),
     TypeOrmModule.forRootAsync(typeOrmConfigAsync),
     ScheduleModule.forRoot(),
@@ -40,7 +46,6 @@ import { MedicalEquipmentUpdatesModule } from './modules/medical-equipment-updat
     TermsModule, 
     RatingsModule, 
     CountriesModule, 
-    UtilsModule,
     QuestionsModule,
     AnswersModule,
     QuestionOrdersModule,
@@ -52,7 +57,8 @@ import { MedicalEquipmentUpdatesModule } from './modules/medical-equipment-updat
     CompletedTermsModule,
     BloodStockUpdatesModule,
     MedicalEquipmentsModule,
-    MedicalEquipmentUpdatesModule
+    MedicalEquipmentUpdatesModule,
+    UtilsModule
   ],
   providers: [
     {

@@ -1,3 +1,5 @@
+import { registerEnumType } from "@nestjs/graphql";
+
 export enum BloodType{
     A_POSITIVE = 'A+',
     A_NEGATIVE = 'A-',
@@ -8,3 +10,6 @@ export enum BloodType{
     O_POSITIVE = 'O+',
     O_NEGATIVE = 'O-'
 }
+registerEnumType(BloodType,{
+    name:'BloodType'
+});

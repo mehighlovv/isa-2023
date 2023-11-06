@@ -21,19 +21,21 @@ const blood_stocks_module_1 = require("../blood-stocks/blood-stocks.module");
 const blood_stock_updates_module_1 = require("../blood-stocks-updates/blood-stock-updates.module");
 const medical_equipment_updates_module_1 = require("../medical-equipment-updates/medical-equipment-updates.module");
 const completed_terms_module_1 = require("../completed-terms/completed-terms.module");
+const points_configurations_module_1 = require("../points-configurations/points-configurations.module");
 let TermsModule = exports.TermsModule = class TermsModule {
 };
 exports.TermsModule = TermsModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forFeature([term_entity_1.default]),
-            questionnaire_responses_module_1.QuestionnaireResponsesModule,
             mail_module_1.MailModule,
-            medical_equipments_module_1.MedicalEquipmentsModule,
-            blood_stocks_module_1.BloodStocksModule,
-            medical_equipment_updates_module_1.MedicalEquipmentUpdatesModule,
-            blood_stock_updates_module_1.BloodStockUpdatesModule,
-            completed_terms_module_1.CompletedTermsModule,
+            (0, common_1.forwardRef)(() => questionnaire_responses_module_1.QuestionnaireResponsesModule),
+            (0, common_1.forwardRef)(() => medical_equipments_module_1.MedicalEquipmentsModule),
+            (0, common_1.forwardRef)(() => medical_equipment_updates_module_1.MedicalEquipmentUpdatesModule),
+            (0, common_1.forwardRef)(() => blood_stock_updates_module_1.BloodStockUpdatesModule),
+            (0, common_1.forwardRef)(() => points_configurations_module_1.PointsConfigurationsModule),
+            (0, common_1.forwardRef)(() => blood_stocks_module_1.BloodStocksModule),
+            (0, common_1.forwardRef)(() => completed_terms_module_1.CompletedTermsModule),
             (0, common_1.forwardRef)(() => transfusion_centers_module_1.TransfusionCentersModule),
             (0, common_1.forwardRef)(() => users_module_1.UsersModule)
         ],

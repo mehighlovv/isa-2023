@@ -22,8 +22,8 @@ exports.TransfusionCentersModule = TransfusionCentersModule = __decorate([
         providers: [transfusion_centers_service_1.TransfusionCentersService],
         imports: [
             typeorm_1.TypeOrmModule.forFeature([transfusion_center_entity_1.default]),
-            blood_stocks_module_1.BloodStocksModule,
-            terms_module_1.TermsModule
+            (0, common_1.forwardRef)(() => blood_stocks_module_1.BloodStocksModule),
+            (0, common_1.forwardRef)(() => terms_module_1.TermsModule)
         ],
         exports: [transfusion_centers_service_1.TransfusionCentersService]
     })

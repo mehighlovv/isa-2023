@@ -34,6 +34,8 @@ const completed_terms_module_1 = require("./modules/completed-terms/completed-te
 const blood_stock_updates_module_1 = require("./modules/blood-stocks-updates/blood-stock-updates.module");
 const medical_equipments_module_1 = require("./modules/medical-equipment/medical-equipments.module");
 const medical_equipment_updates_module_1 = require("./modules/medical-equipment-updates/medical-equipment-updates.module");
+const graphql_1 = require("@nestjs/graphql");
+const apollo_1 = require("@nestjs/apollo");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -43,6 +45,10 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true,
                 envFilePath: '.env',
             }),
+            graphql_1.GraphQLModule.forRoot({
+                driver: apollo_1.ApolloDriver,
+                autoSchemaFile: true
+            }),
             typeorm_1.TypeOrmModule.forRootAsync(typeorm_config_1.typeOrmConfigAsync),
             schedule_1.ScheduleModule.forRoot(),
             users_module_1.UsersModule,
@@ -51,7 +57,6 @@ exports.AppModule = AppModule = __decorate([
             terms_module_1.TermsModule,
             ratings_module_1.RatingsModule,
             countries_module_1.CountriesModule,
-            utils_module_1.UtilsModule,
             questions_module_1.QuestionsModule,
             answers_module_1.AnswersModule,
             question_orders_module_1.QuestionOrdersModule,
@@ -63,7 +68,8 @@ exports.AppModule = AppModule = __decorate([
             completed_terms_module_1.CompletedTermsModule,
             blood_stock_updates_module_1.BloodStockUpdatesModule,
             medical_equipments_module_1.MedicalEquipmentsModule,
-            medical_equipment_updates_module_1.MedicalEquipmentUpdatesModule
+            medical_equipment_updates_module_1.MedicalEquipmentUpdatesModule,
+            utils_module_1.UtilsModule
         ],
         providers: [
             {

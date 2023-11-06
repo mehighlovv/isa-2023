@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TransfusionCentersController } from './transfusion-centers.controller';
 import { TransfusionCentersService } from './transfusion-centers.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,8 +11,8 @@ import { TermsModule } from '../terms/terms.module';
     providers:[TransfusionCentersService],
     imports:[
         TypeOrmModule.forFeature([TransfusionCenter]),
-        BloodStocksModule,
-        TermsModule
+        forwardRef(()=>BloodStocksModule),
+        forwardRef(()=>TermsModule)
     ],
     exports:[TransfusionCentersService]
 })

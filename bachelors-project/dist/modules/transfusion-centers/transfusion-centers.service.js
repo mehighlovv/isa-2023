@@ -53,8 +53,22 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
         return paginate;
     }
     async getOne(id) {
-        const center = await this.transfusionCentersRepository.findOneOrFail({ where: { id: id } });
+        const center = await this.transfusionCentersRepository.findOneOrFail({
+            where: { id: id },
+            relations: {
+                ratings: true
+            },
+        });
         return center;
+    }
+    async getByIdWithAverageRating(id) {
+        const center = await this.transfusionCentersRepository.findOneOrFail({
+            where: { id: id },
+            relations: {
+                ratings: true
+            },
+        });
+        return this.entityToDto(center);
     }
     async updateTransfusionCenter(editTransfusionCenterInfo) {
         await this.transfusionCentersRepository.update({ id: editTransfusionCenterInfo.id }, {
@@ -153,6 +167,42 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
         startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
         let endOfWeek = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), startOfWeek.getDate() + 6, 23, 59, 59);
         return await this.termsService.getTerms(transfusionCenterId, startOfWeek, endOfWeek);
+    }
+    async getByRatingId(ratingId) {
+        return await this.transfusionCentersRepository.findOne({
+            where: {
+                ratings: {
+                    id: ratingId
+                }
+            }
+        });
+    }
+    async getOneByBloodStockId(bloodStockId) {
+        return await this.transfusionCentersRepository.findOne({
+            where: {
+                bloodStocks: {
+                    id: bloodStockId
+                }
+            }
+        });
+    }
+    async getOneByComplaintId(complaintId) {
+        return await this.transfusionCentersRepository.findOne({
+            where: {
+                complaints: {
+                    id: complaintId
+                }
+            }
+        });
+    }
+    async getOneByMedicalEquipmentId(medicalEquipmentId) {
+        return await this.transfusionCentersRepository.findOne({
+            where: {
+                medicalEquipment: {
+                    id: medicalEquipmentId
+                }
+            }
+        });
     }
     dtoToEntity(center) {
         return new transfusion_center_entity_1.default(center.name, center.description, center.address, center.workingHoursBegin, center.workingHoursEnd);

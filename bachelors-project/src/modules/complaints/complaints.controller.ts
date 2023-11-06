@@ -10,7 +10,7 @@ export class ComplaintsController{
 
     @Roles(Role.REGISTERED_USER)
     @Post()
-    async createPredefinedTerm(@Body() createComplaintInfo : CreateComplaint ,@Query('complaintType') complaintType : ComplaintType, @CurrentUser() user: IAuthenticatedUser){
+    async createComplaint(@Body() createComplaintInfo : CreateComplaint ,@Query('complaintType') complaintType : ComplaintType, @CurrentUser() user: IAuthenticatedUser){
         return await this.complaintsService.createComplaint(createComplaintInfo, complaintType, user.userId);
     }
 

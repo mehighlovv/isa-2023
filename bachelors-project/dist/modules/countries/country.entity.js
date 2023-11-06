@@ -9,19 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const graphql_1 = require("@nestjs/graphql");
 const typeorm_1 = require("typeorm");
 let Country = class Country {
 };
 __decorate([
     (0, typeorm_1.PrimaryColumn)(),
+    (0, graphql_1.Field)(() => graphql_1.ID),
     __metadata("design:type", String)
 ], Country.prototype, "code", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], Country.prototype, "name", void 0);
 Country = __decorate([
-    (0, typeorm_1.Entity)({ name: 'countries' })
+    (0, typeorm_1.Entity)({ name: 'countries' }),
+    (0, graphql_1.ObjectType)()
 ], Country);
 exports.default = Country;
 //# sourceMappingURL=country.entity.js.map

@@ -16,7 +16,14 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) {
       return true;
     }
-    const { user } = context.switchToHttp().getRequest();
+    let request={headers: { authorization: "" } };
+    if(context["contextType"] == "http"){
+      request = context.switchToHttp().getRequest();
+    }else{
+      const { req } = context.getArgs()[2]; // Access the GraphQL context's req property
+      request = req;
+    }
+    const user = request["user"];
     return requiredRoles.some((role) => user.role===role);
   }
 }

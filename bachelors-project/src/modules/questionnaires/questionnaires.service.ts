@@ -10,7 +10,8 @@ import { QuestionnaireResponsesService } from "../questionnaire-responses/questi
 @Injectable()
 export class QuestionnairesService{
     
-    constructor(@InjectRepository(QuestionnaireEntity) private readonly questionnairesRepository: Repository<QuestionnaireEntity>,
+    constructor(
+        @InjectRepository(QuestionnaireEntity) private readonly questionnairesRepository: Repository<QuestionnaireEntity>,
         private readonly usersService: UsersService,
         private readonly questionnaireResponsesService : QuestionnaireResponsesService
     ){}
@@ -71,6 +72,16 @@ export class QuestionnairesService{
                 }
             })
         }
+    }
+
+    async getOneByQuestionOrderId(questionOrderId: string){
+        return await this.questionnairesRepository.findOne({
+            where:{
+                questionsWithOrder:{
+                    id:questionOrderId
+                }
+            }
+        });
     }
 
     validateUserAnsweredAllQuestions(questionnaire : QuestionnaireEntity, answers: CreateAnswer[]){

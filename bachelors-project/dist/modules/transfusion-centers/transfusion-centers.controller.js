@@ -26,7 +26,7 @@ let TransfusionCentersController = exports.TransfusionCentersController = Transf
         return await this.transfusionCentersService.getPaginated(paginationParams, name, address);
     }
     async getCenterDetails(id) {
-        return await this.transfusionCentersService.getOne(id);
+        return await this.transfusionCentersService.getByIdWithAverageRating(id);
     }
     async editTransfusionCenter(editTransfusionCenterInfo) {
         return await this.transfusionCentersService.updateTransfusionCenter(editTransfusionCenterInfo);

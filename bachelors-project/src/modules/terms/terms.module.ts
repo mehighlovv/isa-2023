@@ -12,17 +12,19 @@ import { BloodStocksModule } from '../blood-stocks/blood-stocks.module';
 import { BloodStockUpdatesModule } from '../blood-stocks-updates/blood-stock-updates.module';
 import { MedicalEquipmentUpdatesModule } from '../medical-equipment-updates/medical-equipment-updates.module';
 import { CompletedTermsModule } from '../completed-terms/completed-terms.module';
+import { PointsConfigurationsModule } from '../points-configurations/points-configurations.module';
 
 @Module({
     imports:[
         TypeOrmModule.forFeature([Term]),
-        QuestionnaireResponsesModule,
         MailModule,
-        MedicalEquipmentsModule,
-        BloodStocksModule,
-        MedicalEquipmentUpdatesModule,
-        BloodStockUpdatesModule,
-        CompletedTermsModule,
+        forwardRef(()=>QuestionnaireResponsesModule),
+        forwardRef(()=>MedicalEquipmentsModule),
+        forwardRef(()=>MedicalEquipmentUpdatesModule),
+        forwardRef(()=>BloodStockUpdatesModule),
+        forwardRef(()=>PointsConfigurationsModule),
+        forwardRef(()=>BloodStocksModule),
+        forwardRef(()=>CompletedTermsModule),
         forwardRef(()=>TransfusionCentersModule),
         forwardRef(()=>UsersModule)
     ],
