@@ -23,15 +23,13 @@ const role_enum_1 = require("../../utils/enums/role.enum");
 const utils_1 = require("../../utils");
 const crypto_1 = require("crypto");
 const transfusion_centers_service_1 = require("../../transfusion-centers/transfusion-centers.service");
-const terms_service_1 = require("../../terms/terms.service");
 const loyalties_service_1 = require("../../loyalty/loyalties.service");
 const schedule_1 = require("@nestjs/schedule");
 let UsersService = exports.UsersService = UsersService_1 = class UsersService {
-    constructor(usersRepository, countriesService, transfusionCentersService, termsService, loyaltiesService) {
+    constructor(usersRepository, countriesService, transfusionCentersService, loyaltiesService) {
         this.usersRepository = usersRepository;
         this.countriesService = countriesService;
         this.transfusionCentersService = transfusionCentersService;
-        this.termsService = termsService;
         this.loyaltiesService = loyaltiesService;
         this.logger = new common_1.Logger(UsersService_1.name);
     }
@@ -110,6 +108,7 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
             address: userInfo.address,
             city: userInfo.city
         });
+        return await this.usersRepository.findOne({ where: { id: userInfo.id } });
     }
     async changePassword(changePasswordInfo) {
         const user = await this.usersRepository.findOneOrFail({ where: { id: changePasswordInfo.id } });
@@ -193,6 +192,24 @@ let UsersService = exports.UsersService = UsersService_1 = class UsersService {
             }
         });
     }
+    async getOneByQuestionnaireResponseId(questionnaireResponseId) {
+        return await this.usersRepository.findOne({
+            where: {
+                questionnaireResponse: {
+                    id: questionnaireResponseId
+                }
+            }
+        });
+    }
+    async getOneByTermId(termId) {
+        return await this.usersRepository.findOne({
+            where: {
+                reservedTerms: {
+                    id: termId
+                }
+            }
+        });
+    }
     mapRegisterUserDtoToUser(userInfo, country) {
         return {
             email: userInfo.email,
@@ -248,11 +265,9 @@ __decorate([
 exports.UsersService = UsersService = UsersService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_2.InjectRepository)(user_entity_1.default)),
-    __param(3, (0, common_1.Inject)((0, common_1.forwardRef)(() => terms_service_1.TermsService))),
     __metadata("design:paramtypes", [typeorm_1.Repository,
         countries_service_1.CountriesService,
         transfusion_centers_service_1.TransfusionCentersService,
-        terms_service_1.TermsService,
         loyalties_service_1.LoyaltiesService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

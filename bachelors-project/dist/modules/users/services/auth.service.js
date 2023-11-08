@@ -27,9 +27,7 @@ let AuthService = exports.AuthService = class AuthService {
             throw new common_1.UnauthorizedException();
         }
         const payload = { userId: user.id, username: user.email, role: user.role, isAccepted: user.isAccepted };
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-        };
+        return await this.jwtService.signAsync(payload);
     }
     async registerUser(userInfo) {
         if (userInfo.password !== userInfo.verifyPassword) {
@@ -38,9 +36,7 @@ let AuthService = exports.AuthService = class AuthService {
         const newUser = await this.usersService.createRegisteredUser(userInfo);
         const payload = { userId: newUser.id, username: newUser.email, role: newUser.role, isAccepted: newUser.isAccepted };
         await this.mailService.sendUserConfirmation(newUser, newUser.id);
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-        };
+        return await this.jwtService.signAsync(payload);
     }
     async activateAccount(userId) {
         const result = await this.usersService.activateAccount(userId);
@@ -55,9 +51,7 @@ let AuthService = exports.AuthService = class AuthService {
         const newUser = await this.usersService.createCenterAdmin(userInfo);
         const payload = { userId: newUser.id, username: newUser.email, role: newUser.role, isAccepted: newUser.isAccepted };
         await this.mailService.sendCenterAdminConfirmation(newUser, newUser.id);
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-        };
+        return await this.jwtService.signAsync(payload);
     }
 };
 exports.AuthService = AuthService = __decorate([

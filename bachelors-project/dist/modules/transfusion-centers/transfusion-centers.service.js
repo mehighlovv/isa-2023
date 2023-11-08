@@ -40,9 +40,8 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
             skip: (page - 1) * perPage,
             take: perPage
         });
-        const centerResponses = centers.map((center) => this.entityToDto(center));
         const paginate = {
-            records: centerResponses,
+            records: centers,
             pagination: {
                 page: page,
                 perPage: perPage,
@@ -68,7 +67,7 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
                 ratings: true
             },
         });
-        return this.entityToDto(center);
+        return center;
     }
     async updateTransfusionCenter(editTransfusionCenterInfo) {
         await this.transfusionCentersRepository.update({ id: editTransfusionCenterInfo.id }, {
@@ -76,6 +75,7 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
             address: editTransfusionCenterInfo.address,
             name: editTransfusionCenterInfo.name
         });
+        return await this.transfusionCentersRepository.findOne({ where: { id: editTransfusionCenterInfo.id } });
     }
     async createTransfusionCenter(transfusionCenterRequest) {
         try {
@@ -128,9 +128,8 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
             skip: (page - 1) * perPage,
             take: perPage
         });
-        const centerResponses = centers.map((center) => this.entityToDto(center));
         const paginate = {
-            records: centerResponses,
+            records: centers,
             pagination: {
                 page: page,
                 perPage: perPage,
@@ -204,24 +203,17 @@ let TransfusionCentersService = exports.TransfusionCentersService = class Transf
             }
         });
     }
+    async getOneByTermId(termId) {
+        return await this.transfusionCentersRepository.findOne({
+            where: {
+                workingCalendar: {
+                    id: termId
+                }
+            }
+        });
+    }
     dtoToEntity(center) {
         return new transfusion_center_entity_1.default(center.name, center.description, center.address, center.workingHoursBegin, center.workingHoursEnd);
-    }
-    entityToDto(center) {
-        let avgRating = 0;
-        center.ratings.forEach(rating => {
-            avgRating += rating.rating;
-        });
-        avgRating /= center.ratings.length;
-        return {
-            id: center.id,
-            name: center.name,
-            description: center.description,
-            address: center.address,
-            workingHoursBegin: center.workingHoursBegin,
-            workingHoursEnd: center.workingHoursEnd,
-            averageRating: avgRating
-        };
     }
 };
 exports.TransfusionCentersService = TransfusionCentersService = __decorate([

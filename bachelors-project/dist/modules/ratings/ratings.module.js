@@ -21,8 +21,8 @@ exports.RatingsModule = RatingsModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forFeature([rating_entity_1.default]),
-            users_module_1.UsersModule,
-            transfusion_centers_module_1.TransfusionCentersModule
+            (0, common_1.forwardRef)(() => users_module_1.UsersModule),
+            (0, common_1.forwardRef)(() => transfusion_centers_module_1.TransfusionCentersModule)
         ],
         exports: [ratings_service_1.RatingsService],
         providers: [

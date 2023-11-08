@@ -49,7 +49,7 @@ export class TermsService{
         if(this.validateTimeIsWithinWorkingHours(startDateWithTime, endTime, transfusionCenter) && 
         !(await this.termAlreadyExistsInTimeFrame(startDate, timeBeforeTermStart, endTime, transfusionCenter.id))){
             const newTerm = await this.termsRepository.save(this.createPredefinedTermDtoToEntity(transfusionCenter, createPredefinedTermInfo, startDateWithTime));
-            return {id:newTerm.id};
+            return newTerm;
         }
         throw new BadRequestException('Term begin time invalid!');
     }
@@ -89,8 +89,8 @@ export class TermsService{
         }
         term.reservationHolder=user;
         term.status=TermStatus.TAKEN;
-        await this.termsRepository.save(term);
-        return {success : true};
+        const reservedTerm = await this.termsRepository.save(term);
+        return reservedTerm;
     }
 
     async cancelTerm(userId: string, termId: string){
@@ -108,8 +108,8 @@ export class TermsService{
             throw new UnauthorizedException('Not Allowed!');
         }
         term.status=TermStatus.FREE;
-        await this.termsRepository.save(term);
-        return {success : true};
+        const canceledTerm = await this.termsRepository.save(term);
+        return canceledTerm;
     }
 
     async reserveNewTerm(reserveNewTerm: CreateNewTerm, userId: string){
@@ -148,7 +148,7 @@ export class TermsService{
         !(await this.termAlreadyExistsInTimeFrame(startDate, timeBeforeTermStart, endTime, transfusionCenter.id))){
             const newTerm = await this.termsRepository.save(this.createNewTermDtoToEntity(transfusionCenter, reserveNewTerm, startDateWithTime, user));
             await this.mailService.sendTermConfirmation(user,newTerm);
-            return {id:newTerm.id};
+            return newTerm;
         }
         
     }

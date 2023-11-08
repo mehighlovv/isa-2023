@@ -57,5 +57,15 @@ export class CompletedTermsService{
             }
         });
     }
+
+    async getOneByTermId(termId: string) {
+        return await this.completedTermsRepository.findOne({
+            where:{
+                term:{
+                    id:termId
+                }
+            }
+        });
+    }
     
 }

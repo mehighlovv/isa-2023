@@ -7,15 +7,9 @@ export declare class AuthController {
     private authService;
     private usersService;
     constructor(authService: AuthService, usersService: UsersService);
-    login(credentials: Login): Promise<{
-        access_token: string;
-    }>;
-    register(userInfo: RegisterUser): Promise<{
-        access_token: string;
-    }>;
+    login(credentials: Login): Promise<string>;
+    register(userInfo: RegisterUser): Promise<string>;
     activateAccount(token: string): Promise<string>;
     changePassword(changePasswordInfo: ChangePassword): Promise<void>;
-    registerCenterAdministrator(registerCenterAdminInfo: RegisterCenterAdmin): Promise<{
-        access_token: string;
-    }>;
+    registerCenterAdministrator(registerCenterAdminInfo: RegisterCenterAdmin): Promise<string>;
 }

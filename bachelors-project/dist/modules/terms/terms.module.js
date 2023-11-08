@@ -22,6 +22,7 @@ const blood_stock_updates_module_1 = require("../blood-stocks-updates/blood-stoc
 const medical_equipment_updates_module_1 = require("../medical-equipment-updates/medical-equipment-updates.module");
 const completed_terms_module_1 = require("../completed-terms/completed-terms.module");
 const points_configurations_module_1 = require("../points-configurations/points-configurations.module");
+const terms_resolver_1 = require("./terms.resolver");
 let TermsModule = exports.TermsModule = class TermsModule {
 };
 exports.TermsModule = TermsModule = __decorate([
@@ -39,7 +40,10 @@ exports.TermsModule = TermsModule = __decorate([
             (0, common_1.forwardRef)(() => transfusion_centers_module_1.TransfusionCentersModule),
             (0, common_1.forwardRef)(() => users_module_1.UsersModule)
         ],
-        providers: [terms_service_1.TermsService],
+        providers: [
+            terms_service_1.TermsService,
+            terms_resolver_1.TermsResolver
+        ],
         exports: [terms_service_1.TermsService],
         controllers: [terms_controller_1.TermsController]
     })

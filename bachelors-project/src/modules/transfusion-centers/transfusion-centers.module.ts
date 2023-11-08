@@ -5,14 +5,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import TransfusionCenter from './entities/transfusion-center.entity';
 import { BloodStocksModule } from '../blood-stocks/blood-stocks.module';
 import { TermsModule } from '../terms/terms.module';
+import { TransfusionCentersResolver } from './transfusion-centers.resolver';
+import { RatingsModule } from '../ratings/ratings.module';
 
 @Module({
     controllers:[TransfusionCentersController],
-    providers:[TransfusionCentersService],
+    providers:[
+        TransfusionCentersService,
+        TransfusionCentersResolver
+    ],
     imports:[
         TypeOrmModule.forFeature([TransfusionCenter]),
         forwardRef(()=>BloodStocksModule),
-        forwardRef(()=>TermsModule)
+        forwardRef(()=>TermsModule),
+        forwardRef(()=>RatingsModule)
     ],
     exports:[TransfusionCentersService]
 })

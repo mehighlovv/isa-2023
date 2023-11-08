@@ -12,6 +12,8 @@ import { UserController } from './controllers/user.controller';
 import { TransfusionCentersModule } from '../transfusion-centers/transfusion-centers.module';
 import { TermsModule } from '../terms/terms.module';
 import { LoyaltiesModule } from '../loyalty/loyalties.module';
+import { UsersResolver } from './resolvers/users.resolver';
+import { AuthResolver } from './resolvers/auth.resolver';
 
 @Module({
     imports:[
@@ -27,7 +29,12 @@ import { LoyaltiesModule } from '../loyalty/loyalties.module';
       forwardRef(()=>TransfusionCentersModule),
       forwardRef(()=>TermsModule),
     ],
-    providers: [UsersService, AuthService],
+    providers: [
+      UsersService, 
+      AuthService,
+      UsersResolver,
+      AuthResolver
+    ],
     exports: [UsersService, AuthService],
     controllers: [AuthController, UserController],
 })

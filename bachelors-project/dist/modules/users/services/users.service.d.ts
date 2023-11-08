@@ -8,17 +8,15 @@ import { EditUserProfile } from "src/modules/utils/interfaces/EditUserProfile";
 import { ChangePassword } from "src/modules/utils/interfaces/ChangePassword";
 import { OrderByValue, Paginate, PaginationRequest, UserSearchParams } from "src/modules/utils";
 import { TransfusionCentersService } from "src/modules/transfusion-centers/transfusion-centers.service";
-import { TermsService } from "src/modules/terms/terms.service";
 import TransfusionCenter from "src/modules/transfusion-centers/entities/transfusion-center.entity";
 import { LoyaltiesService } from "src/modules/loyalty/loyalties.service";
 export declare class UsersService {
     private readonly usersRepository;
     private readonly countriesService;
     private readonly transfusionCentersService;
-    private readonly termsService;
     private readonly loyaltiesService;
     private readonly logger;
-    constructor(usersRepository: Repository<User>, countriesService: CountriesService, transfusionCentersService: TransfusionCentersService, termsService: TermsService, loyaltiesService: LoyaltiesService);
+    constructor(usersRepository: Repository<User>, countriesService: CountriesService, transfusionCentersService: TransfusionCentersService, loyaltiesService: LoyaltiesService);
     getOne(email: string): Promise<User | undefined>;
     getById(id: string): Promise<User>;
     getUserProfile(userId: string): Promise<{
@@ -54,7 +52,7 @@ export declare class UsersService {
     createRegisteredUser(userInfo: RegisterUser): Promise<User>;
     getPaginatedUsers(searchParams: UserSearchParams, paginationParams: PaginationRequest, orderBy: OrderByValue, sortBy: string): Promise<Paginate<User, import("src/modules/utils").Pagination>>;
     activateAccount(userId: string): Promise<boolean>;
-    editProfile(userInfo: EditUserProfile): Promise<void>;
+    editProfile(userInfo: EditUserProfile): Promise<User>;
     changePassword(changePasswordInfo: ChangePassword): Promise<string>;
     createCenterAdmin(userInfo: RegisterCenterAdmin): Promise<User>;
     updateUser(updatedUser: User): Promise<void>;
@@ -63,6 +61,8 @@ export declare class UsersService {
     getOneByComplaintAnswerId(complaintAnswerId: string): Promise<User>;
     getOneByAnswerId(answerId: string): Promise<User>;
     getOneByComplaintId(complaintId: string): Promise<User>;
+    getOneByQuestionnaireResponseId(questionnaireResponseId: string): Promise<User>;
+    getOneByTermId(termId: string): Promise<User>;
     mapRegisterUserDtoToUser(userInfo: RegisterUser, country: Country): {
         email: string;
         password: string;

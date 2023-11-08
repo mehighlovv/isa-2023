@@ -19,9 +19,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     const payload = { userId: user.id, username: user.email, role: user.role , isAccepted:user.isAccepted};
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    return await this.jwtService.signAsync(payload);
   }
 
   async registerUser(userInfo: RegisterUser){
@@ -31,9 +29,7 @@ export class AuthService {
     const newUser = await this.usersService.createRegisteredUser(userInfo);
     const payload = { userId: newUser.id, username: newUser.email, role: newUser.role , isAccepted:newUser.isAccepted};
     await this.mailService.sendUserConfirmation(newUser,newUser.id)
-    return {
-        access_token: await this.jwtService.signAsync(payload),
-    }; 
+    return await this.jwtService.signAsync(payload);
   }
 
   async activateAccount(userId: string){
@@ -50,8 +46,6 @@ export class AuthService {
     const newUser = await this.usersService.createCenterAdmin(userInfo);
     const payload = { userId: newUser.id, username: newUser.email, role: newUser.role , isAccepted:newUser.isAccepted};
     await this.mailService.sendCenterAdminConfirmation(newUser,newUser.id)
-    return {
-        access_token: await this.jwtService.signAsync(payload),
-    }; 
+    return await this.jwtService.signAsync(payload);
   }
 }

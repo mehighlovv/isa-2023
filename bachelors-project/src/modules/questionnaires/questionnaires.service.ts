@@ -10,6 +10,7 @@ import { QuestionnaireResponsesService } from "../questionnaire-responses/questi
 @Injectable()
 export class QuestionnairesService{
     
+    
     constructor(
         @InjectRepository(QuestionnaireEntity) private readonly questionnairesRepository: Repository<QuestionnaireEntity>,
         private readonly usersService: UsersService,
@@ -79,6 +80,16 @@ export class QuestionnairesService{
             where:{
                 questionsWithOrder:{
                     id:questionOrderId
+                }
+            }
+        });
+    }
+
+    async getOneByQuestionnaireResponseId(questionnaireResponseId: string) {
+        return await this.questionnairesRepository.findOne({
+            where:{
+                responses:{
+                    id:questionnaireResponseId
                 }
             }
         });

@@ -21,6 +21,8 @@ const user_controller_1 = require("./controllers/user.controller");
 const transfusion_centers_module_1 = require("../transfusion-centers/transfusion-centers.module");
 const terms_module_1 = require("../terms/terms.module");
 const loyalties_module_1 = require("../loyalty/loyalties.module");
+const users_resolver_1 = require("./resolvers/users.resolver");
+const auth_resolver_1 = require("./resolvers/auth.resolver");
 let UsersModule = exports.UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule = __decorate([
@@ -38,7 +40,12 @@ exports.UsersModule = UsersModule = __decorate([
             (0, common_1.forwardRef)(() => transfusion_centers_module_1.TransfusionCentersModule),
             (0, common_1.forwardRef)(() => terms_module_1.TermsModule),
         ],
-        providers: [users_service_1.UsersService, auth_service_1.AuthService],
+        providers: [
+            users_service_1.UsersService,
+            auth_service_1.AuthService,
+            users_resolver_1.UsersResolver,
+            auth_resolver_1.AuthResolver
+        ],
         exports: [users_service_1.UsersService, auth_service_1.AuthService],
         controllers: [auth_controller_1.AuthController, user_controller_1.UserController],
     })

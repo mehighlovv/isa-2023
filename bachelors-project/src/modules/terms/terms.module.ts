@@ -13,6 +13,7 @@ import { BloodStockUpdatesModule } from '../blood-stocks-updates/blood-stock-upd
 import { MedicalEquipmentUpdatesModule } from '../medical-equipment-updates/medical-equipment-updates.module';
 import { CompletedTermsModule } from '../completed-terms/completed-terms.module';
 import { PointsConfigurationsModule } from '../points-configurations/points-configurations.module';
+import { TermsResolver } from './terms.resolver';
 
 @Module({
     imports:[
@@ -28,7 +29,10 @@ import { PointsConfigurationsModule } from '../points-configurations/points-conf
         forwardRef(()=>TransfusionCentersModule),
         forwardRef(()=>UsersModule)
     ],
-    providers:[TermsService],
+    providers:[
+        TermsService,
+        TermsResolver
+    ],
     exports:[TermsService],
     controllers:[TermsController]
 })

@@ -10,10 +10,21 @@ import QuestionnaireResponse from "../questionnaire-responses/questionnaire-resp
 
 @Injectable()
 export class AnswersService{
+    
     constructor(@InjectRepository(AnswerEntity) private readonly answersRepository : Repository<AnswerEntity>){}
 
     async createAnswer(question : Question, user : User, questionnaireResponse : QuestionnaireResponse, response : boolean){
         return await this.answersRepository.create(this.toAnswerEntity(question, user, questionnaireResponse, response));
+    }
+
+    async getByQuestionnaireResponseId(questionnaireResponseId: string) {
+        return await this.answersRepository.find({
+            where:{
+                questionnaireResponse:{
+                    id:questionnaireResponseId
+                }
+            }
+        });
     }
 
     toAnswerEntity(question : Question, user : User, questionnaireResponse : QuestionnaireResponse, response : boolean){

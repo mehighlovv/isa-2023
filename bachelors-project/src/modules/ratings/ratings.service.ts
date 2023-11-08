@@ -9,6 +9,7 @@ import { CreateRating } from "../utils";
 
 @Injectable()
 export class RatingsService{
+    
     constructor(
         @InjectRepository(Rating) private readonly ratingsRepository: Repository<Rating>,
         private readonly usersService: UsersService,
@@ -54,5 +55,15 @@ export class RatingsService{
             }
         });
         return rating !== null; 
+    }
+
+    async getByTransfusionCenterId(transfusionCenterId: string) {
+        return await this.ratingsRepository.find({
+            where:{
+                transfusionCenter:{
+                    id:transfusionCenterId
+                }
+            }
+        });
     }
 }

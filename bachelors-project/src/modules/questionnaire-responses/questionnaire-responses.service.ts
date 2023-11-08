@@ -12,7 +12,7 @@ export class QuestionnaireResponsesService{
     constructor(@InjectRepository(QuestionnaireResponseEntity) private readonly questionnaireResponsesRepository : Repository<QuestionnaireResponseEntity>){}
 
     async createQuestionnaireResponse(questionnaire: Questionnaire, user: User, answers: CreateAnswer[]){
-        const questioannireResponse =  await this.questionnaireResponsesRepository.save({
+        const questionnaireResponse =  await this.questionnaireResponsesRepository.save({
             questionnaire:questionnaire,
             user: user,
             answers: answers.map((answer)=> {
@@ -25,7 +25,7 @@ export class QuestionnaireResponsesService{
                 }
             })
         })
-        return this.questionnaireResponseEntityToDto(questioannireResponse);
+        return questionnaireResponse;
     }
 
     async getByUserId(userId: string){
@@ -51,9 +51,13 @@ export class QuestionnaireResponsesService{
         });
     }
 
-    questionnaireResponseEntityToDto(questionnaireResponse : QuestionnaireResponseEntity){
-        return {
-            id: questionnaireResponse.id
-        }
+    async getByQuestionnaireId(questionnaireId: string) {
+        return await this.questionnaireResponsesRepository.find({
+            where:{
+                questionnaire:{
+                    id:questionnaireId
+                }
+            }
+        });
     }
 }

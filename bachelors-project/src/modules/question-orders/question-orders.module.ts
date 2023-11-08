@@ -4,6 +4,7 @@ import QuestionOrder from "./question-order.entity";
 import { QuestionOrdersResolver } from "./question-orders.resolver";
 import { QuestionnairesModule } from "../questionnaires/questionnaires.module";
 import { QuestionsModule } from "../questions/questions.module";
+import { QuestionOrdersService } from "./question-orders.service";
 
 @Module({
     imports:[
@@ -12,7 +13,9 @@ import { QuestionsModule } from "../questions/questions.module";
         forwardRef(()=>QuestionnairesModule)
     ],
     providers:[
-        QuestionOrdersResolver
-    ]
+        QuestionOrdersResolver,
+        QuestionOrdersService
+    ],
+    exports:[QuestionOrdersService]
 })
 export class QuestionOrdersModule {}

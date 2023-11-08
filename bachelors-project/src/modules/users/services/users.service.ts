@@ -11,7 +11,6 @@ import { ChangePassword } from "src/modules/utils/interfaces/ChangePassword";
 import { DEFAULT_LOCKOUT_PERIOD, DEFAULT_PASSWORD_ATTEMPTS, OrderByValue, Paginate, PaginationRequest, UserSearchParams, UserSortParams } from "src/modules/utils";
 import { randomUUID } from "crypto";
 import { TransfusionCentersService } from "src/modules/transfusion-centers/transfusion-centers.service";
-import { TermsService } from "src/modules/terms/terms.service";
 import TransfusionCenter from "src/modules/transfusion-centers/entities/transfusion-center.entity";
 import { LoyaltiesService } from "src/modules/loyalty/loyalties.service";
 import { Cron } from "@nestjs/schedule";
@@ -19,14 +18,11 @@ import { Cron } from "@nestjs/schedule";
 @Injectable()
 export class UsersService{
     
-    
     private readonly logger = new Logger(UsersService.name);
 
     constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>,
         private readonly countriesService: CountriesService,
         private readonly transfusionCentersService: TransfusionCentersService,
-        @Inject(forwardRef(() => TermsService))
-        private readonly termsService: TermsService,
         private readonly loyaltiesService: LoyaltiesService
     ){}
 
@@ -121,6 +117,7 @@ export class UsersService{
                 city:userInfo.city
             }
         );
+        return await this.usersRepository.findOne({where:{id:userInfo.id}});
     }
 
     async changePassword(changePasswordInfo: ChangePassword){
@@ -209,6 +206,26 @@ export class UsersService{
             where:{
                 complaints:{
                     id:complaintId
+                }
+            }
+        });
+    }
+
+    async getOneByQuestionnaireResponseId(questionnaireResponseId: string) {
+        return await this.usersRepository.findOne({
+            where:{
+                questionnaireResponse:{
+                    id:questionnaireResponseId
+                }
+            }
+        });
+    }
+
+    async getOneByTermId(termId: string) {
+        return await this.usersRepository.findOne({
+            where:{
+                reservedTerms:{
+                    id:termId
                 }
             }
         });

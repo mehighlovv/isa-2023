@@ -7,14 +7,8 @@ export declare class AuthService {
     private jwtService;
     private mailService;
     constructor(usersService: UsersService, jwtService: JwtService, mailService: MailService);
-    signIn(email: string, password: string): Promise<{
-        access_token: string;
-    }>;
-    registerUser(userInfo: RegisterUser): Promise<{
-        access_token: string;
-    }>;
+    signIn(email: string, password: string): Promise<string>;
+    registerUser(userInfo: RegisterUser): Promise<string>;
     activateAccount(userId: string): Promise<string>;
-    registerCenterAdmin(userInfo: RegisterCenterAdmin): Promise<{
-        access_token: string;
-    }>;
+    registerCenterAdmin(userInfo: RegisterCenterAdmin): Promise<string>;
 }

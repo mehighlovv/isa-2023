@@ -31,9 +31,8 @@ export class TransfusionCentersService{
             skip:(page-1)*perPage,
             take:perPage
         });
-        const centerResponses = centers.map((center)=>this.entityToDto(center));
-        const paginate: Paginate<TransfusionCenter> = {
-            records: centerResponses,
+        const paginate: Paginate<TransfusionCenterEntity> = {
+            records: centers,
             pagination: {
                 page: page,
                 perPage: perPage,
@@ -61,7 +60,7 @@ export class TransfusionCentersService{
                 ratings:true
             },
         });
-        return this.entityToDto(center);
+        return center;
     }
 
     async updateTransfusionCenter(editTransfusionCenterInfo : EditTransfusionCenter){
@@ -72,6 +71,7 @@ export class TransfusionCentersService{
                 name: editTransfusionCenterInfo.name
             }
         );
+        return await this.transfusionCentersRepository.findOne({where:{id:editTransfusionCenterInfo.id}});
     }
 
     async createTransfusionCenter(transfusionCenterRequest: CreateTransfusionCenter){
@@ -130,9 +130,9 @@ export class TransfusionCentersService{
             skip:(page-1)*perPage,
             take:perPage
         });
-        const centerResponses = centers.map((center)=>this.entityToDto(center));
-        const paginate: Paginate<TransfusionCenter> = {
-            records: centerResponses,
+    
+        const paginate: Paginate<TransfusionCenterEntity> = {
+            records: centers,
             pagination: {
                 page: page,
                 perPage: perPage,
@@ -213,24 +213,18 @@ export class TransfusionCentersService{
         });
     }
 
+    async getOneByTermId(termId: string) {
+        return await this.transfusionCentersRepository.findOne({
+            where:{
+                workingCalendar:{
+                    id:termId
+                }
+            }
+        });
+    }
+
     dtoToEntity(center: CreateTransfusionCenter) : TransfusionCenterEntity{
         return new TransfusionCenterEntity(center.name, center.description, center.address, center.workingHoursBegin, center.workingHoursEnd);
     }
 
-    entityToDto(center: TransfusionCenterEntity) : TransfusionCenter{
-        let avgRating = 0;
-        center.ratings.forEach(rating=>{
-            avgRating+=rating.rating;
-        });
-        avgRating/=center.ratings.length;
-        return {
-            id: center.id,
-            name:center.name,
-            description:center.description,
-            address: center.address,
-            workingHoursBegin: center.workingHoursBegin,
-            workingHoursEnd: center.workingHoursEnd,
-            averageRating: avgRating
-        }
-    }
 }

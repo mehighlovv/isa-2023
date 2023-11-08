@@ -3,7 +3,7 @@ import { EditUserProfile, OrderByValue, PaginationRequest, Role } from 'src/modu
 export declare class UserController {
     private usersService;
     constructor(usersService: UsersService);
-    login(editUserProfileDto: EditUserProfile): Promise<void>;
+    login(editUserProfileDto: EditUserProfile): Promise<import("../entities/user.entity").default>;
     getPaginatedUsers(firstName: string, lastName: string, paginationParams: PaginationRequest, orderBy: OrderByValue, sortBy?: string): Promise<import("src/modules/utils").Paginate<import("../entities/user.entity").default, import("src/modules/utils").Pagination>>;
     getUserProfile(userId: string): Promise<{
         loyaltyLevel: string;
