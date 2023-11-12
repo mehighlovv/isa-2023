@@ -188,7 +188,10 @@ export class TermsService{
             const updatedUser = term.reservationHolder;
             term.reservationHolder.penalties+=1;
             await this.usersService.updateUser(updatedUser);
-            return termReport.reasonForRejection ?? "Hasn't shown up";
+            throw new BadRequestException("The user hasn't shown up!");
+        }
+        if(termReport.reasonForRejection){
+            throw new BadRequestException(termReport.reasonForRejection);
         }
         const medicalEquipments = await this.medicalEquipmentsService.getMedicalEquipments(termReport.medicalEquipmentIds);
         let medicalEquipmentUpdates = [];
