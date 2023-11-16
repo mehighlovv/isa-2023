@@ -1,11 +1,10 @@
-import { Body, Controller, Logger, Param, Post, UsePipes } from "@nestjs/common";
+import { Body, Controller, Param, Post, UsePipes } from "@nestjs/common";
 import { TermsService } from "./terms.service";
 import { CreateNewTerm, CreatePredefinedTerm, CurrentUser, DateTransformPipe, IAuthenticatedUser, Role, Roles, TermReportInfo } from "../utils";
 
 
 @Controller('terms')
 export class TermsController{
-    private readonly logger = new Logger(TermsController.name);
     constructor(private readonly termsService: TermsService){}
 
     @Roles(Role.TRANSFUSION_CENTER_ADMINISTRATOR)

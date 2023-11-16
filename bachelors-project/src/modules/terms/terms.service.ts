@@ -18,6 +18,7 @@ import { MedicalEquipmentUpdatesService } from "../medical-equipment-updates/med
 import { BloodStockUpdatesService } from "../blood-stocks-updates/blood-stock-updates.service";
 import BloodStockUpdate from "../blood-stocks-updates/blood-stock-update.entity";
 import { PointsConfigurationsService } from "../points-configurations/points-configurations.service";
+import QuestionnaireResponse from "../questionnaire-responses/questionnaire-response.entity";
 
 
 @Injectable()
@@ -55,42 +56,63 @@ export class TermsService{
     }
     async reservePredefinedTerm(userId: string, termId: string){
         const user = await this.usersService.getById(userId);
-        if(user.penalties>=MAX_NUM_OF_PENALTIES){
-            throw new BadRequestException("Users who have 3 penalties or more aren't allowed to reserve a term!");
-        }
+        this.guardAgainstMaxPenalties(user);
+        
         const questionnaireResponse = await this.questionnaireResponsesService.getByUserId(userId);
-        if(questionnaireResponse===null){
-            throw new BadRequestException('The user has to fill in the questionnaire before making a reservation!');
-        }
+        this.guardAgainstNullQuestionnaireResponse(questionnaireResponse);
+
         const term = await this.termsRepository.findOneOrFail({where:{id:termId},relations:{reservationHolder:true, transfusionCenter: true}});
-        if(term.status===TermStatus.TAKEN){
-            throw new BadRequestException('This term is already taken!');
-        }
-        if(term.reservationHolder!== null && term.reservationHolder.id===userId){
-            throw new BadRequestException('Users are not allowed to reserve previously canceled terms');
-        }
+        this.guardAgainstTermTaken(term);
+        this.guardAgainstPreviouslyCanceled(term, userId);
+        await this.guardAgainst6MonthPeriod(term, userId);
+
+        term.reservationHolder=user;
+        term.status=TermStatus.TAKEN;
+        const reservedTerm = await this.termsRepository.save(term);
+        return reservedTerm;
+    }
+
+    private async guardAgainst6MonthPeriod(term: TermEntity, userId: string) {
         const sixMonthsAgo = new Date(term.startDate.toString());
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
         const usersTerm = await this.termsRepository.findOne(
             {
-                where:
-                {
-                    reservationHolder:
-                    {
-                        id:userId
+                where: {
+                    reservationHolder: {
+                        id: userId
                     },
                     startDate: MoreThan(sixMonthsAgo),
                     status: TermStatus.TAKEN
                 },
             }
         );
-        if(usersTerm !== null){
+        if (usersTerm !== null) {
             throw new BadRequestException('Users are not allowed to donate blood more frequently than once in six months.');
         }
-        term.reservationHolder=user;
-        term.status=TermStatus.TAKEN;
-        const reservedTerm = await this.termsRepository.save(term);
-        return reservedTerm;
+    }
+
+    private guardAgainstPreviouslyCanceled(term: TermEntity, userId: string) {
+        if (term.reservationHolder !== null && term.reservationHolder.id === userId) {
+            throw new BadRequestException('Users are not allowed to reserve previously canceled terms');
+        }
+    }
+
+    private guardAgainstTermTaken(term: TermEntity) {
+        if (term.status === TermStatus.TAKEN) {
+            throw new BadRequestException('This term is already taken!');
+        }
+    }
+
+    private guardAgainstNullQuestionnaireResponse(questionnaireResponse: QuestionnaireResponse) {
+        if (questionnaireResponse === null) {
+            throw new BadRequestException('The user has to fill in the questionnaire before making a reservation!');
+        }
+    }
+
+    private guardAgainstMaxPenalties(user: User) {
+        if (user.penalties >= MAX_NUM_OF_PENALTIES) {
+            throw new BadRequestException("Users who have 3 penalties or more aren't allowed to reserve a term!");
+        }
     }
 
     async cancelTerm(userId: string, termId: string){
@@ -177,45 +199,80 @@ export class TermsService{
                 reservationHolder:true
             }
         });
-        if(term.status===TermStatus.COMPLETED)
-        {
-            throw new BadRequestException('A completed term cannot be completed again!');
-        }
-        if(!Equal(new Date(term.startDate),new Date())){
-            throw new BadRequestException("The term date must be today's date");
-        }
-        if(!termReport.patientShownUp){
-            const updatedUser = term.reservationHolder;
-            term.reservationHolder.penalties+=1;
-            await this.usersService.updateUser(updatedUser);
-            throw new BadRequestException("The user hasn't shown up!");
-        }
-        if(termReport.reasonForRejection){
-            throw new BadRequestException(termReport.reasonForRejection);
-        }
-        const medicalEquipments = await this.medicalEquipmentsService.getMedicalEquipments(termReport.medicalEquipmentIds);
-        let medicalEquipmentUpdates = [];
-        medicalEquipments.forEach((value,index)=>{
-            value.quantityInStock-=termReport.medicalEquipmentUsageAmounts[index];
-            medicalEquipmentUpdates.push(new MedicalEquipmentUpdate(termReport.medicalEquipmentUsageAmounts[index],value));
-        });
-        await this.medicalEquipmentUpdatesService.createMedicalEquipmentUpdates(medicalEquipmentUpdates);
-        await this.medicalEquipmentsService.updateMedicalEquipments(medicalEquipments);
+        this.guardAgainstCompletedTerms(term);
+        this.guardAgainstDateMismatch(term);
+        await this.guardAgainstUsersNotShowingUp(termReport, term);
+        this.guardAgainstRejectedUsers(termReport);
 
-        const bloodStock = await this.bloodStocksService.getById(termReport.bloodStockId);
-        bloodStock.volume+=termReport.bloodStockVolume;
-        await this.bloodStocksService.updateBloodStock(bloodStock);
-        await this.bloodStockUpdatesService.createBloodStockUpdate(new BloodStockUpdate(termReport.bloodStockVolume, bloodStock));
+        await this.updateMedicalEquipment(termReport);
+        await this.updateBloodStocks(termReport);
 
-        term.status=TermStatus.COMPLETED;
-        await this.termsRepository.save(term);
-        const completedTerm = await this.completedTermsService.createCompletedTerm(new CompletedTerm(term.reservationHolder, term, termReport.lungSaturation, termReport.heartRate, termReport.amountOfSugarInBlood));
+        await this.updateTerm(term);
+        const completedTerm = await this.createCompletedTerm(term, termReport);
 
+        await this.updateUserPoints(term);
+        
+        return completedTerm;
+    }
+
+    private async createCompletedTerm(term: TermEntity, termReport: TermReportInfo) {
+        return await this.completedTermsService.createCompletedTerm(new CompletedTerm(term.reservationHolder, term, termReport.lungSaturation, termReport.heartRate, termReport.amountOfSugarInBlood));
+    }
+
+    private async updateUserPoints(term: TermEntity) {
         const updatedUser = term.reservationHolder;
         updatedUser.points += (await this.pointsConfigurationsService.getPointsConfiguration()).points;
         await this.usersService.updateUser(updatedUser);
-        
-        return completedTerm;
+    }
+
+    private async updateTerm(term: TermEntity) {
+        term.status = TermStatus.COMPLETED;
+        await this.termsRepository.save(term);
+    }
+
+    private async updateBloodStocks(termReport: TermReportInfo) {
+        const bloodStock = await this.bloodStocksService.getById(termReport.bloodStockId);
+        bloodStock.volume += termReport.bloodStockVolume;
+        await this.bloodStocksService.updateBloodStock(bloodStock);
+        await this.bloodStockUpdatesService.createBloodStockUpdate(new BloodStockUpdate(termReport.bloodStockVolume, bloodStock));
+    }
+
+    private async updateMedicalEquipment(termReport: TermReportInfo) {
+        const medicalEquipments = await this.medicalEquipmentsService.getMedicalEquipments(termReport.medicalEquipmentIds);
+        let medicalEquipmentUpdates = [];
+        medicalEquipments.forEach((value, index) => {
+            value.quantityInStock -= termReport.medicalEquipmentUsageAmounts[index];
+            medicalEquipmentUpdates.push(new MedicalEquipmentUpdate(termReport.medicalEquipmentUsageAmounts[index], value));
+        });
+        await this.medicalEquipmentUpdatesService.createMedicalEquipmentUpdates(medicalEquipmentUpdates);
+        await this.medicalEquipmentsService.updateMedicalEquipments(medicalEquipments);
+    }
+
+    private guardAgainstRejectedUsers(termReport: TermReportInfo) {
+        if (termReport.reasonForRejection) {
+            throw new BadRequestException(termReport.reasonForRejection);
+        }
+    }
+
+    private async guardAgainstUsersNotShowingUp(termReport: TermReportInfo, term: TermEntity) {
+        if (!termReport.patientShownUp) {
+            const updatedUser = term.reservationHolder;
+            term.reservationHolder.penalties += 1;
+            await this.usersService.updateUser(updatedUser);
+            throw new BadRequestException("The user hasn't shown up!");
+        }
+    }
+
+    private guardAgainstDateMismatch(term: TermEntity) {
+        if (!Equal(new Date(term.startDate), new Date())) {
+            throw new BadRequestException("The term date must be today's date");
+        }
+    }
+
+    private guardAgainstCompletedTerms(term: TermEntity) {
+        if (term.status === TermStatus.COMPLETED) {
+            throw new BadRequestException('A completed term cannot be completed again!');
+        }
     }
 
     async getOneByCompletedTermId(completedTermId: string) {

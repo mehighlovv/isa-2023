@@ -17,8 +17,6 @@ import { Cron } from "@nestjs/schedule";
 
 @Injectable()
 export class UsersService{
-    
-    private readonly logger = new Logger(UsersService.name);
 
     constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>,
         private readonly countriesService: CountriesService,

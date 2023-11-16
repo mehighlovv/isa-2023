@@ -27,21 +27,6 @@ export default class TypeOrmConfig {
             username: configService.get('DATABASE_USERNAME'),
             password: configService.get('DATABASE_PASSWORD'),
             database: configService.get('DATABASE_NAME'),
-            entities: [
-               Country,
-               TransfusionCenter,
-               User,
-               BloodStock,
-               Question,
-               QuestionOrder,
-               Answer,
-               Questionaire,
-               QuestionaireResponse,
-               Term,
-               Complaint,
-               ComplaintAnswer,
-               Rating
-            ],
             autoLoadEntities: true,
             logging: ['error'],
             synchronize:true
