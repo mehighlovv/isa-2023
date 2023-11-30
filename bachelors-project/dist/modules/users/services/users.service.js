@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var UsersService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
@@ -25,13 +24,12 @@ const crypto_1 = require("crypto");
 const transfusion_centers_service_1 = require("../../transfusion-centers/transfusion-centers.service");
 const loyalties_service_1 = require("../../loyalty/loyalties.service");
 const schedule_1 = require("@nestjs/schedule");
-let UsersService = exports.UsersService = UsersService_1 = class UsersService {
+let UsersService = exports.UsersService = class UsersService {
     constructor(usersRepository, countriesService, transfusionCentersService, loyaltiesService) {
         this.usersRepository = usersRepository;
         this.countriesService = countriesService;
         this.transfusionCentersService = transfusionCentersService;
         this.loyaltiesService = loyaltiesService;
-        this.logger = new common_1.Logger(UsersService_1.name);
     }
     async getOne(email) {
         return await this.usersRepository.findOne({ where: { email: email } });
@@ -262,7 +260,7 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UsersService.prototype, "resetPenalties", null);
-exports.UsersService = UsersService = UsersService_1 = __decorate([
+exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_2.InjectRepository)(user_entity_1.default)),
     __metadata("design:paramtypes", [typeorm_1.Repository,

@@ -15,7 +15,6 @@ export declare class UsersService {
     private readonly countriesService;
     private readonly transfusionCentersService;
     private readonly loyaltiesService;
-    private readonly logger;
     constructor(usersRepository: Repository<User>, countriesService: CountriesService, transfusionCentersService: TransfusionCentersService, loyaltiesService: LoyaltiesService);
     getOne(email: string): Promise<User | undefined>;
     getById(id: string): Promise<User>;
